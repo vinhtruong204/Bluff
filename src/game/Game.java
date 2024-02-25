@@ -39,6 +39,9 @@ public class Game {
             case PLAYING:
                 playing.render(g);
                 break;
+            case PAUSE:
+
+                break;
             default:
                 break;
         }
@@ -51,5 +54,5 @@ public class Game {
     public Menu getMenu() {
         return menu;
     }
-    
+
 }

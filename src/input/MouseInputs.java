@@ -23,6 +23,9 @@ public class MouseInputs implements MouseInputListener {
                 break;
             case PLAYING:
                 game.getPlaying().mouseClicked(e);
+            case PAUSE:
+
+                break;
             default:
                 break;
         }
@@ -37,6 +40,9 @@ public class MouseInputs implements MouseInputListener {
                 break;
             case PLAYING:
                 game.getPlaying().mousePressed(e);
+            case PAUSE:
+
+                break;
             default:
                 break;
         }
@@ -52,6 +58,9 @@ public class MouseInputs implements MouseInputListener {
             case PLAYING:
                 game.getPlaying().mouseReleased(e);
                 break;
+            case PAUSE:
+
+                break;
             default:
                 break;
         }
@@ -66,6 +75,9 @@ public class MouseInputs implements MouseInputListener {
             case PLAYING:
 
                 break;
+            case PAUSE:
+
+                break;
             default:
                 break;
         }
@@ -78,6 +90,9 @@ public class MouseInputs implements MouseInputListener {
 
                 break;
             case PLAYING:
+
+                break;
+            case PAUSE:
 
                 break;
             default:
@@ -95,6 +110,9 @@ public class MouseInputs implements MouseInputListener {
             case PLAYING:
 
                 break;
+            case PAUSE:
+
+                break;
             default:
                 break;
         }
@@ -107,6 +125,9 @@ public class MouseInputs implements MouseInputListener {
 
                 break;
             case PLAYING:
+
+                break;
+            case PAUSE:
 
                 break;
             default:
