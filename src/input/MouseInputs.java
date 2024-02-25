@@ -11,6 +11,7 @@ public class MouseInputs implements MouseInputListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
+        System.out.println("Mouse is clicked");
     }
 
     @Override
