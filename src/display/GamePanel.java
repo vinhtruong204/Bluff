@@ -20,14 +20,14 @@ public class GamePanel extends JPanel implements Runnable {
     private long nextStartTime;
     private int fps, ups;
 
-    // private Game game;
+    private Game game;
     private KeyboardInputs keyboardInputs;
     private MouseInputs mouseInputs;
 
     public GamePanel() {
-        keyboardInputs = new KeyboardInputs();
-        mouseInputs = new MouseInputs();
-        // game = new Game(this.keyHandler);
+        game = new Game();
+        keyboardInputs = new KeyboardInputs(game);
+        mouseInputs = new MouseInputs(game);
         this.setPreferredSize(new Dimension(Game.SCREEN_WIDTH, Game.SCREEN_HEIGHT));
         this.setFocusable(true);
         this.setBackground(Color.black);
@@ -46,6 +46,7 @@ public class GamePanel extends JPanel implements Runnable {
         long currentTime, lastUpdate = System.currentTimeMillis();
         nextStartTime = System.currentTimeMillis() + 1000;
 
+        // While game is running
         while (running) {
             currentTime = System.currentTimeMillis();
             double lastRenderTimeInSeconds = (currentTime - lastUpdate) / 1000.0d;
@@ -54,13 +55,16 @@ public class GamePanel extends JPanel implements Runnable {
 
             if (accumulator >= UPDATE_INTERVAL) {
                 while (accumulator >= UPDATE_INTERVAL) {
+                    // Update game
                     update();
                     accumulator -= UPDATE_INTERVAL;
                 }
 
+                // Call paintComponent function to render to screen
                 repaint();
             }
 
+            // Print fps and ups
             printStats();
         }
 
@@ -77,14 +81,14 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     private void update() {
-        // game.update();
+        game.update();
         ups++;
     }
 
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        // game.render(g);
+        game.render(g);
 
         g.dispose();
         fps++;
