@@ -3,6 +3,8 @@ package display;
 import javax.swing.JPanel;
 
 import game.Game;
+import input.KeyboardInputs;
+import input.MouseInputs;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -19,13 +21,18 @@ public class GamePanel extends JPanel implements Runnable {
     private int fps, ups;
 
     // private Game game;
+    private KeyboardInputs keyboardInputs;
+    private MouseInputs mouseInputs;
 
     public GamePanel() {
-        // keyHandler = new KeyHandler();
+        keyboardInputs = new KeyboardInputs();
+        mouseInputs = new MouseInputs();
         // game = new Game(this.keyHandler);
         this.setPreferredSize(new Dimension(Game.SCREEN_WIDTH, Game.SCREEN_HEIGHT));
         this.setFocusable(true);
         this.setBackground(Color.black);
+        this.addKeyListener(keyboardInputs);
+        this.addMouseListener(mouseInputs);
         // Draws multiple images to the buffer before displaying them on the screen
         this.setDoubleBuffered(true);
         // this.addKeyListener(keyHandler);
