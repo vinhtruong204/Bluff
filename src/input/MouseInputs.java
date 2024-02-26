@@ -7,7 +7,7 @@ import game.Game;
 import gamestate.GameState;
 
 public class MouseInputs implements MouseInputListener {
-
+    // Store game to manage update and render game
     private Game game;
 
     public MouseInputs(Game game) {

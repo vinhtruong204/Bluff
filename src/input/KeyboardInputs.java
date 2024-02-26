@@ -7,6 +7,7 @@ import game.Game;
 import gamestate.GameState;
 
 public class KeyboardInputs implements KeyListener {
+    // Store game to manage update and render game
     private Game game;
 
     public KeyboardInputs(Game game) {
@@ -32,6 +33,7 @@ public class KeyboardInputs implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
+        // Handle keyboard event depend on game state
         switch (GameState.gameState) {
             case MENU:
                 game.getMenu().keyPressed(e);
@@ -49,6 +51,7 @@ public class KeyboardInputs implements KeyListener {
 
     @Override
     public void keyReleased(KeyEvent e) {
+        // Handle keyboard event depend on game state
         switch (GameState.gameState) {
             case MENU:
                 game.getMenu().keyReleased(e);

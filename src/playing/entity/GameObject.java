@@ -7,6 +7,7 @@ import core.Position;
 import core.Size;
 
 public abstract class GameObject {
+    // Default attributes of a game object
     protected Position position;
     protected Size size;
     protected BufferedImage image;
@@ -35,6 +36,7 @@ public abstract class GameObject {
         return image;
     }
 
+    // The objects have to provide update and render functions
     public abstract void update();
     public abstract void render(Graphics g);
 }

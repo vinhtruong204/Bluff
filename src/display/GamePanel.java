@@ -25,17 +25,24 @@ public class GamePanel extends JPanel implements Runnable {
     private MouseInputs mouseInputs;
 
     public GamePanel() {
+        // Create new game
         game = new Game();
+
+        // Create and add keyboard and mouse input
         keyboardInputs = new KeyboardInputs(game);
         mouseInputs = new MouseInputs(game);
+        this.addKeyListener(keyboardInputs);
+        this.addMouseListener(mouseInputs);
+
+        // Set size of panel, focus and background color
         this.setPreferredSize(new Dimension(Game.SCREEN_WIDTH, Game.SCREEN_HEIGHT));
         this.setFocusable(true);
         this.setBackground(Color.black);
-        this.addKeyListener(keyboardInputs);
-        this.addMouseListener(mouseInputs);
+
         // Draws multiple images to the buffer before displaying them on the screen
         this.setDoubleBuffered(true);
-        // this.addKeyListener(keyHandler);
+        
+        // Create game window depend on game panel
         new GameWindow(this);
     }
 
@@ -71,6 +78,7 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     private void printStats() {
+        // Print stats every second
         if (System.currentTimeMillis() > nextStartTime) {
             System.out.printf("FPS: %d, UPS: %d\n", fps, ups);
             fps = 0;
@@ -81,15 +89,19 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     private void update() {
+        // Update game
         game.update();
         ups++;
     }
 
     public void paintComponent(Graphics g) {
+        // Call paintComponent of JPanel class
         super.paintComponent(g);
 
+        // Render game
         game.render(g);
 
+        // Free memory manual
         g.dispose();
         fps++;
     }

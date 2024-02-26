@@ -7,18 +7,22 @@ import menu.Menu;
 import playing.Playing;
 
 public class Game {
+    // Dimension of the window
     public static final int SCREEN_WIDTH = 720;
     public static final int SCREEN_HEIGHT = 480;
 
+    // Game states
     private Playing playing;
     private Menu menu;
 
     public Game() {
+        // Create new playing and menu objects
         playing = new Playing();
         menu = new Menu();
     }
 
     public void update() {
+        // Update depend on game state
         switch (GameState.gameState) {
             case MENU:
                 menu.update();
@@ -32,6 +36,7 @@ public class Game {
     }
 
     public void render(Graphics g) {
+        // Render depend on game state
         switch (GameState.gameState) {
             case MENU:
                 menu.render(g);
