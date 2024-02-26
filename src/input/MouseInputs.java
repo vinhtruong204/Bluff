@@ -16,7 +16,6 @@ public class MouseInputs implements MouseInputListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        System.out.println("Mouse is clicked");
         switch (GameState.gameState) {
             case MENU:
                 game.getMenu().mouseClicked(e);
@@ -33,7 +32,6 @@ public class MouseInputs implements MouseInputListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        System.out.println("Mouse is pressed");
         switch (GameState.gameState) {
             case MENU:
                 game.getMenu().mousePressed(e);
@@ -50,7 +48,6 @@ public class MouseInputs implements MouseInputListener {
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        System.out.println("Mouse released");
         switch (GameState.gameState) {
             case MENU:
                 game.getMenu().mouseReleased(e);

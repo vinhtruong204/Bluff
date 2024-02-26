@@ -6,5 +6,5 @@ public enum GameState {
     PAUSE;
 
     // Set default start game state
-    public static GameState gameState = PLAYING;
+    public static GameState gameState = MENU;
 }
