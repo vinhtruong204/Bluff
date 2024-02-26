@@ -60,7 +60,7 @@ public class GamePanel extends JPanel implements Runnable {
                     accumulator -= UPDATE_INTERVAL;
                 }
 
-                // Call paintComponent function to render to screen
+                // Call paintComponent function render to screen
                 repaint();
             }
 

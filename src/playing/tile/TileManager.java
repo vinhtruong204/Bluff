@@ -1,4 +1,4 @@
-package tile;
+package playing.tile;
 
 public class TileManager {
     private int mapTileNum[][];

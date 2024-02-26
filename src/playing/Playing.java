@@ -5,13 +5,15 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
 import gamestate.StateMethods;
+import playing.entity.Player;
+import playing.tile.TileManager;
 
 public class Playing implements StateMethods {
-    // Player player
-    // LevelManager levelManager
+    Player player;
+    private TileManager tileManager;
 
     public Playing() {
-
+        player = new Player();
     }
 
     @Override
@@ -20,6 +22,7 @@ public class Playing implements StateMethods {
 
     @Override
     public void render(Graphics g) {
+        player.render(g);
     }
 
     @Override
