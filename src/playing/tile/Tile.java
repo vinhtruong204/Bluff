@@ -1,29 +1,18 @@
 package playing.tile;
 
-import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 import core.Position;
 import core.Size;
-import playing.entity.GameObject;
 
-public class Tile extends GameObject {
+public class Tile {
+    private BufferedImage image;
 
-    private final int TILE_WIDTH = 48;
-    private final int TILE_HEIGHT = 48;
-    protected boolean collition;
-
-
-
-    @Override
-    public void update() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'update'");
+    public void setImage(BufferedImage image) {
+        this.image = image;
     }
 
-    @Override
-    public void render(Graphics g) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'render'");
-    } 
+    public BufferedImage getImage() {
+        return image;
+    }
 }

@@ -14,6 +14,7 @@ public class Playing implements StateMethods {
 
     public Playing() {
         player = new Player();
+        tileManager = new TileManager();
     }
 
     @Override
@@ -23,6 +24,7 @@ public class Playing implements StateMethods {
     @Override
     public void render(Graphics g) {
         player.render(g);
+        tileManager.render(g);
     }
 
     @Override
