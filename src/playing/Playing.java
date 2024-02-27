@@ -23,8 +23,8 @@ public class Playing implements StateMethods {
 
     @Override
     public void render(Graphics g) {
-        player.render(g);
         tileManager.render(g);
+        player.render(g);
     }
 
     @Override

@@ -8,36 +8,37 @@ import helpmethods.LoadSave;
 
 public class TileManager {
 
+    //set imformation of TileMap
     private final int TILE_SIZE = 48;
     private final int MAX_WORLD_COL = 42;
     private final int MAX_WORLD_ROW = 12;
     private int mapTileNum[][];
     private Tile tile[];
 
-    public TileManager()
-    {
-        mapTileNum= new int[MAX_WORLD_COL][MAX_WORLD_ROW];
+    //constructor of TileManager
+    public TileManager() {
+        mapTileNum = new int[MAX_WORLD_COL][MAX_WORLD_ROW];
         tile = new Tile[10];
         GetTileMap();
         LoadMap();
     }
 
-    private void GetTileMap()
-    {
-        tile[0]= new Tile();
-        tile[0].setImage(LoadSave.loadImage("img/Tile/wood03.png"));
+    //Loading Tile
+    private void GetTileMap() {
+        tile[0] = new Tile();
+        tile[0].setImage(LoadSave.loadImage("img/Tile/Blue.png"));
 
-        tile[1]= new Tile();
+        tile[1] = new Tile();
         tile[1].setImage(LoadSave.loadImage("img/Tile/wood01.png"));
 
-        tile[2]= new Tile();
+        tile[2] = new Tile();
         tile[2].setImage(LoadSave.loadImage("img/Tile/wood02.png"));
     }
 
-    private void LoadMap()
-    {
-        try{
-        String is = "Map/Map01.txt";
+    //Loading TileMap
+    private void LoadMap() {
+        try {
+            String is = "Map/Map01.txt";
             BufferedReader br = new BufferedReader(new FileReader(is));
             int col = 0, row = 0;
             while (col < MAX_WORLD_COL && row < MAX_WORLD_ROW) {
@@ -60,12 +61,12 @@ public class TileManager {
         }
     }
 
-    
-
+    //update Map
     public void update() {
-        
+
     }
 
+    //render Map
     public void render(Graphics g) {
         int worldCol = 0;
         int worldRow = 0;

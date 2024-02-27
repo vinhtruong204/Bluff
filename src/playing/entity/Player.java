@@ -8,7 +8,7 @@ public class Player extends GameObject {
 
     public Player() {
         // Load image player from file
-        image = LoadSave.loadImage("img/Enemy-Cucumber.png");
+        image = LoadSave.loadImage("img/Player-Bomb Guy.png");
     }
 
     @Override
