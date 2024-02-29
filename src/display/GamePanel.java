@@ -41,7 +41,7 @@ public class GamePanel extends JPanel implements Runnable {
 
         // Draws multiple images to the buffer before displaying them on the screen
         this.setDoubleBuffered(true);
-        
+
         // Create game window depend on game panel
         new GameWindow(this);
     }

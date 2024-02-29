@@ -9,6 +9,7 @@ import playing.entity.Player;
 import playing.tile.TileManager;
 
 public class Playing implements StateMethods {
+    private final float speed = 5f;
     Player player;
     private TileManager tileManager;
 
@@ -19,6 +20,7 @@ public class Playing implements StateMethods {
 
     @Override
     public void update() {
+        player.update();
     }
 
     @Override
@@ -47,18 +49,19 @@ public class Playing implements StateMethods {
     public void keyPressed(KeyEvent e) {
         switch (e.getKeyCode()) {
             case KeyEvent.VK_A:
-                System.out.println("It's A!");
+                player.setIndex(1);
+                player.setTotalAnim(14);
+                player.getPosition().setX(player.getPosition().getX() - speed);
                 break;
             case KeyEvent.VK_W:
-                System.out.println("It's W!");
-
-                break;
-            case KeyEvent.VK_S:
-                System.out.println("It's S!");
-
+                player.setIndex(4);
+                player.setTotalAnim(4);
+                player.getPosition().setY(player.getPosition().getY() - speed);
                 break;
             case KeyEvent.VK_D:
-                System.out.println("It's D!");
+                player.setIndex(1);
+                player.setTotalAnim(14);
+                player.getPosition().setX(player.getPosition().getX() + speed);
 
                 break;
 
@@ -71,16 +74,16 @@ public class Playing implements StateMethods {
     public void keyReleased(KeyEvent e) {
         switch (e.getKeyCode()) {
             case KeyEvent.VK_A:
-
+                player.setIndex(0);
+                player.setTotalAnim(26);
                 break;
             case KeyEvent.VK_W:
-
-                break;
-            case KeyEvent.VK_S:
-
+                player.setIndex(0);
+                player.setTotalAnim(26);
                 break;
             case KeyEvent.VK_D:
-
+                player.setIndex(0);
+                player.setTotalAnim(26);
                 break;
 
             default:
