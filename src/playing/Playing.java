@@ -9,7 +9,7 @@ import playing.entity.Player;
 import playing.tile.TileManager;
 
 public class Playing implements StateMethods {
-    private final float speed = 5f;
+    private final float speed = 7f;
     Player player;
     private TileManager tileManager;
 

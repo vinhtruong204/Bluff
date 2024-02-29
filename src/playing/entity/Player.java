@@ -13,8 +13,8 @@ public class Player extends GameObject {
     private BufferedImage[][] anim;
     private final int TILE_PLAYER = 58;
     private int index, totalAnim;
-    private int TOTAL_FRAME=0;
     private int animStick,animIndex;
+    private final int animSpeed=4;
 
     public void setIndex(int index) {
         this.index = index;
@@ -46,7 +46,7 @@ public class Player extends GameObject {
     @Override
     public void update() {
         animStick++;
-        if(animStick>1)
+        if(animStick>=animStick)
         {
             animStick=0;
             animIndex++;
