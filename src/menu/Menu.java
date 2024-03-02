@@ -5,10 +5,10 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 
+import gamestate.MenuState;
+import gamestate.StateMethods;
 import helpmethods.CheckContain;
 import helpmethods.LoadSave;
-import states.MenuState;
-import states.StateMethods;
 
 public class Menu implements StateMethods {
     // Background image of the menu

@@ -4,9 +4,9 @@ import java.awt.Graphics;
 
 import core.Position;
 import core.Size;
+import gamestate.MenuState;
 import helpmethods.LoadSave;
 import playing.entity.GameObject;
-import states.MenuState;
 
 public class Help extends GameObject {
 

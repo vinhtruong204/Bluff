@@ -8,9 +8,9 @@ import constants.Constants;
 import core.Position;
 import core.Size;
 import game.Game;
+import gamestate.GameState;
+import gamestate.MenuState;
 import helpmethods.LoadSave;
-import states.GameState;
-import states.MenuState;
 
 public class MenuButton {
     // Total button and dimension of each button

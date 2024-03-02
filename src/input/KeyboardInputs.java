@@ -4,7 +4,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 import game.Game;
-import states.GameState;
+import gamestate.GameState;
 
 public class KeyboardInputs implements KeyListener {
     // Store game to manage update and render game
