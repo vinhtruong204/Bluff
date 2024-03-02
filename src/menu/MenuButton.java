@@ -9,6 +9,7 @@ import core.Position;
 import core.Size;
 import game.Game;
 import gamestate.GameState;
+import gamestate.MenuState;
 import helpmethods.LoadSave;
 
 public class MenuButton {
@@ -130,9 +131,22 @@ public class MenuButton {
     }
 
     public void applyGameState() {
-        // If type of button is play, change gamestate
-        if (rowIndex == Constants.ButtonState.PLAY)
-            GameState.gameState = GameState.PLAYING;
+        // Change game state depend on type of menu buttons
+        switch (rowIndex) {
+            case Constants.ButtonState.PLAY:
+                GameState.gameState = GameState.PLAYING;
+                break;
+            case Constants.ButtonState.HELP:
+                MenuState.menuState = MenuState.HELP;
+                break;
+            case Constants.ButtonState.EXIT:
+                // Terminates the application
+                System.exit(0);
+                break;
+
+            default:
+                break;
+        }
     }
 
     public void resetBoolean() {

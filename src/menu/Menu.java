@@ -5,6 +5,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 
+import gamestate.MenuState;
 import gamestate.StateMethods;
 import helpmethods.CheckContain;
 import helpmethods.LoadSave;
@@ -16,12 +17,18 @@ public class Menu implements StateMethods {
     // Array button of the menu
     MenuButton[] buttons;
 
+    // Menu help state
+    Help help;
+
     public Menu() {
         // Load background from file
-        background = LoadSave.loadImage("img/Background_Menu.png");
+        background = LoadSave.loadImage("img/Menu/Background_Menu.png");
 
-        // Allocate memory 
+        // Allocate memory
         buttons = new MenuButton[3];
+
+        // Initialize help
+        help = new Help();
 
         // Initialize all buttons
         initButtons();
@@ -42,12 +49,21 @@ public class Menu implements StateMethods {
 
     @Override
     public void render(Graphics g) {
-        // Render background to screen
-        g.drawImage(background, 0, 0, null);
 
+        // If game state is main menu
+        if (MenuState.menuState == MenuState.MAIN) {
+            // Render background to screen
+            g.drawImage(background, 0, 0, null);
 
-        for (MenuButton button : buttons) {
-            button.render(g);
+            // Render all buttons to screen
+            for (MenuButton button : buttons) {
+                button.render(g);
+            }
+        }
+
+        // If game state is help menu
+        else if (MenuState.menuState == MenuState.HELP) {
+            help.render(g);
         }
     }
 
@@ -57,47 +73,56 @@ public class Menu implements StateMethods {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        for (MenuButton button : buttons) {
-            // If mouse press over button
-            if (CheckContain.isIn(e, button)) {
-                button.setMousePressed(true);
+        if (MenuState.menuState == MenuState.MAIN) {
+            for (MenuButton button : buttons) {
+                // If mouse press over button
+                if (CheckContain.isIn(e, button)) {
+                    button.setMousePressed(true);
+                }
             }
         }
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        for (MenuButton button : buttons) {
-            if (CheckContain.isIn(e, button)) {
-                if (button.isMousePressed()) {
-                    // Apply game state when mouse released on button
-                    button.applyGameState();
+        if (MenuState.menuState == MenuState.MAIN) {
+            for (MenuButton button : buttons) {
+                if (CheckContain.isIn(e, button)) {
+                    if (button.isMousePressed()) {
+                        // Apply game state when mouse released on button
+                        button.applyGameState();
+                    }
                 }
             }
-        }
 
-        // Reset boolean of all button if mouse released
-        for (MenuButton button : buttons) {
-            button.resetBoolean();
+            // Reset boolean of all button if mouse released
+            for (MenuButton button : buttons) {
+                button.resetBoolean();
+            }
         }
     }
 
     @Override
     public void mouseMoved(MouseEvent e) {
-        // Reset mouse over when mouse moved
-        for (MenuButton mb : buttons)
-            mb.setMouseOver(false);
+        if (MenuState.menuState == MenuState.MAIN) {
+            // Reset mouse over when mouse moved
+            for (MenuButton button : buttons)
+                button.setMouseOver(false);
 
-        // Check and set mouse over
-        for (MenuButton mb : buttons)
-            if (CheckContain.isIn(e, mb)) {
-                mb.setMouseOver(true);
-                break;
-            }
+            // Check and set mouse over
+            for (MenuButton button : buttons)
+                if (CheckContain.isIn(e, button)) {
+                    button.setMouseOver(true);
+                    break;
+                }
+        }
     }
 
     @Override
     public void keyPressed(KeyEvent e) {
+        // If user pressed enter key in help window
+        if (MenuState.menuState == MenuState.HELP && e.getKeyCode() == KeyEvent.VK_ENTER)
+            help.applyGameState();
     }
 
     @Override
