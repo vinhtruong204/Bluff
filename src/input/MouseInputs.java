@@ -4,7 +4,7 @@ import java.awt.event.MouseEvent;
 import javax.swing.event.MouseInputListener;
 
 import game.Game;
-import gamestate.GameState;
+import states.GameState;
 
 public class MouseInputs implements MouseInputListener {
     // Store game to manage update and render game

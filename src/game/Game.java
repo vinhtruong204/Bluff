@@ -2,9 +2,9 @@ package game;
 
 import java.awt.Graphics;
 
-import gamestate.GameState;
 import menu.Menu;
 import playing.Playing;
+import states.GameState;
 
 public class Game {
     // Dimension of the window

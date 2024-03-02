@@ -4,9 +4,9 @@ import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
-import gamestate.StateMethods;
 import playing.entity.Player;
 import playing.tile.TileManager;
+import states.StateMethods;
 
 public class Playing implements StateMethods {
     private final float speed = 5f;
