@@ -4,9 +4,11 @@ import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
-import gamestate.StateMethods;
+import helpmethods.CheckKeyPress;
+import helpmethods.PlayerAnimationType;
 import playing.entity.Player;
 import playing.tile.TileManager;
+import gamestate.StateMethods;
 
 public class Playing implements StateMethods {
     private final float speed = 5f;
@@ -49,22 +51,17 @@ public class Playing implements StateMethods {
     public void keyPressed(KeyEvent e) {
         switch (e.getKeyCode()) {
             case KeyEvent.VK_A:
-                player.setIndex(1);
-                player.setTotalAnim(14);
-                player.getPosition().setX(player.getPosition().getX() - speed);
+                player.setKeyPress(CheckKeyPress.Left);
+                player.setAniType(PlayerAnimationType.RUN);
                 break;
             case KeyEvent.VK_W:
-                player.setIndex(4);
-                player.setTotalAnim(4);
-                player.getPosition().setY(player.getPosition().getY() - speed);
+                player.setKeyPress(CheckKeyPress.Up);
+                player.setAniType(PlayerAnimationType.JUMP);
                 break;
             case KeyEvent.VK_D:
-                player.setIndex(1);
-                player.setTotalAnim(14);
-                player.getPosition().setX(player.getPosition().getX() + speed);
-
+                player.setKeyPress(CheckKeyPress.Right);
+                player.setAniType(PlayerAnimationType.RUN);
                 break;
-
             default:
                 break;
         }
@@ -74,16 +71,16 @@ public class Playing implements StateMethods {
     public void keyReleased(KeyEvent e) {
         switch (e.getKeyCode()) {
             case KeyEvent.VK_A:
-                player.setIndex(0);
-                player.setTotalAnim(26);
+            player.setKeyPress(CheckKeyPress.keyDefault);
+            player.setAniType(PlayerAnimationType.IDLE);
                 break;
             case KeyEvent.VK_W:
-                player.setIndex(0);
-                player.setTotalAnim(26);
+            player.setKeyPress(CheckKeyPress.keyDefault);
+            player.setAniType(PlayerAnimationType.IDLE);
                 break;
             case KeyEvent.VK_D:
-                player.setIndex(0);
-                player.setTotalAnim(26);
+            player.setKeyPress(CheckKeyPress.keyDefault);
+            player.setAniType(PlayerAnimationType.IDLE);
                 break;
 
             default:
