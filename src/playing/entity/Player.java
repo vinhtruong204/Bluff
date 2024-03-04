@@ -30,28 +30,15 @@ public class Player extends GameObject {
 
     private int keyPressed;
 
-    public void setMoving(boolean moving) {
-        this.moving = moving;
-    }
-
-    public void setAniType(int aniType) {
-        this.aniType = aniType;
-    }
-
-    public void setKeyPress(int keyPressed) {
-        this.keyPressed = keyPressed;
-    }
-
     public Player() {
         position = new Position(100f, 100f);
         size = new Size(PLAYER_WIDTH, PLAYER_HEIGHT);
 
         velocity = new Vector2D(0, 0);
         hitBox = new Rectangle((int) position.getX(), (int) position.getY(), size.getWidth(), size.getHeight());
-        speed = 5;
+        aniType = speed = 5;
         aniSpeed = 3;
         animations = new BufferedImage[6][26];
-        aniType = PlayerAnimationType.IDLE;
         onGround = false;
         loadAnimations();
     }
@@ -64,7 +51,7 @@ public class Player extends GameObject {
     }
 
     private void updateAnimationTick() {
-        // 60fps => 15 animation frames rendered
+        // 60fps => 20 animation frames rendered
         aniTick++;
 
         if (aniTick >= aniSpeed) {
@@ -76,17 +63,20 @@ public class Player extends GameObject {
         }
     }
 
-    // private void setAnimationType() {
-    // int startAni = aniType;
-    // aniType = moving ? PlayerAnimationType.RUN : PlayerAnimationType.IDLE;
+    private void setAnimationType() {
+        // Store begin ani type
+        int startAni = aniType;
 
-    // // If start anitype is not equal to startAni reset aniTick and aniIndex
-    // if (aniType != startAni) {
-    // aniTick = 0;
-    // aniIndex = 0;
-    // }
+        // Set type of animation if player is moving
+        aniType = moving ? PlayerAnimationType.RUN : PlayerAnimationType.IDLE;
 
-    // }
+        // If start anitype is not equal to startAni reset aniTick and aniIndex
+        if (aniType != startAni) {
+            // Reset animation index and animation tick
+            aniTick = 0;
+            aniIndex = 0;
+        }
+    }
 
     private void upDatePosition() {
         moving = false;
@@ -97,13 +87,14 @@ public class Player extends GameObject {
             velocity.setY(-speed);
         }
 
-        if (keyPressed == CheckKeyPress.Right) {
+        if (keyPressed == CheckKeyPress.Right && keyPressed != CheckKeyPress.Left) {
             velocity.setX(speed);
             velocity.setY(0);
             moving = true;
+
         }
 
-        if (keyPressed == CheckKeyPress.Left) {
+        if (keyPressed == CheckKeyPress.Left && keyPressed != CheckKeyPress.Right) {
             velocity.setX(-speed);
             velocity.setY(0);
             moving = true;
@@ -114,15 +105,36 @@ public class Player extends GameObject {
 
     @Override
     public void update() {
-        // setAnimationType();
+        // Set current type of animation
+        setAnimationType();
+
+        // Update tick to render animation
         updateAnimationTick();
+
+        // Change position if player is moving
         upDatePosition();
     }
 
     @Override
     public void render(Graphics g) {
-        g.drawImage(animations[aniType][aniIndex], (int) position.getX(), (int) position.getY(), size.getWidth(),
-                size.getHeight(), null);
+        g.drawImage(animations[aniType][aniIndex],
+                (int) position.getX(),
+                (int) position.getY(),
+                size.getWidth(),
+                size.getHeight(),
+                null);
+    }
+
+    public void setMoving(boolean moving) {
+        this.moving = moving;
+    }
+
+    public void setAniType(int aniType) {
+        this.aniType = aniType;
+    }
+
+    public void setKeyPress(int keyPressed) {
+        this.keyPressed = keyPressed;
     }
 
     public BufferedImage[][] getAnimations() {
