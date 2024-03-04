@@ -16,8 +16,8 @@ public class Playing implements StateMethods {
     private TileManager tileManager;
 
     public Playing() {
-        player = new Player();
         tileManager = new TileManager();
+        player = new Player(tileManager.getTile(), tileManager.getMapTileNum());
     }
 
     @Override
@@ -58,6 +58,10 @@ public class Playing implements StateMethods {
                 player.setKeyPress(CheckKeyPress.Up);
                 player.setAniType(PlayerAnimationType.JUMP);
                 break;
+            case KeyEvent.VK_S:
+                player.setKeyPress(CheckKeyPress.Down);
+                player.setAniType(PlayerAnimationType.FALL);
+                break;
             case KeyEvent.VK_D:
                 player.setKeyPress(CheckKeyPress.Right);
                 player.setAniType(PlayerAnimationType.RUN);
@@ -71,16 +75,20 @@ public class Playing implements StateMethods {
     public void keyReleased(KeyEvent e) {
         switch (e.getKeyCode()) {
             case KeyEvent.VK_A:
-            player.setKeyPress(CheckKeyPress.keyDefault);
-            player.setAniType(PlayerAnimationType.IDLE);
+                player.setKeyPress(CheckKeyPress.keyDefault);
+                player.setAniType(PlayerAnimationType.IDLE);
                 break;
             case KeyEvent.VK_W:
-            player.setKeyPress(CheckKeyPress.keyDefault);
-            player.setAniType(PlayerAnimationType.IDLE);
+                player.setKeyPress(CheckKeyPress.keyDefault);
+                player.setAniType(PlayerAnimationType.IDLE);
+                break;
+            case KeyEvent.VK_S:
+                player.setKeyPress(CheckKeyPress.keyDefault);
+                player.setAniType(PlayerAnimationType.IDLE);
                 break;
             case KeyEvent.VK_D:
-            player.setKeyPress(CheckKeyPress.keyDefault);
-            player.setAniType(PlayerAnimationType.IDLE);
+                player.setKeyPress(CheckKeyPress.keyDefault);
+                player.setAniType(PlayerAnimationType.IDLE);
                 break;
 
             default:

@@ -10,6 +10,8 @@ import core.Vector2D;
 import helpmethods.CheckKeyPress;
 import helpmethods.LoadSave;
 import helpmethods.PlayerAnimationType;
+import playing.tile.Tile;
+import playing.tile.TileManager;
 
 public class Player extends GameObject {
 
@@ -20,6 +22,8 @@ public class Player extends GameObject {
     private int speed;
 
     private BufferedImage[][] animations;
+    private Tile tile[];
+    private int[][] TileMapNum;
     private int aniType;
     private int aniTick, aniIndex, aniSpeed;
 
@@ -30,15 +34,17 @@ public class Player extends GameObject {
 
     private int keyPressed;
 
-    public Player() {
-        position = new Position(100f, 100f);
+    public Player(Tile[] tile, int[][] TileMapNum) {
+        position = new Position(100f, 300f);
         size = new Size(PLAYER_WIDTH, PLAYER_HEIGHT);
 
         velocity = new Vector2D(0, 0);
-        hitBox = new Rectangle((int) position.getX(), (int) position.getY(), size.getWidth(), size.getHeight());
-        aniType = speed = 5;
+        speed = 5;
         aniSpeed = 3;
         animations = new BufferedImage[6][26];
+        hitBox = new Rectangle(8, 8, 48, 48);
+        this.tile = tile;
+        this.TileMapNum = TileMapNum;
         onGround = false;
         loadAnimations();
     }
@@ -87,11 +93,15 @@ public class Player extends GameObject {
             velocity.setY(-speed);
         }
 
+        if (keyPressed == CheckKeyPress.Down) {
+            onGround = false;
+            velocity.setY(speed);
+        }
+
         if (keyPressed == CheckKeyPress.Right && keyPressed != CheckKeyPress.Left) {
             velocity.setX(speed);
             velocity.setY(0);
             moving = true;
-
         }
 
         if (keyPressed == CheckKeyPress.Left && keyPressed != CheckKeyPress.Right) {
@@ -100,7 +110,73 @@ public class Player extends GameObject {
             moving = true;
         }
 
-        position = new Position(position.getX() + velocity.getX(), position.getY() + velocity.getY());
+        if (checkTile() == false) {
+            position = new Position(position.getX() + velocity.getX(), position.getY() + velocity.getY());
+        }
+    }
+
+    private boolean checkTile() {
+        int entityLeftWorldX = (int) position.getX() + hitBox.x;
+        int entityRightWorldX = (int) position.getX() + hitBox.x + hitBox.width;
+        int entityTopWorldY = (int) position.getY() + hitBox.y;
+        int entityBottomWorldY = (int) position.getY() + hitBox.y + hitBox.height;
+
+        int entityLeftCol = entityLeftWorldX / TileManager.TILE_SIZE;
+        int entityRightCol = entityRightWorldX / TileManager.TILE_SIZE;
+        int entityTopRow = entityTopWorldY / TileManager.TILE_SIZE;
+        int entityBottomRow = entityBottomWorldY / TileManager.TILE_SIZE;
+
+        int tileNum1, tileNum2;
+        boolean flag = false;
+
+        switch (keyPressed) {
+            case CheckKeyPress.Up: {
+                entityTopRow = (entityTopWorldY - speed) / TileManager.TILE_SIZE;
+                tileNum1 = TileMapNum[entityLeftCol][entityTopRow];
+                tileNum2 = TileMapNum[entityRightCol][entityTopRow];
+                if (tile[tileNum1].getCollition() == true || tile[tileNum2].getCollition() == true) {
+                    System.out.println("Up");
+                    flag = true;
+                }
+                break;
+            }
+            case CheckKeyPress.Down: {
+                entityBottomRow = (entityBottomWorldY + speed) / TileManager.TILE_SIZE;
+                tileNum1 = TileMapNum[entityLeftCol][entityBottomRow];
+                tileNum2 = TileMapNum[entityRightCol][entityBottomRow];
+                if (tile[tileNum1].getCollition() == true || tile[tileNum2].getCollition() == true) {
+                    System.out.println("Down");
+                    flag = true;
+                }
+                break;
+            }
+            case CheckKeyPress.Left: {
+                entityLeftCol = (entityLeftWorldX - speed) / TileManager.TILE_SIZE;
+                tileNum1 = TileMapNum[entityLeftCol][entityTopRow];
+                tileNum2 = TileMapNum[entityLeftCol][entityBottomRow];
+                if (tile[tileNum1].getCollition() == true || tile[tileNum2].getCollition() == true) {
+                    System.out.println("Left");
+                    flag = true;
+                }
+                break;
+            }
+            case CheckKeyPress.Right: {
+                entityRightCol = (entityRightWorldX + speed) / TileManager.TILE_SIZE;
+                tileNum1 = TileMapNum[entityRightCol][entityTopRow];
+                tileNum2 = TileMapNum[entityRightCol][entityBottomRow];
+                if (tile[tileNum1].getCollition() == true || tile[tileNum2].getCollition() == true) {
+                    System.out.println("right");
+                    flag = true;
+                }
+                break;
+            }
+            default: {
+                System.out.println("Default");
+                flag = false;
+                break;
+            }
+        }
+        return flag;
     }
 
     @Override
@@ -111,8 +187,11 @@ public class Player extends GameObject {
         // Update tick to render animation
         updateAnimationTick();
 
+        checkTile();
+
         // Change position if player is moving
         upDatePosition();
+
     }
 
     @Override
