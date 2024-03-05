@@ -9,7 +9,7 @@ import helpmethods.LoadSave;
 public class TileManager {
 
     //set imformation of TileMap
-    private final int TILE_SIZE = 48;
+    public static final int TILE_SIZE = 48;
     private final int MAX_WORLD_COL = 42;
     private final int MAX_WORLD_ROW = 12;
     private int mapTileNum[][];
@@ -27,12 +27,15 @@ public class TileManager {
     private void GetTileMap() {
         tile[0] = new Tile();
         tile[0].setImage(LoadSave.loadImage("img/Tile/Blue.png"));
+        tile[0].setCollition(false);
 
         tile[1] = new Tile();
         tile[1].setImage(LoadSave.loadImage("img/Tile/wood01.png"));
+        tile[1].setCollition(true);
 
         tile[2] = new Tile();
         tile[2].setImage(LoadSave.loadImage("img/Tile/wood02.png"));
+        tile[2].setCollition(true);
     }
 
     //Loading TileMap
@@ -82,5 +85,15 @@ public class TileManager {
                 worldRow++;
             }
         }
+    }
+
+    public int[][] getMapTileNum()
+    {
+        return mapTileNum;
+    }
+
+    public Tile[] getTile()
+    {
+        return tile;
     }
 }
