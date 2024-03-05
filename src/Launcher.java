@@ -1,4 +1,4 @@
-import display.GamePanel;
+import game.GamePanel;
 
 public class Launcher {
     public static void main(String[] args) {

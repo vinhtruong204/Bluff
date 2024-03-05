@@ -44,7 +44,7 @@ public class Player extends GameObject {
     }
 
     private void loadAnimations() {
-        image = LoadSave.loadImage("img/Player-Bomb Guy.png");
+        image = LoadSave.loadImage("img/Player/Player-Bomb Guy.png");
         for (int i = 0; i < animations.length; i++)
             for (int j = 0; j < animations[i].length; j++)
                 animations[i][j] = image.getSubimage(j * PLAYER_WIDTH, i * PLAYER_HEIGHT, PLAYER_WIDTH, PLAYER_HEIGHT);

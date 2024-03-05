@@ -1,8 +1,7 @@
-package display;
+package game;
 
 import javax.swing.JPanel;
 
-import game.Game;
 import input.KeyboardInputs;
 import input.MouseInputs;
 

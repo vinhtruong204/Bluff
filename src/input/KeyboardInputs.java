@@ -42,7 +42,7 @@ public class KeyboardInputs implements KeyListener {
                 game.getPlaying().keyPressed(e);
                 break;
             case PAUSE:
-
+                game.getPause().keyPressed(e);
                 break;
             default:
                 break;
@@ -60,7 +60,7 @@ public class KeyboardInputs implements KeyListener {
                 game.getPlaying().keyReleased(e);
                 break;
             case PAUSE:
-
+                game.getPause().keyReleased(e);
                 break;
             default:
                 break;

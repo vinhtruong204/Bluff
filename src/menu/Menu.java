@@ -7,7 +7,6 @@ import java.awt.image.BufferedImage;
 
 import gamestate.MenuState;
 import gamestate.StateMethods;
-import helpmethods.CheckContain;
 import helpmethods.LoadSave;
 
 public class Menu implements StateMethods {
@@ -17,7 +16,7 @@ public class Menu implements StateMethods {
     // Array button of the menu
     MenuButton[] buttons;
 
-    // Menu help state
+    // Help state of menu
     Help help;
 
     public Menu() {
@@ -76,7 +75,7 @@ public class Menu implements StateMethods {
         if (MenuState.menuState == MenuState.MAIN) {
             for (MenuButton button : buttons) {
                 // If mouse press over button
-                if (CheckContain.isIn(e, button)) {
+                if (button.isIn(e)) {
                     button.setMousePressed(true);
                 }
             }
@@ -87,7 +86,7 @@ public class Menu implements StateMethods {
     public void mouseReleased(MouseEvent e) {
         if (MenuState.menuState == MenuState.MAIN) {
             for (MenuButton button : buttons) {
-                if (CheckContain.isIn(e, button)) {
+                if (button.isIn(e)) {
                     if (button.isMousePressed()) {
                         // Apply game state when mouse released on button
                         button.applyGameState();
@@ -111,7 +110,7 @@ public class Menu implements StateMethods {
 
             // Check and set mouse over
             for (MenuButton button : buttons)
-                if (CheckContain.isIn(e, button)) {
+                if (button.isIn(e)) {
                     button.setMouseOver(true);
                     break;
                 }
