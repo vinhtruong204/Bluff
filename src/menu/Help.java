@@ -1,6 +1,7 @@
 package menu;
 
 import java.awt.Graphics;
+import java.awt.image.BufferedImage;
 
 import core.Position;
 import core.Size;
@@ -9,6 +10,7 @@ import helpmethods.LoadSave;
 import playing.entity.GameObject;
 
 public class Help extends GameObject {
+    private BufferedImage image;
 
     public Help() {
         // Load help image and initialize position and size
@@ -33,7 +35,7 @@ public class Help extends GameObject {
     }
 
     public void applyGameState() {
-        // Change game state to menu 
+        // Change game state to menu
         MenuState.menuState = MenuState.MAIN;
     }
 
