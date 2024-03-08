@@ -55,7 +55,7 @@ public class Player extends GameObject {
     }
 
     private void loadAnimations() {
-        image = LoadSave.loadImage("img/Player/Player-Bomb Guy.png");
+        BufferedImage image = LoadSave.loadImage("img/Player/Player-Bomb Guy.png");
         for (int i = 0; i < animations.length; i++)
             for (int j = 0; j < animations[i].length; j++)
                 animations[i][j] = image.getSubimage(j * PLAYER_WIDTH, i * PLAYER_HEIGHT, PLAYER_WIDTH, PLAYER_HEIGHT);
@@ -76,7 +76,6 @@ public class Player extends GameObject {
 
     private void setAnimationType() {
         // If start anitype is not equal to startAni reset aniTick and aniIndex
-        System.out.println(aniType);
         if (aniType != startAni) {
             // Reset animation index and animation tick
             aniTick = 0;
@@ -152,7 +151,6 @@ public class Player extends GameObject {
                 if (tile[tileNum1].getCollition() == true || tile[tileNum2].getCollition() == true) {
                     flag = true;
                     onGround = true;
-                    System.out.println("Onground + " + onGround);
                 }
                 break;
             }
