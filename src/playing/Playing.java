@@ -7,6 +7,7 @@ import java.awt.event.MouseEvent;
 import helpmethods.CheckKeyPress;
 import helpmethods.PlayerAnimationType;
 import playing.camera.camera;
+import playing.entity.EnemyManager;
 import playing.entity.Player;
 import playing.pause.PauseButton;
 import playing.tile.Tile;
@@ -19,17 +20,21 @@ public class Playing implements StateMethods {
     private PauseButton pauseButton;
     private camera screen;
 
+    private EnemyManager enemyManager;
 
     public Playing() {
         tileManager = new TileManager();
         player = new Player(tileManager.getTile(), tileManager.getMapTileNum());
         screen = new camera(tileManager.getMapTileNum(), tileManager.getTile(), player);
         pauseButton = new PauseButton(3);
+        enemyManager = new EnemyManager();
     }
 
     @Override
     public void update() {
         tileManager.update();
+        player.update();
+        enemyManager.update();
         pauseButton.update();
         player.update();
         player.setScreen(screen.getMapStartX(),screen.getMapStartY());
