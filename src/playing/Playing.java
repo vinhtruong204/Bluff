@@ -25,18 +25,18 @@ public class Playing implements StateMethods {
         player = new Player(tileManager.getTile(), tileManager.getMapTileNum());
         screen = new camera(tileManager.getMapTileNum(), tileManager.getTile(), player);
         pauseButton = new PauseButton(3);
-        enemyManager = new EnemyManager();
+        // enemyManager = new EnemyManager();
     }
 
     @Override
     public void update() {
         tileManager.update();
         player.update();
-        enemyManager.update();
-        pauseButton.update();
+        //enemyManager.update();
         player.update();
         player.setScreen(screen.getMapStartX(),screen.getMapStartY());
         screen.update();
+        pauseButton.update();
     }
 
     @Override
@@ -44,7 +44,7 @@ public class Playing implements StateMethods {
         screen.render(g);
         tileManager.render(g);
         player.render(g);
-        pauseButton.update();
+        pauseButton.render(g);;
     }
 
 
