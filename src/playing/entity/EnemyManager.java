@@ -6,16 +6,23 @@ import java.util.ArrayList;
 import helpmethods.EnemyConstants;
 
 public class EnemyManager {
-    ArrayList<Cucumber> cucumbers;
+    private ArrayList<Cucumber> cucumbers;
+    private int[][] map;
 
-    public EnemyManager() {
+    public EnemyManager(int[][] map) {
         cucumbers = new ArrayList<>();
+        this.map = map;
         addCucumber();
     }
 
     private void addCucumber() {
-        Cucumber cb = new Cucumber(EnemyConstants.CUCUMBER);
-        cucumbers.add(cb);
+        for (int i = 0; i < map.length; i++) {
+            for (int j = 0; j < map[i].length; j++) {
+                if (map[i][j] == 5) {
+                    cucumbers.add(new Cucumber(EnemyConstants.CUCUMBER, i, j));
+                }
+            }
+        }
     }
 
     public void update() {

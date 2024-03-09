@@ -21,11 +21,12 @@ public class Playing implements StateMethods {
         tileManager = new TileManager();
         pauseButton = new PauseButton(3);
         player = new Player(tileManager.getTile(), tileManager.getMapTileNum());
-        enemyManager = new EnemyManager();
+        enemyManager = new EnemyManager(tileManager.getMapTileNum());
     }
 
     @Override
     public void update() {
+        //tileManager.update();
         player.update();
         enemyManager.update();
         pauseButton.update();
@@ -33,7 +34,7 @@ public class Playing implements StateMethods {
 
     @Override
     public void render(Graphics g) {
-        tileManager.render(g);
+        //tileManager.render(g);
         player.render(g);
         enemyManager.render(g);
         pauseButton.render(g);

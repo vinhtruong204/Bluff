@@ -7,12 +7,13 @@ import core.Position;
 import core.Size;
 import helpmethods.LoadSave;
 import helpmethods.EnemyConstants.CucumberConstants;
+import playing.tile.TileManager;
 
 public class Cucumber extends Enemy {
 
-    public Cucumber(int enemyType) {
+    public Cucumber(int enemyType, int i, int j) {
         super(enemyType);
-        position = new Position(200, 300);
+        position = new Position(TileManager.TILE_SIZE * j, TileManager.TILE_SIZE * i);
         size = new Size(CucumberConstants.CUCUMBER_WIDTH, CucumberConstants.CUCUMBER_HEIGHT);
         aniType = CucumberConstants.IDLE;
         loadAni();
