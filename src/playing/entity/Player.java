@@ -26,8 +26,7 @@ public class Player extends GameObject {
     private int[][] TileMapNum;
     private int aniType;
     private int aniTick, aniIndex, aniSpeed;
-    private int mapStartX,mapStartY;
-
+    private int mapStartX, mapStartY;
 
     // private boolean moving;
 
@@ -53,8 +52,8 @@ public class Player extends GameObject {
         this.tile = tile;
         this.TileMapNum = TileMapNum;
         onGround = false;
-        mapStartX=0;
-        mapStartY=0;
+        mapStartX = 0;
+        mapStartY = 0;
         loadAnimations();
     }
 
@@ -118,11 +117,13 @@ public class Player extends GameObject {
             }
         }
 
-
         if (!checkTile()) {
             position.setY(position.getY() + velocity.getY());
             position.setX(position.getX() + velocity.getX());
         }
+
+        // Reset vector
+        velocity = new Vector2D(0, speedY);
     }
 
     private boolean checkTile() {
@@ -142,10 +143,12 @@ public class Player extends GameObject {
         switch (keyPressed) {
             case CheckKeyPress.Up: {
                 entityTopRow = (entityTopWorldY - (int) speedY) / TileManager.TILE_SIZE;
-                tileNum1 = TileMapNum[entityLeftCol][entityTopRow];
-                tileNum2 = TileMapNum[entityRightCol][entityTopRow];
-                if (tile[tileNum1].getCollition() == true || tile[tileNum2].getCollition() == true) {
-                    flag = true;
+                if (entityLeftCol >= 0 && entityLeftCol < 42 ) {
+                    tileNum1 = TileMapNum[entityLeftCol][entityTopRow];
+                    tileNum2 = TileMapNum[entityRightCol][entityTopRow];
+                    if (tile[tileNum1].getCollition() == true || tile[tileNum2].getCollition() == true) {
+                        flag = true;
+                    }
                 }
                 break;
             }
@@ -214,10 +217,9 @@ public class Player extends GameObject {
         }
     }
 
-    public void setScreen(int mapStartX,int mapStartY)
-    {
-        this.mapStartX=mapStartX;
-        this.mapStartY=mapStartY;
+    public void setScreen(int mapStartX, int mapStartY) {
+        this.mapStartX = mapStartX;
+        this.mapStartY = mapStartY;
     }
 
     @Override
@@ -239,12 +241,11 @@ public class Player extends GameObject {
         upDatePosition();
     }
 
-
     @Override
     public void render(Graphics g) {
         g.drawImage(animations[aniType][aniIndex],
-                (int) position.getX()-mapStartX,
-                (int) position.getY()-mapStartY,
+                (int) position.getX() - mapStartX,
+                (int) position.getY() - mapStartY,
                 size.getWidth(),
                 size.getHeight(),
                 null);
@@ -266,8 +267,7 @@ public class Player extends GameObject {
         this.onGround = onGround;
     }
 
-    public void inPos()
-    {
+    public void inPos() {
         System.out.println(position.getX() + " " + position.getY());
     }
 }

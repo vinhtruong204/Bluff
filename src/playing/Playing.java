@@ -5,12 +5,10 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
 import helpmethods.CheckKeyPress;
-import helpmethods.PlayerAnimationType;
 import playing.camera.camera;
 import playing.entity.EnemyManager;
 import playing.entity.Player;
 import playing.pause.PauseButton;
-import playing.tile.Tile;
 import playing.tile.TileManager;
 import gamestate.StateMethods;
 
