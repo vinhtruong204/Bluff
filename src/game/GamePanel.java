@@ -99,6 +99,7 @@ public class GamePanel extends JPanel implements Runnable {
 
         // Render game
         game.render(g);
+        // game.inPos();
 
         // Free memory manual
         g.dispose();

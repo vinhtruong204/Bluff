@@ -6,16 +6,16 @@ import java.io.FileReader;
 
 import helpmethods.LoadSave;
 
+
 public class TileManager {
 
-    //set imformation of TileMap
+    // set imformation of TileMap
     public static final int TILE_SIZE = 48;
-    private final int MAX_WORLD_COL = 42;
-    private final int MAX_WORLD_ROW = 12;
+    public static final int MAX_WORLD_COL = 42;
+    public static final int MAX_WORLD_ROW = 12;
     private int mapTileNum[][];
     private Tile tile[];
-
-    //constructor of TileManager
+    // constructor of TileManager
     public TileManager() {
         mapTileNum = new int[MAX_WORLD_COL][MAX_WORLD_ROW];
         tile = new Tile[10];
@@ -23,8 +23,8 @@ public class TileManager {
         LoadMap();
     }
 
-    //Loading Tile
-    private void GetTileMap() {
+    // Loading Tile
+    public void GetTileMap() {
         tile[0] = new Tile();
         tile[0].setImage(LoadSave.loadImage("img/Tile/Blue.png"));
         tile[0].setCollition(false);
@@ -38,7 +38,7 @@ public class TileManager {
         tile[2].setCollition(true);
     }
 
-    //Loading TileMap
+    // Loading TileMap
     private void LoadMap() {
         try {
             String is = "Map/Map01.txt";
@@ -63,37 +63,22 @@ public class TileManager {
         }
     }
 
-    //update Map
+    // update Map
     public void update() {
-
     }
 
-    //render Map
+    // render Map
     public void render(Graphics g) {
-        int worldCol = 0;
-        int worldRow = 0;
-        while (worldCol < MAX_WORLD_COL && worldRow < MAX_WORLD_ROW) {
-            int tileNum = mapTileNum[worldCol][worldRow];
-
-            int worldX = worldCol * TILE_SIZE;
-            int worldY = worldRow * TILE_SIZE;
-
-            g.drawImage(tile[tileNum].getImage(), worldX, worldY, TILE_SIZE, TILE_SIZE, null);
-            worldCol++;
-            if (worldCol == MAX_WORLD_COL) {
-                worldCol = 0;
-                worldRow++;
-            }
-        }
+        
     }
 
-    public int[][] getMapTileNum()
-    {
+    public int[][] getMapTileNum() {
         return mapTileNum;
     }
 
-    public Tile[] getTile()
-    {
+    public Tile[] getTile() {
         return tile;
     }
+
+    
 }

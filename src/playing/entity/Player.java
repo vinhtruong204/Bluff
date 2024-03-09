@@ -26,6 +26,8 @@ public class Player extends GameObject {
     private int[][] TileMapNum;
     private int aniType;
     private int aniTick, aniIndex, aniSpeed;
+    private int mapStartX,mapStartY;
+
 
     // private boolean moving;
 
@@ -36,7 +38,7 @@ public class Player extends GameObject {
     private int startAni;
 
     public Player(Tile[] tile, int[][] TileMapNum) {
-        position = new Position(100f, 300f);
+        position = new Position(60f, 60f);
         size = new Size(PLAYER_WIDTH, PLAYER_HEIGHT);
 
         velocity = new Vector2D(0f, 0f);
@@ -51,6 +53,8 @@ public class Player extends GameObject {
         this.tile = tile;
         this.TileMapNum = TileMapNum;
         onGround = false;
+        mapStartX=0;
+        mapStartY=0;
         loadAnimations();
     }
 
@@ -76,7 +80,6 @@ public class Player extends GameObject {
 
     private void setAnimationType() {
         // If start anitype is not equal to startAni reset aniTick and aniIndex
-        System.out.println(aniType);
         if (aniType != startAni) {
             // Reset animation index and animation tick
             aniTick = 0;
@@ -97,7 +100,7 @@ public class Player extends GameObject {
         } else if (keyPressed == CheckKeyPress.Down) {
             velocity.setY(speedY);
             velocity.setX(0f);
-        } else if (keyPressed == CheckKeyPress.Right) {
+        } else if (keyPressed == CheckKeyPress.Right && keyPressed != CheckKeyPress.Left) {
             if (onGround) {
                 velocity.setX(speedX);
                 velocity.setY(0f);
@@ -105,7 +108,7 @@ public class Player extends GameObject {
                 velocity.setX(speedX);
                 velocity.setY(speedY);
             }
-        } else if (keyPressed == CheckKeyPress.Left) {
+        } else if (keyPressed == CheckKeyPress.Left && keyPressed != CheckKeyPress.Right) {
             if (onGround) {
                 velocity.setX(-speedX);
                 velocity.setY(0f);
@@ -114,6 +117,7 @@ public class Player extends GameObject {
                 velocity.setY(speedY);
             }
         }
+
 
         if (!checkTile()) {
             position.setY(position.getY() + velocity.getY());
@@ -152,7 +156,6 @@ public class Player extends GameObject {
                 if (tile[tileNum1].getCollition() == true || tile[tileNum2].getCollition() == true) {
                     flag = true;
                     onGround = true;
-                    System.out.println("Onground + " + onGround);
                 }
                 break;
             }
@@ -211,14 +214,17 @@ public class Player extends GameObject {
         }
     }
 
+    public void setScreen(int mapStartX,int mapStartY)
+    {
+        this.mapStartX=mapStartX;
+        this.mapStartY=mapStartY;
+    }
+
     @Override
     public void update() {
 
         // Update tick to render animation
         updateAnimationTick();
-
-        // Change position if player is moving
-        upDatePosition();
 
         // take AniType Old
         StartAniOld();
@@ -229,16 +235,16 @@ public class Player extends GameObject {
         // Set current type of animation
         setAnimationType();
 
-        // check collider player with map
-        checkTile();
-
+        // Change position if player is moving
+        upDatePosition();
     }
+
 
     @Override
     public void render(Graphics g) {
         g.drawImage(animations[aniType][aniIndex],
-                (int) position.getX(),
-                (int) position.getY(),
+                (int) position.getX()-mapStartX,
+                (int) position.getY()-mapStartY,
                 size.getWidth(),
                 size.getHeight(),
                 null);
@@ -260,4 +266,8 @@ public class Player extends GameObject {
         this.onGround = onGround;
     }
 
+    public void inPos()
+    {
+        System.out.println(position.getX() + " " + position.getY());
+    }
 }

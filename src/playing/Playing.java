@@ -6,8 +6,10 @@ import java.awt.event.MouseEvent;
 
 import helpmethods.CheckKeyPress;
 import helpmethods.PlayerAnimationType;
+import playing.camera.camera;
 import playing.entity.Player;
 import playing.pause.PauseButton;
+import playing.tile.Tile;
 import playing.tile.TileManager;
 import gamestate.StateMethods;
 
@@ -15,26 +17,33 @@ public class Playing implements StateMethods {
     private Player player;
     private TileManager tileManager;
     private PauseButton pauseButton;
+    private camera screen;
+
 
     public Playing() {
         tileManager = new TileManager();
-        pauseButton = new PauseButton(3);
         player = new Player(tileManager.getTile(), tileManager.getMapTileNum());
+        screen = new camera(tileManager.getMapTileNum(), tileManager.getTile(), player);
+        pauseButton = new PauseButton(3);
     }
 
     @Override
     public void update() {
-        player.update();
+        tileManager.update();
         pauseButton.update();
+        player.update();
+        player.setScreen(screen.getMapStartX(),screen.getMapStartY());
+        screen.update();
     }
 
     @Override
     public void render(Graphics g) {
+        screen.render(g);
         tileManager.render(g);
         player.render(g);
-        pauseButton.render(g);
-
+        pauseButton.update();
     }
+
 
     @Override
     public void mouseClicked(MouseEvent e) {
@@ -78,9 +87,6 @@ public class Playing implements StateMethods {
             case KeyEvent.VK_W:
                 player.setKeyPress(CheckKeyPress.Up);
                 break;
-            case KeyEvent.VK_S:
-                player.setKeyPress(CheckKeyPress.Down);
-                break;
             case KeyEvent.VK_D:
                 player.setKeyPress(CheckKeyPress.Right);
                 break;
@@ -96,9 +102,6 @@ public class Playing implements StateMethods {
                 player.setKeyPress(CheckKeyPress.Down);
                 break;
             case KeyEvent.VK_W:
-                player.setKeyPress(CheckKeyPress.Down);
-                break;
-            case KeyEvent.VK_S:
                 player.setKeyPress(CheckKeyPress.Down);
                 break;
             case KeyEvent.VK_D:
