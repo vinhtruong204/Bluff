@@ -41,6 +41,11 @@ public class Game {
         }
     }
 
+    // public void inPos()
+    // {
+    //     playing.inPos();
+    // }
+
     
     public void render(Graphics g) {
         // Render depend on game state
