@@ -121,7 +121,6 @@ public class Player extends GameObject {
             position.setY(position.getY() + velocity.getY());
             position.setX(position.getX() + velocity.getX());
         }
-
     }
 
     private boolean checkTile() {
@@ -221,7 +220,7 @@ public class Player extends GameObject {
     }
 
     @Override
-    public void update() {
+    public void update(int mapStartX,int mapStartY) {
 
         // Update tick to render animation
         updateAnimationTick();
@@ -234,6 +233,9 @@ public class Player extends GameObject {
 
         // Set current type of animation
         setAnimationType();
+
+        //set screen 
+        setScreen(mapStartX, mapStartY);
 
         // Change position if player is moving
         upDatePosition();
