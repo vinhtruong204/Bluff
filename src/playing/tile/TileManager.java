@@ -36,6 +36,10 @@ public class TileManager {
         tile[2] = new Tile();
         tile[2].setImage(LoadSave.loadImage("img/Tile/wood02.png"));
         tile[2].setCollition(true);
+
+        tile[5] = new Tile();
+        tile[5].setImage(LoadSave.loadImage("img/Tile/Blue.png"));
+        tile[5].setCollition(false);
     }
 
     // Loading TileMap

@@ -5,7 +5,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
 import helpmethods.CheckKeyPress;
-import playing.camera.camera;
+import playing.camera.Camera;
 import playing.entity.EnemyManager;
 import playing.entity.Player;
 import playing.pause.PauseButton;
@@ -16,14 +16,14 @@ public class Playing implements StateMethods {
     private Player player;
     private TileManager tileManager;
     private PauseButton pauseButton;
-    private camera screen;
+    private Camera screen;
 
     private EnemyManager enemyManager;
 
     public Playing() {
         tileManager = new TileManager();
         player = new Player(tileManager.getTile(), tileManager.getMapTileNum());
-        screen = new camera(tileManager.getMapTileNum(), tileManager.getTile(), player);
+        screen = new Camera(tileManager.getMapTileNum(), tileManager.getTile(), player);
         pauseButton = new PauseButton(3);
         // enemyManager = new EnemyManager();
     }
@@ -31,10 +31,8 @@ public class Playing implements StateMethods {
     @Override
     public void update() {
         tileManager.update();
-        player.update();
-        //enemyManager.update();
-        player.update();
-        player.setScreen(screen.getMapStartX(),screen.getMapStartY());
+        // enemyManager.update();
+        player.update(screen.getMapStartX(), screen.getMapStartY());
         screen.update();
         pauseButton.update();
     }
@@ -44,9 +42,9 @@ public class Playing implements StateMethods {
         screen.render(g);
         tileManager.render(g);
         player.render(g);
-        pauseButton.render(g);;
+        pauseButton.render(g);
+        ;
     }
-
 
     @Override
     public void mouseClicked(MouseEvent e) {

@@ -7,7 +7,7 @@ import playing.entity.Player;
 import playing.tile.Tile;
 import playing.tile.TileManager;
 
-public class camera {
+public class    Camera {
 
     private int maxMapX;
     private int maxMapY;
@@ -18,7 +18,9 @@ public class camera {
     private Tile[] tile;
     private Player player;
 
-    public camera(int[][] mapTileNum, Tile[] tile, Player player) {
+    private int x1,x2,y1,y2,map_x,map_y;
+
+    public Camera(int[][] mapTileNum, Tile[] tile, Player player) {
         this.mapTileNum = mapTileNum;
         this.tile = tile;
         this.player = player;
@@ -74,22 +76,17 @@ public class camera {
             mapStartY = maxMapY - Game.SCREEN_HEIGHT;
         }
     }
+    
+    private void UpdatePositionRenderToMap()
+    {
+        x1 = 0;
+        x2 = 0;
 
-    public void update() {
-        checkCenterToMap();
-    }
+        y1 = 0;
+        y2 = 0;
 
-    public void render(Graphics g) {
-        int x1 = 0;
-        int x2 = 0;
-
-        int y1 = 0;
-        int y2 = 0;
-
-        int map_x = 0;
-        int map_y = 0;
-
-       // System.out.println(mapStartX + " " + mapStartY);
+        map_x = 0;
+        map_y = 0;
 
         map_x = mapStartX / TileManager.TILE_SIZE;
         x1 = (mapStartX % TileManager.TILE_SIZE) * -1;
@@ -98,7 +95,14 @@ public class camera {
         map_y = mapStartY / TileManager.TILE_SIZE;
         y1 = (mapStartY % TileManager.TILE_SIZE) * -1;
         y2 = y1 + Game.SCREEN_HEIGHT + (y1 == 0 ? 0 : TileManager.TILE_SIZE);
+    }
 
+    public void update() {
+        checkCenterToMap();
+        UpdatePositionRenderToMap();
+    }
+
+    public void render(Graphics g) {
         for (int i = y1; i < y2; i += TileManager.TILE_SIZE) {
             map_x = (mapStartX / TileManager.TILE_SIZE);
             for (int j = x1; j < x2; j += TileManager.TILE_SIZE) {
