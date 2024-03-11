@@ -143,12 +143,10 @@ public class Player extends GameObject {
         switch (keyPressed) {
             case CheckKeyPress.Up: {
                 entityTopRow = (entityTopWorldY - (int) speedY) / TileManager.TILE_SIZE;
-                if (entityLeftCol >= 0 && entityLeftCol < 42) {
-                    tileNum1 = TileMapNum[entityLeftCol][entityTopRow];
-                    tileNum2 = TileMapNum[entityRightCol][entityTopRow];
-                    if (tile[tileNum1].getCollition() == true || tile[tileNum2].getCollition() == true) {
-                        flag = true;
-                    }
+                tileNum1 = TileMapNum[entityLeftCol][entityTopRow];
+                tileNum2 = TileMapNum[entityRightCol][entityTopRow];
+                if (tile[tileNum1].getCollition() == true || tile[tileNum2].getCollition() == true) {
+                    flag = true;
                 }
                 break;
             }

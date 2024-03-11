@@ -76,6 +76,15 @@ public class Camera {
     }
 
     private void UpdatePositionRenderToMap() {
+       
+    }
+
+    public void update() {
+        checkCenterToMap();
+        UpdatePositionRenderToMap();
+    }
+
+    public void render(Graphics g) {
         x1 = 0;
         x2 = 0;
 
@@ -92,19 +101,13 @@ public class Camera {
         map_y = mapStartY / TileManager.TILE_SIZE;
         y1 = (mapStartY % TileManager.TILE_SIZE) * -1;
         y2 = y1 + Game.SCREEN_HEIGHT + (y1 == 0 ? 0 : TileManager.TILE_SIZE);
-    }
-
-    public void update() {
-        checkCenterToMap();
-        UpdatePositionRenderToMap();
-    }
-
-    public void render(Graphics g) {
         for (int i = y1; i < y2; i += TileManager.TILE_SIZE) {
             map_x = (mapStartX / TileManager.TILE_SIZE);
             for (int j = x1; j < x2; j += TileManager.TILE_SIZE) {
-                int tileNum = mapTileNum[map_x][map_y];
-                g.drawImage(tile[tileNum].getImage(), j, i, TileManager.TILE_SIZE, TileManager.TILE_SIZE, null);
+                if(map_x <TileManager.MAX_WORLD_COL && map_y < TileManager.MAX_WORLD_ROW){
+                    int tileNum = mapTileNum[map_x][map_y];
+                    g.drawImage(tile[tileNum].getImage(), j, i, TileManager.TILE_SIZE, TileManager.TILE_SIZE, null);
+                }
                 map_x++;
             }
             map_y++;
