@@ -12,7 +12,7 @@ public class TileManager {
     // set imformation of TileMap
     public static final int TILE_SIZE = 48;
     public static final int MAX_WORLD_COL = 42;
-    public static final int MAX_WORLD_ROW = 12;
+    public static final int MAX_WORLD_ROW = 14;
     private int mapTileNum[][];
     private Tile tile[];
     // constructor of TileManager
@@ -40,10 +40,7 @@ public class TileManager {
         tile[2] = new Tile();
         tile[2].setImage(LoadSave.loadImage("img/Tile/wood02.png"));
         tile[2].setCollition(true);
-
-        tile[5] = new Tile();
-        tile[5].setImage(LoadSave.loadImage("img/Tile/Blue.png"));
-        tile[5].setCollition(false);
+        
     }
 
     // Loading TileMap

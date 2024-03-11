@@ -92,14 +92,15 @@ public class Player extends GameObject {
 
     private void upDatePosition() {
 
-        if (keyPressed == CheckKeyPress.Up && onGround) {
+        if (keyPressed == CheckKeyPress.Up) {
             velocity.setY(-speedY);
             velocity.setX(0f);
             onGround = false;
         } else if (keyPressed == CheckKeyPress.Down) {
             velocity.setY(speedY);
             velocity.setX(0f);
-        } else if (keyPressed == CheckKeyPress.Right && keyPressed != CheckKeyPress.Left) {
+        }
+        else if (keyPressed == CheckKeyPress.Right && keyPressed != CheckKeyPress.Left) {
             if (onGround) {
                 velocity.setX(speedX);
                 velocity.setY(0f);
@@ -107,6 +108,8 @@ public class Player extends GameObject {
                 velocity.setX(speedX);
                 velocity.setY(speedY);
             }
+            velocity.setX(speedX);
+
         } else if (keyPressed == CheckKeyPress.Left && keyPressed != CheckKeyPress.Right) {
             if (onGround) {
                 velocity.setX(-speedX);
@@ -140,7 +143,7 @@ public class Player extends GameObject {
         switch (keyPressed) {
             case CheckKeyPress.Up: {
                 entityTopRow = (entityTopWorldY - (int) speedY) / TileManager.TILE_SIZE;
-                if (entityLeftCol >= 0 && entityLeftCol < 42 ) {
+                if (entityLeftCol >= 0 && entityLeftCol < 42) {
                     tileNum1 = TileMapNum[entityLeftCol][entityTopRow];
                     tileNum2 = TileMapNum[entityRightCol][entityTopRow];
                     if (tile[tileNum1].getCollition() == true || tile[tileNum2].getCollition() == true) {
@@ -219,7 +222,7 @@ public class Player extends GameObject {
         this.mapStartY = mapStartY;
     }
 
-    public void update(int mapStartX,int mapStartY) {
+    public void update(int mapStartX, int mapStartY) {
 
         // Update tick to render animation
         updateAnimationTick();
@@ -233,7 +236,7 @@ public class Player extends GameObject {
         // Set current type of animation
         setAnimationType();
 
-        //set screen 
+        // set screen
         setScreen(mapStartX, mapStartY);
 
         // Change position if player is moving
@@ -248,6 +251,11 @@ public class Player extends GameObject {
                 size.getWidth(),
                 size.getHeight(),
                 null);
+    }
+
+    @Override
+    public void update() {
+
     }
 
     public void setAniType(int aniType) {
@@ -268,10 +276,5 @@ public class Player extends GameObject {
 
     public void inPos() {
         System.out.println(position.getX() + " " + position.getY());
-    }
-
-    @Override
-    public void update() {
-        
     }
 }

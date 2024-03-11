@@ -18,7 +18,7 @@ public class Camera {
     private Tile[] tile;
     private Player player;
 
-    private int x1,x2,y1,y2,map_x,map_y;
+    private int x1, x2, y1, y2, map_x, map_y;
 
     public Camera(int[][] mapTileNum, Tile[] tile, Player player) {
         this.mapTileNum = mapTileNum;
@@ -64,21 +64,18 @@ public class Camera {
         mapStartX = (int) player.getPosition().getX() - Game.SCREEN_WIDTH / 2;
         if (mapStartX < 0) {
             mapStartX = 0;
-        }
-        else if (mapStartX + Game.SCREEN_WIDTH >= maxMapX) {
+        } else if (mapStartX + Game.SCREEN_WIDTH >= maxMapX) {
             mapStartX = maxMapX - Game.SCREEN_WIDTH;
         }
         mapStartY = (int) player.getPosition().getY() - Game.SCREEN_HEIGHT / 2;
         if (mapStartY < 0) {
             mapStartY = 0;
-        }
-        else if (mapStartY + Game.SCREEN_HEIGHT >= maxMapY) {
+        } else if (mapStartY + Game.SCREEN_HEIGHT >= maxMapY) {
             mapStartY = maxMapY - Game.SCREEN_HEIGHT;
         }
     }
-    
-    private void UpdatePositionRenderToMap()
-    {
+
+    private void UpdatePositionRenderToMap() {
         x1 = 0;
         x2 = 0;
 
@@ -114,8 +111,7 @@ public class Camera {
         }
     }
 
-    public void inPos()
-    {
+    public void inPos() {
         System.out.println(player.getPosition().getX() + " " + player.getPosition().getY());
     }
 
