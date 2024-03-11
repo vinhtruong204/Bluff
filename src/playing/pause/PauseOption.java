@@ -9,7 +9,6 @@ import core.Size;
 import game.Game;
 import gamestate.GameState;
 import helpmethods.LoadSave;
-import menu.MenuButtonState;
 
 public class PauseOption extends Button {
 
@@ -35,13 +34,13 @@ public class PauseOption extends Button {
         // Set posision for each type of button
         // Distance among each button is 70 - size.getHeight() = 70 - 48 = 22(pixel)
         switch (rowIndex) {
-            case MenuButtonState.PLAY:
+            case PauseOptionState.CONTINUE:
                 position = new Position((Game.SCREEN_WIDTH - size.getWidth()) / 2, 150);
                 break;
-            case MenuButtonState.HELP:
+            case PauseOptionState.RESTART:
                 position = new Position((Game.SCREEN_WIDTH - size.getWidth()) / 2, 150 + 70);
                 break;
-            case MenuButtonState.EXIT:
+            case PauseOptionState.EXIT:
                 position = new Position((Game.SCREEN_WIDTH - size.getWidth()) / 2, (150 + 70) + 70);
                 break;
             default:

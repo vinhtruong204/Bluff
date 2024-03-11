@@ -41,23 +41,18 @@ public class Game {
         }
     }
 
-    // public void inPos()
-    // {
-    //     playing.inPos();
-    // }
-
     
     public void render(Graphics g) {
         // Render depend on game state
         switch (GameState.gameState) {
             case MENU:
-            menu.render(g);
-            break;
+                menu.render(g);
+                break;
             case PLAYING:
                 playing.render(g);
                 break;
             case PAUSE:
-                playing.render(g);
+                //playing.render(g);
                 pause.render(g);
                 break;
             default:
