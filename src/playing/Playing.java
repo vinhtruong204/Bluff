@@ -5,8 +5,9 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
 import helpmethods.CheckKeyPress;
+import helpmethods.EnemyConstants;
 import playing.camera.camera;
-import playing.entity.EnemyManager;
+import playing.entity.Cucumber;
 import playing.entity.Player;
 import playing.pause.PauseButton;
 import playing.tile.TileManager;
@@ -18,23 +19,22 @@ public class Playing implements StateMethods {
     private PauseButton pauseButton;
     private camera screen;
 
-    private EnemyManager enemyManager;
+    private Cucumber cucumber;
 
     public Playing() {
         tileManager = new TileManager();
         player = new Player(tileManager.getTile(), tileManager.getMapTileNum());
         screen = new camera(tileManager.getMapTileNum(), tileManager.getTile(), player);
         pauseButton = new PauseButton(3);
-        // enemyManager = new EnemyManager();
+        cucumber = new Cucumber(EnemyConstants.CUCUMBER, 8, 7);
     }
 
     @Override
     public void update() {
-        tileManager.update();
         player.update();
-        //enemyManager.update();
         player.update();
         player.setScreen(screen.getMapStartX(),screen.getMapStartY());
+        cucumber.update();
         screen.update();
         pauseButton.update();
     }
@@ -42,9 +42,9 @@ public class Playing implements StateMethods {
     @Override
     public void render(Graphics g) {
         screen.render(g);
-        tileManager.render(g);
         player.render(g);
-        pauseButton.render(g);;
+        cucumber.render(g);
+        pauseButton.render(g);
     }
 
 

@@ -5,17 +5,23 @@ import java.awt.image.BufferedImage;
 
 import core.Position;
 import core.Size;
+import core.Vector2D;
 import helpmethods.LoadSave;
 import helpmethods.EnemyConstants.CucumberConstants;
 import playing.tile.TileManager;
 
 public class Cucumber extends Enemy {
+    private float attackDistance;
+    private Vector2D velocity;
+    private float traveled; // distance traveled
 
     public Cucumber(int enemyType, int i, int j) {
         super(enemyType);
-        position = new Position(TileManager.TILE_SIZE * j, TileManager.TILE_SIZE * i);
+        position = new Position(TileManager.TILE_SIZE * i, TileManager.TILE_SIZE * j);
         size = new Size(CucumberConstants.CUCUMBER_WIDTH, CucumberConstants.CUCUMBER_HEIGHT);
         aniType = CucumberConstants.IDLE;
+        attackDistance = 100.0f;
+        velocity = new Vector2D(-1.0f, 0);
         loadAni();
     }
 
@@ -54,6 +60,19 @@ public class Cucumber extends Enemy {
 
     @Override
     protected void upDatePosition() {
+        if (traveled <= attackDistance) {
+            traveled += Math.abs(velocity.getX());
+            position.setX(position.getX() + velocity.getX());
+        } else {
+            traveled = 0.0f;
+            velocity.setX(-velocity.getX());
+            // flip image
+            for (int i = 0; i < animations.length; i++) {
+                for (int j = 0; j < animations[i].length; j++) {
+                    animations[i][j] = FlipImage.flipImage(animations[i][j]);
+                }
+            }
+        } 
     }
 
     @Override

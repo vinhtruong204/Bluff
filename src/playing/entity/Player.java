@@ -122,8 +122,6 @@ public class Player extends GameObject {
             position.setX(position.getX() + velocity.getX());
         }
 
-        // Reset vector
-        velocity = new Vector2D(0, speedY);
     }
 
     private boolean checkTile() {

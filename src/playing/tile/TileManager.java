@@ -29,6 +29,10 @@ public class TileManager {
         tile[0].setImage(LoadSave.loadImage("img/Tile/Blue.png"));
         tile[0].setCollition(false);
 
+        tile[5] = new Tile();
+        tile[5].setImage(LoadSave.loadImage("img/Tile/Blue.png"));
+        tile[5].setCollition(false);
+
         tile[1] = new Tile();
         tile[1].setImage(LoadSave.loadImage("img/Tile/wood01.png"));
         tile[1].setCollition(true);
