@@ -6,6 +6,7 @@ import java.awt.image.BufferedImage;
 import core.Position;
 import core.Size;
 import core.Vector2D;
+import helpmethods.FlipImage;
 import helpmethods.LoadSave;
 import helpmethods.EnemyConstants.CucumberConstants;
 import playing.tile.TileManager;

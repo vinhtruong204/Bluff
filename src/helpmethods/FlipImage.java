@@ -1,4 +1,4 @@
-package playing.entity;
+package helpmethods;
 import java.awt.Graphics2D;
 import java  .awt.image.BufferedImage;
 
