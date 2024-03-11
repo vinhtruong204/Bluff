@@ -7,7 +7,7 @@ import playing.entity.Player;
 import playing.tile.Tile;
 import playing.tile.TileManager;
 
-public class    Camera {
+public class Camera {
 
     private int maxMapX;
     private int maxMapY;

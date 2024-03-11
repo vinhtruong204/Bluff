@@ -219,7 +219,6 @@ public class Player extends GameObject {
         this.mapStartY = mapStartY;
     }
 
-    @Override
     public void update(int mapStartX,int mapStartY) {
 
         // Update tick to render animation
@@ -269,5 +268,10 @@ public class Player extends GameObject {
 
     public void inPos() {
         System.out.println(position.getX() + " " + position.getY());
+    }
+
+    @Override
+    public void update() {
+        
     }
 }

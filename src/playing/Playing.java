@@ -31,9 +31,8 @@ public class Playing implements StateMethods {
 
     @Override
     public void update() {
-        player.update();
-        player.update();
-        player.setScreen(screen.getMapStartX(),screen.getMapStartY());
+
+        player.update(screen.getMapStartX(),screen.getMapStartY());
         cucumber.update();
         screen.update();
         pauseButton.update();

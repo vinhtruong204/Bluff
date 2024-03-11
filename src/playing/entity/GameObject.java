@@ -29,7 +29,7 @@ public abstract class GameObject {
     // The objects have to provide update and render functions
     public abstract void update();
 
-    public abstract void update(int x,int y);
+    //public abstract void update(int x,int y);
 
     public abstract void render(Graphics g);
 }
