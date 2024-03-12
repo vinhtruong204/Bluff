@@ -52,7 +52,7 @@ public class Game {
                 playing.render(g);
                 break;
             case PAUSE:
-                //playing.render(g);
+                playing.render(g);
                 pause.render(g);
                 break;
             default:

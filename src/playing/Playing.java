@@ -4,46 +4,29 @@ import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
-import helpmethods.CheckKeyPress;
-import helpmethods.EnemyConstants;
-import playing.camera.Camera;
-import playing.entity.Cucumber;
-import playing.entity.Player;
 import playing.pause.PauseButton;
 import playing.tile.LevelManager;
 import gamestate.StateMethods;
 
 public class Playing implements StateMethods {
-    private Player player;
-    private LevelManager tileManager;
+    private LevelManager levelManager;
     private PauseButton pauseButton;
-    private Camera screen;
-
-    private Cucumber cucumber;
 
     public Playing() {
-        tileManager = new LevelManager();
-        player = new Player(tileManager.getTile(), tileManager.getMapTileNum());
-        screen = new Camera(tileManager.getMapTileNum(), tileManager.getTile(), player);
+        levelManager = new LevelManager();
         pauseButton = new PauseButton(3);
-        cucumber = new Cucumber(EnemyConstants.CUCUMBER, 8, 7);
     }
 
     @Override
     public void update() {
-        screen.update();
-        player.update(screen.getMapStartX(),screen.getMapStartY());
-        cucumber.update(screen.getMapStartX(),screen.getMapStartY());
+        levelManager.update();
         pauseButton.update();
     }
 
     @Override
     public void render(Graphics g) {
-        screen.render(g);
-        player.render(g);
-        cucumber.render(g);
+        levelManager.render(g);
         pauseButton.render(g);
-        
     }
 
     @Override
@@ -81,37 +64,13 @@ public class Playing implements StateMethods {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        switch (e.getKeyCode()) {
-            case KeyEvent.VK_A:
-                player.setKeyPress(CheckKeyPress.Left);
-                break;
-            case KeyEvent.VK_W:
-                player.setKeyPress(CheckKeyPress.Up);
-                break;
-            case KeyEvent.VK_D:
-                player.setKeyPress(CheckKeyPress.Right);
-                break;
-            default:
-                break;
-        }
+        levelManager.keyPressed(e);
+
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-        switch (e.getKeyCode()) {
-            case KeyEvent.VK_A:
-                player.setKeyPress(CheckKeyPress.Down);
-                break;
-            case KeyEvent.VK_W:
-                player.setKeyPress(CheckKeyPress.Down);
-                break;
-            case KeyEvent.VK_D:
-                player.setKeyPress(CheckKeyPress.Down);
-                break;
-
-            default:
-                break;
-        }
+        levelManager.keyReleased(e);
     }
 
 }

@@ -8,17 +8,17 @@ import core.Size;
 import core.Vector2D;
 import helpmethods.*;
 import helpmethods.EnemyConstants.CucumberConstants;
-import playing.tile.LevelManager;
+import playing.tile.Tile;
 
 public class Cucumber extends Enemy {
     private float attackDistance;
     private Vector2D velocity;
     private float traveled; // distance traveled
-    private int mapStartX,mapStartY;
+    private int mapStartX, mapStartY;
 
     public Cucumber(int enemyType, int i, int j) {
         super(enemyType);
-        position = new Position(LevelManager.TILE_SIZE * i, LevelManager.TILE_SIZE * j);
+        position = new Position(Tile.TILE_SIZE * i, Tile.TILE_SIZE * j);
         size = new Size(CucumberConstants.CUCUMBER_WIDTH, CucumberConstants.CUCUMBER_HEIGHT);
         aniType = CucumberConstants.IDLE;
         attackDistance = 100.0f;
@@ -26,10 +26,9 @@ public class Cucumber extends Enemy {
         loadAni();
     }
 
-    private void setMapStartXY(int mapStartX,int mapStartY)
-    {
-        this.mapStartX=mapStartX;
-        this.mapStartY=mapStartY;
+    private void setMapStartXY(int mapStartX, int mapStartY) {
+        this.mapStartX = mapStartX;
+        this.mapStartY = mapStartY;
     }
 
     @Override
@@ -79,11 +78,11 @@ public class Cucumber extends Enemy {
                     animations[i][j] = FlipImage.flipImage(animations[i][j]);
                 }
             }
-        } 
+        }
     }
 
-    public void update(int mapStartX,int mapStartY) {
-        setMapStartXY(mapStartX,mapStartY);
+    public void update(int mapStartX, int mapStartY) {
+        setMapStartXY(mapStartX, mapStartY);
         updateAnimationTick();
         upDatePosition();
     }
@@ -100,8 +99,7 @@ public class Cucumber extends Enemy {
     }
 
     @Override
-    public void update()
-    {
+    public void update() {
 
     }
 

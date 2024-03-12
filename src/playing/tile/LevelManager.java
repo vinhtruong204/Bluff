@@ -1,89 +1,95 @@
 package playing.tile;
 
 import java.awt.Graphics;
-import java.io.BufferedReader;
-import java.io.FileReader;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 
-import helpmethods.LoadSave;
+import gamestate.StateMethods;
+import helpmethods.CheckKeyPress;
+import playing.camera.Camera;
+import playing.entity.Player;
 
+public class LevelManager implements StateMethods {
 
-public class LevelManager {
+    private Level levels[];
+    private int currentLevel = 0;
+    private Camera camera;
+    private Player player;
 
-    // set imformation of TileMap
-    public static final int TILE_SIZE = 48;
-    public static final int MAX_WORLD_COL = 42;
-    public static final int MAX_WORLD_ROW = 14;
-    private int mapTileNum[][];
-    private Level tile[];
     // constructor of TileManager
     public LevelManager() {
-        mapTileNum = new int[MAX_WORLD_COL][MAX_WORLD_ROW];
-        tile = new Level[10];
-        GetTileMap();
-        LoadMap();
+        levels = new Level[5];
+        initMap();
+        player = new Player(levels[currentLevel].getMap());
+        camera = new Camera(levels[currentLevel], player);
     }
 
-    // Loading Tile
-    public void GetTileMap() {
-        tile[0] = new Level();
-        tile[0].setImage(LoadSave.loadImage("img/Tile/Blue.png"));
-        tile[0].setCollition(false);
-
-        tile[5] = new Level();
-        tile[5].setImage(LoadSave.loadImage("img/Tile/Blue.png"));
-        tile[5].setCollition(false);
-
-        tile[1] = new Level();
-        tile[1].setImage(LoadSave.loadImage("img/Tile/wood01.png"));
-        tile[1].setCollition(true);
-
-        tile[2] = new Level();
-        tile[2].setImage(LoadSave.loadImage("img/Tile/wood02.png"));
-        tile[2].setCollition(true);
-        
-    }
-
-    // Loading TileMap
-    private void LoadMap() {
-        try {
-            String is = "Map/Map01.txt";
-            BufferedReader br = new BufferedReader(new FileReader(is));
-            int col = 0, row = 0;
-            while (col < MAX_WORLD_COL && row < MAX_WORLD_ROW) {
-                String Line = br.readLine();
-                while (col < MAX_WORLD_COL) {
-                    String Number[] = Line.split(" ");
-                    int Num = Integer.parseInt(Number[col]);
-                    mapTileNum[col][row] = Num;
-                    col++;
-                }
-                if (col == MAX_WORLD_COL) {
-                    col = 0;
-                    row++;
-                }
-            }
-            br.close();
-        } catch (Exception e) {
-            e.printStackTrace();
+    private void initMap() {
+        for (int i = 0; i < levels.length; i++) {
+            levels[i] = new Level("Map/Map01.txt");
         }
     }
 
     // update Map
     public void update() {
+        //camera.update();
+        player.update(camera.getMapStartX(), camera.getMapStartY());
     }
 
     // render Map
     public void render(Graphics g) {
-        
+        //camera.render(g);
+        player.render(g);
     }
 
-    public int[][] getMapTileNum() {
-        return mapTileNum;
+    @Override
+    public void mouseClicked(MouseEvent e) {
     }
 
-    public Level[] getTile() {
-        return tile;
+    @Override
+    public void mousePressed(MouseEvent e) {
     }
 
-    
+    @Override
+    public void mouseReleased(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent e) {
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        switch (e.getKeyCode()) {
+            case KeyEvent.VK_A:
+                player.setKeyPress(CheckKeyPress.Left);
+                break;
+            case KeyEvent.VK_W:
+                player.setKeyPress(CheckKeyPress.Up);
+                break;
+            case KeyEvent.VK_D:
+                player.setKeyPress(CheckKeyPress.Right);
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        switch (e.getKeyCode()) {
+            case KeyEvent.VK_A:
+                player.setKeyPress(CheckKeyPress.Down);
+                break;
+            case KeyEvent.VK_W:
+                player.setKeyPress(CheckKeyPress.Down);
+                break;
+            case KeyEvent.VK_D:
+                player.setKeyPress(CheckKeyPress.Down);
+                break;
+            default:
+                break;
+        }
+    }
+
 }

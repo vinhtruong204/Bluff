@@ -5,7 +5,7 @@ import java.awt.Graphics;
 import game.Game;
 import playing.entity.Player;
 import playing.tile.Level;
-import playing.tile.LevelManager;
+import playing.tile.Tile;
 
 public class Camera {
 
@@ -14,18 +14,14 @@ public class Camera {
     private int mapStartX;
     private int mapStartY;
 
-    private int[][] mapTileNum;
-    private Level[] tile;
+    private Level level;
     private Player player;
-
     private int x1, x2, y1, y2, map_x, map_y;
 
-    public Camera(int[][] mapTileNum, Level[] tile, Player player) {
-        this.mapTileNum = mapTileNum;
-        this.tile = tile;
-        this.player = player;
-        maxMapX = LevelManager.TILE_SIZE * (LevelManager.MAX_WORLD_COL);
-        maxMapY = LevelManager.TILE_SIZE * (LevelManager.MAX_WORLD_ROW);
+    public Camera(Level level, Player player) {
+        this.level = level;
+        maxMapX = Tile.TILE_SIZE * level.getMaxCol();
+        maxMapY = Tile.TILE_SIZE * level.getMaxRow();
     }
 
     public int getMaxMapX() {
@@ -76,15 +72,6 @@ public class Camera {
     }
 
     private void UpdatePositionRenderToMap() {
-
-    }
-
-    public void update() {
-        checkCenterToMap();
-        UpdatePositionRenderToMap();
-    }
-
-    public void render(Graphics g) {
         x1 = 0;
         x2 = 0;
 
@@ -94,28 +81,32 @@ public class Camera {
         map_x = 0;
         map_y = 0;
 
-        map_x = mapStartX / LevelManager.TILE_SIZE;
-        x1 = (mapStartX % LevelManager.TILE_SIZE) * -1;
-        x2 = x1 + Game.SCREEN_WIDTH + (x1 == 0 ? 0 : LevelManager.TILE_SIZE);
+        map_x = mapStartX / Tile.TILE_SIZE;
+        x1 = (mapStartX % Tile.TILE_SIZE) * -1;
+        x2 = x1 + Game.SCREEN_WIDTH + (x1 == 0 ? 0 : Tile.TILE_SIZE);
 
-        map_y = mapStartY / LevelManager.TILE_SIZE;
-        y1 = (mapStartY % LevelManager.TILE_SIZE) * -1;
-        y2 = y1 + Game.SCREEN_HEIGHT + (y1 == 0 ? 0 : LevelManager.TILE_SIZE);
-        for (int i = y1; i < y2; i += LevelManager.TILE_SIZE) {
-            map_x = (mapStartX / LevelManager.TILE_SIZE);
-            for (int j = x1; j < x2; j += LevelManager.TILE_SIZE) {
-                if (map_x < LevelManager.MAX_WORLD_COL && map_y < LevelManager.MAX_WORLD_ROW) {
-                    int tileNum = mapTileNum[map_x][map_y];
-                    g.drawImage(tile[tileNum].getImage(), j, i, LevelManager.TILE_SIZE, LevelManager.TILE_SIZE, null);
+        map_y = mapStartY / Tile.TILE_SIZE;
+        y1 = (mapStartY % Tile.TILE_SIZE) * -1;
+        y2 = y1 + Game.SCREEN_HEIGHT + (y1 == 0 ? 0 : Tile.TILE_SIZE);
+    }
+
+    public void update() {
+        checkCenterToMap();
+        UpdatePositionRenderToMap();
+    }
+
+    public void render(Graphics g) {
+        for (int i = y1; i < y2; i += Tile.TILE_SIZE) {
+            map_x = (mapStartX / Tile.TILE_SIZE);
+            for (int j = x1; j < x2; j += Tile.TILE_SIZE) {
+                if (map_x < level.getMaxCol() && map_y < level.getMaxRow()) {
+                    int tileNum = level.getMap()[map_x][map_y];
+                    g.drawImage(level.getTiles()[tileNum].getImage(), j, i, Tile.TILE_SIZE, Tile.TILE_SIZE, null);
                 }
                 map_x++;
             }
             map_y++;
         }
-    }
-
-    public void inPos() {
-        System.out.println(player.getPosition().getX() + " " + player.getPosition().getY());
     }
 
 }
