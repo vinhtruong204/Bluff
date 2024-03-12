@@ -10,19 +10,19 @@ import playing.camera.Camera;
 import playing.entity.Cucumber;
 import playing.entity.Player;
 import playing.pause.PauseButton;
-import playing.tile.TileManager;
+import playing.tile.LevelManager;
 import gamestate.StateMethods;
 
 public class Playing implements StateMethods {
     private Player player;
-    private TileManager tileManager;
+    private LevelManager tileManager;
     private PauseButton pauseButton;
     private Camera screen;
 
     private Cucumber cucumber;
 
     public Playing() {
-        tileManager = new TileManager();
+        tileManager = new LevelManager();
         player = new Player(tileManager.getTile(), tileManager.getMapTileNum());
         screen = new Camera(tileManager.getMapTileNum(), tileManager.getTile(), player);
         pauseButton = new PauseButton(3);

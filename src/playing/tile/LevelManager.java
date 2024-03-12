@@ -7,37 +7,37 @@ import java.io.FileReader;
 import helpmethods.LoadSave;
 
 
-public class TileManager {
+public class LevelManager {
 
     // set imformation of TileMap
     public static final int TILE_SIZE = 48;
     public static final int MAX_WORLD_COL = 42;
     public static final int MAX_WORLD_ROW = 14;
     private int mapTileNum[][];
-    private Tile tile[];
+    private Level tile[];
     // constructor of TileManager
-    public TileManager() {
+    public LevelManager() {
         mapTileNum = new int[MAX_WORLD_COL][MAX_WORLD_ROW];
-        tile = new Tile[10];
+        tile = new Level[10];
         GetTileMap();
         LoadMap();
     }
 
     // Loading Tile
     public void GetTileMap() {
-        tile[0] = new Tile();
+        tile[0] = new Level();
         tile[0].setImage(LoadSave.loadImage("img/Tile/Blue.png"));
         tile[0].setCollition(false);
 
-        tile[5] = new Tile();
+        tile[5] = new Level();
         tile[5].setImage(LoadSave.loadImage("img/Tile/Blue.png"));
         tile[5].setCollition(false);
 
-        tile[1] = new Tile();
+        tile[1] = new Level();
         tile[1].setImage(LoadSave.loadImage("img/Tile/wood01.png"));
         tile[1].setCollition(true);
 
-        tile[2] = new Tile();
+        tile[2] = new Level();
         tile[2].setImage(LoadSave.loadImage("img/Tile/wood02.png"));
         tile[2].setCollition(true);
         
@@ -81,7 +81,7 @@ public class TileManager {
         return mapTileNum;
     }
 
-    public Tile[] getTile() {
+    public Level[] getTile() {
         return tile;
     }
 

@@ -10,8 +10,8 @@ import core.Vector2D;
 import helpmethods.CheckKeyPress;
 import helpmethods.LoadSave;
 import helpmethods.PlayerAnimationType;
-import playing.tile.Tile;
-import playing.tile.TileManager;
+import playing.tile.Level;
+import playing.tile.LevelManager;
 
 public class Player extends GameObject {
 
@@ -22,7 +22,7 @@ public class Player extends GameObject {
     private float speedX, speedY;
 
     private BufferedImage[][] animations;
-    private Tile tile[];
+    private Level tile[];
     private int[][] TileMapNum;
     private int aniType;
     private int aniTick, aniIndex, aniSpeed;
@@ -36,7 +36,7 @@ public class Player extends GameObject {
     private int keyPressed;
     private int startAni;
 
-    public Player(Tile[] tile, int[][] TileMapNum) {
+    public Player(Level[] tile, int[][] TileMapNum) {
         position = new Position(60f, 60f);
         size = new Size(PLAYER_WIDTH, PLAYER_HEIGHT);
 
@@ -92,35 +92,34 @@ public class Player extends GameObject {
 
     private void upDatePosition() {
 
-        if (keyPressed == CheckKeyPress.Up) {
-            velocity.setY(-speedY);
-            velocity.setX(0f);
-            onGround = false;
-        } else if (keyPressed == CheckKeyPress.Down) {
-            velocity.setY(speedY);
-            velocity.setX(0f);
-        }
-        else if (keyPressed == CheckKeyPress.Right && keyPressed != CheckKeyPress.Left) {
-            if (onGround) {
-                velocity.setX(speedX);
-                velocity.setY(0f);
-            } else {
-                velocity.setX(speedX);
-                velocity.setY(speedY);
-            }
-            velocity.setX(speedX);
-
-        } else if (keyPressed == CheckKeyPress.Left && keyPressed != CheckKeyPress.Right) {
-            if (onGround) {
-                velocity.setX(-speedX);
-                velocity.setY(0f);
-            } else {
-                velocity.setX(-speedX);
-                velocity.setY(speedY);
-            }
-        }
-
         if (!checkTile()) {
+            if (keyPressed == CheckKeyPress.Up) {
+                velocity.setY(-speedY);
+                velocity.setX(0f);
+                onGround = false;
+            } else if (keyPressed == CheckKeyPress.Down) {
+                velocity.setY(speedY);
+                velocity.setX(0f);
+            }
+            else if (keyPressed == CheckKeyPress.Right && keyPressed != CheckKeyPress.Left) {
+                if (onGround) {
+                    velocity.setX(speedX);
+                    velocity.setY(0f);
+                } else {
+                    velocity.setX(speedX);
+                    velocity.setY(speedY);
+                }
+                velocity.setX(speedX);
+    
+            } else if (keyPressed == CheckKeyPress.Left && keyPressed != CheckKeyPress.Right) {
+                if (onGround) {
+                    velocity.setX(-speedX);
+                    velocity.setY(0f);
+                } else {
+                    velocity.setX(-speedX);
+                    velocity.setY(speedY);
+                }
+            }
             position.setY(position.getY() + velocity.getY());
             position.setX(position.getX() + velocity.getX());
         }
@@ -132,17 +131,17 @@ public class Player extends GameObject {
         int entityTopWorldY = (int) position.getY() + hitBox.y;
         int entityBottomWorldY = (int) position.getY() + hitBox.y + hitBox.height;
 
-        int entityLeftCol = entityLeftWorldX / TileManager.TILE_SIZE;
-        int entityRightCol = entityRightWorldX / TileManager.TILE_SIZE;
-        int entityTopRow = entityTopWorldY / TileManager.TILE_SIZE;
-        int entityBottomRow = entityBottomWorldY / TileManager.TILE_SIZE;
+        int entityLeftCol = entityLeftWorldX / LevelManager.TILE_SIZE;
+        int entityRightCol = entityRightWorldX / LevelManager.TILE_SIZE;
+        int entityTopRow = entityTopWorldY / LevelManager.TILE_SIZE;
+        int entityBottomRow = entityBottomWorldY / LevelManager.TILE_SIZE;
 
         int tileNum1, tileNum2;
         boolean flag = false;
 
         switch (keyPressed) {
             case CheckKeyPress.Up: {
-                entityTopRow = (entityTopWorldY - (int) speedY) / TileManager.TILE_SIZE;
+                entityTopRow = (entityTopWorldY - (int) speedY) / LevelManager.TILE_SIZE;
                 tileNum1 = TileMapNum[entityLeftCol][entityTopRow];
                 tileNum2 = TileMapNum[entityRightCol][entityTopRow];
                 if (tile[tileNum1].getCollition() == true || tile[tileNum2].getCollition() == true) {
@@ -151,7 +150,7 @@ public class Player extends GameObject {
                 break;
             }
             case CheckKeyPress.Down: {
-                entityBottomRow = (entityBottomWorldY + (int) speedY) / TileManager.TILE_SIZE;
+                entityBottomRow = (entityBottomWorldY + (int) speedY) / LevelManager.TILE_SIZE;
                 tileNum1 = TileMapNum[entityLeftCol][entityBottomRow];
                 tileNum2 = TileMapNum[entityRightCol][entityBottomRow];
                 if (tile[tileNum1].getCollition() == true || tile[tileNum2].getCollition() == true) {
@@ -161,7 +160,7 @@ public class Player extends GameObject {
                 break;
             }
             case CheckKeyPress.Left: {
-                entityLeftCol = (entityLeftWorldX - (int) speedX) / TileManager.TILE_SIZE;
+                entityLeftCol = (entityLeftWorldX - (int) speedX) / LevelManager.TILE_SIZE;
                 tileNum1 = TileMapNum[entityLeftCol][entityTopRow];
                 tileNum2 = TileMapNum[entityLeftCol][entityBottomRow];
                 if (tile[tileNum1].getCollition() == true || tile[tileNum2].getCollition() == true) {
@@ -170,7 +169,7 @@ public class Player extends GameObject {
                 break;
             }
             case CheckKeyPress.Right: {
-                entityRightCol = (entityRightWorldX + (int) speedX) / TileManager.TILE_SIZE;
+                entityRightCol = (entityRightWorldX + (int) speedX) / LevelManager.TILE_SIZE;
                 tileNum1 = TileMapNum[entityRightCol][entityTopRow];
                 tileNum2 = TileMapNum[entityRightCol][entityBottomRow];
                 if (tile[tileNum1].getCollition() == true || tile[tileNum2].getCollition() == true) {

@@ -8,7 +8,7 @@ import core.Size;
 import core.Vector2D;
 import helpmethods.*;
 import helpmethods.EnemyConstants.CucumberConstants;
-import playing.tile.TileManager;
+import playing.tile.LevelManager;
 
 public class Cucumber extends Enemy {
     private float attackDistance;
@@ -18,7 +18,7 @@ public class Cucumber extends Enemy {
 
     public Cucumber(int enemyType, int i, int j) {
         super(enemyType);
-        position = new Position(TileManager.TILE_SIZE * i, TileManager.TILE_SIZE * j);
+        position = new Position(LevelManager.TILE_SIZE * i, LevelManager.TILE_SIZE * j);
         size = new Size(CucumberConstants.CUCUMBER_WIDTH, CucumberConstants.CUCUMBER_HEIGHT);
         aniType = CucumberConstants.IDLE;
         attackDistance = 100.0f;
