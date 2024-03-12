@@ -20,6 +20,7 @@ public class Camera {
 
     public Camera(Level level, Player player) {
         this.level = level;
+        this.player = player;
         maxMapX = Tile.TILE_SIZE * level.getMaxCol();
         maxMapY = Tile.TILE_SIZE * level.getMaxRow();
     }

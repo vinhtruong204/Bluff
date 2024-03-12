@@ -46,7 +46,7 @@ public class Player extends GameObject {
         animations = new BufferedImage[6][26];
         // box of player
         hitBox = new Rectangle(8, 8, 48, 48);
-        keyPressed = CheckKeyPress.Down;
+        keyPressed = CheckKeyPress.keyDefault;
         startAni = PlayerAnimationType.IDLE;
         this.TileMapNum = TileMapNum;
         onGround = false;
@@ -91,20 +91,20 @@ public class Player extends GameObject {
     private void upDatePosition() {
 
         // if (!checkTile()) {
-        if (keyPressed == CheckKeyPress.Up) {
-            velocity.setY(-speedY);
-            velocity.setX(0f);
-            onGround = false;
-        } else if (keyPressed == CheckKeyPress.Down) {
-            velocity.setY(speedY);
-            velocity.setX(0f);
-        } else if (keyPressed == CheckKeyPress.Right && keyPressed != CheckKeyPress.Left) {
+        // if (keyPressed == CheckKeyPress.Up) {
+        //     velocity.setY(-speedY);
+        //     velocity.setX(0f);
+        //     onGround = false;
+        // } else if (keyPressed == CheckKeyPress.Down) {
+        //     velocity.setY(speedY);
+        //     velocity.setX(0f);
+        if (keyPressed == CheckKeyPress.Right && keyPressed != CheckKeyPress.Left) {
             if (onGround) {
                 velocity.setX(speedX);
                 velocity.setY(0f);
             } else {
-                velocity.setX(speedX);
-                velocity.setY(speedY);
+                // velocity.setX(speedX);
+                // velocity.setY(speedY);
             }
             velocity.setX(speedX);
 
@@ -113,8 +113,8 @@ public class Player extends GameObject {
                 velocity.setX(-speedX);
                 velocity.setY(0f);
             } else {
-                velocity.setX(-speedX);
-                velocity.setY(speedY);
+                // velocity.setX(-speedX);
+                // velocity.setY(speedY);
             }
         }
         position.setY(position.getY() + velocity.getY());
@@ -122,65 +122,65 @@ public class Player extends GameObject {
         // }
     }
 
-    // private boolean checkTile() {
-    // int entityLeftWorldX = (int) position.getX() + hitBox.x;
-    // int entityRightWorldX = (int) position.getX() + hitBox.x + hitBox.width;
-    // int entityTopWorldY = (int) position.getY() + hitBox.y;
-    // int entityBottomWorldY = (int) position.getY() + hitBox.y + hitBox.height;
+    private boolean checkTile() {
+    int entityLeftWorldX = (int) position.getX() + hitBox.x;
+    int entityRightWorldX = (int) position.getX() + hitBox.x + hitBox.width;
+    int entityTopWorldY = (int) position.getY() + hitBox.y;
+    int entityBottomWorldY = (int) position.getY() + hitBox.y + hitBox.height;
 
-    // int entityLeftCol = entityLeftWorldX / Tile.TILE_SIZE;
-    // int entityRightCol = entityRightWorldX / Tile.TILE_SIZE;
-    // int entityTopRow = entityTopWorldY / Tile.TILE_SIZE;
-    // int entityBottomRow = entityBottomWorldY / Tile.TILE_SIZE;
+    int entityLeftCol = entityLeftWorldX / Tile.TILE_SIZE;
+    int entityRightCol = entityRightWorldX / Tile.TILE_SIZE;
+    int entityTopRow = entityTopWorldY / Tile.TILE_SIZE;
+    int entityBottomRow = entityBottomWorldY / Tile.TILE_SIZE;
 
-    // int tileNum1, tileNum2;
-    // boolean flag = false;
+    int tileNum1, tileNum2;
+    boolean flag = false;
 
-    // switch (keyPressed) {
-    // case CheckKeyPress.Up: {
-    // entityTopRow = (entityTopWorldY - (int) speedY) / Tile.TILE_SIZE;
-    // tileNum1 = TileMapNum[entityLeftCol][entityTopRow];
-    // tileNum2 = TileMapNum[entityRightCol][entityTopRow];
-    // if (tile[tileNum1].getCollition() == true || tile[tileNum2].getCollition() ==
-    // true) {
-    // flag = true;
-    // }
-    // break;
-    // }
-    // case CheckKeyPress.Down: {
-    // entityBottomRow = (entityBottomWorldY + (int) speedY) / Tile.TILE_SIZE;
-    // tileNum1 = TileMapNum[entityLeftCol][entityBottomRow];
-    // tileNum2 = TileMapNum[entityRightCol][entityBottomRow];
-    // if (tile[tileNum1].getCollition() == true || tile[tileNum2].getCollition() ==
-    // true) {
-    // flag = true;
-    // onGround = true;
-    // }
-    // break;
-    // }
-    // case CheckKeyPress.Left: {
-    // entityLeftCol = (entityLeftWorldX - (int) speedX) / Tile.TILE_SIZE;
-    // tileNum1 = TileMapNum[entityLeftCol][entityTopRow];
-    // tileNum2 = TileMapNum[entityLeftCol][entityBottomRow];
-    // if (tile[tileNum1].getCollition() == true || tile[tileNum2].getCollition() ==
-    // true) {
-    // flag = true;
-    // }
-    // break;
-    // }
-    // case CheckKeyPress.Right: {
-    // entityRightCol = (entityRightWorldX + (int) speedX) / Tile.TILE_SIZE;
-    // tileNum1 = TileMapNum[entityRightCol][entityTopRow];
-    // tileNum2 = TileMapNum[entityRightCol][entityBottomRow];
-    // if (tile[tileNum1].getCollition() == true || tile[tileNum2].getCollition() ==
-    // true) {
-    // flag = true;
-    // }
-    // break;
-    // }
-    // }
-    // return flag;
-    // }
+    switch (keyPressed) {
+    case CheckKeyPress.Up: {
+    entityTopRow = (entityTopWorldY - (int) speedY) / Tile.TILE_SIZE;
+    tileNum1 = TileMapNum[entityLeftCol][entityTopRow];
+    tileNum2 = TileMapNum[entityRightCol][entityTopRow];
+    if (tile[tileNum1].getCollition() == true || tile[tileNum2].getCollition() ==
+    true) {
+    flag = true;
+    }
+    break;
+    }
+    case CheckKeyPress.Down: {
+    entityBottomRow = (entityBottomWorldY + (int) speedY) / Tile.TILE_SIZE;
+    tileNum1 = TileMapNum[entityLeftCol][entityBottomRow];
+    tileNum2 = TileMapNum[entityRightCol][entityBottomRow];
+    if (tile[tileNum1].getCollition() == true || tile[tileNum2].getCollition() ==
+    true) {
+    flag = true;
+    onGround = true;
+    }
+    break;
+    }
+    case CheckKeyPress.Left: {
+    entityLeftCol = (entityLeftWorldX - (int) speedX) / Tile.TILE_SIZE;
+    tileNum1 = TileMapNum[entityLeftCol][entityTopRow];
+    tileNum2 = TileMapNum[entityLeftCol][entityBottomRow];
+    if (tile[tileNum1].getCollition() == true || tile[tileNum2].getCollition() ==
+    true) {
+    flag = true;
+    }
+    break;
+    }
+    case CheckKeyPress.Right: {
+    entityRightCol = (entityRightWorldX + (int) speedX) / Tile.TILE_SIZE;
+    tileNum1 = TileMapNum[entityRightCol][entityTopRow];
+    tileNum2 = TileMapNum[entityRightCol][entityBottomRow];
+    if (tile[tileNum1].getCollition() == true || tile[tileNum2].getCollition() ==
+    true) {
+    flag = true;
+    }
+    break;
+    }
+    }
+    return flag;
+    }
 
     public void setAniType() {
         switch (keyPressed) {

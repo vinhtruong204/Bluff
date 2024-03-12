@@ -12,33 +12,41 @@ import playing.entity.Player;
 public class LevelManager implements StateMethods {
 
     private Level levels[];
-    private int currentLevel = 0;
+    private int currentLevel=0;
+    private String[] nameFile;
     private Camera camera;
     private Player player;
 
     // constructor of TileManager
     public LevelManager() {
-        levels = new Level[5];
+        // nameFile = {"Map/Map01.txt", "Map/Map02.txt", "Map/Map03.txt", "Map/Map04.txt", "Map/Map05.txt"};
+        nameFile = new String[5];
+        nameFile[0]=new String("Map/Map01.txt");
+        nameFile[1]=new String("Map/Map02.txt");
+        nameFile[2]=new String("Map/Map03.txt");
+        nameFile[3]=new String("Map/Map04.txt");
+        nameFile[4]=new String("Map/Map05.txt");
         initMap();
         player = new Player(levels[currentLevel].getMap());
         camera = new Camera(levels[currentLevel], player);
     }
 
     private void initMap() {
+        levels = new Level[5];
         for (int i = 0; i < levels.length; i++) {
-            levels[i] = new Level("Map/Map01.txt");
+            levels[i] = new Level(nameFile[i]);
         }
     }
 
     // update Map
     public void update() {
-        //camera.update();
+        camera.update();
         player.update(camera.getMapStartX(), camera.getMapStartY());
     }
 
     // render Map
     public void render(Graphics g) {
-        //camera.render(g);
+        camera.render(g);
         player.render(g);
     }
 
