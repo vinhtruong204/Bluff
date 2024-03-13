@@ -11,12 +11,16 @@ public class Camera {
 
     private int maxMapX;
     private int maxMapY;
-    private int mapStartX;
-    private int mapStartY;
+
+    private int mapStartX,mapStartY;
 
     private Level level;
     private Player player;
-    private int x1, x2, y1, y2, map_x, map_y;
+    // x1 va y1 la vi tri bat dau de tai gach 
+    // x2 va y2 la vi tri dai nhat rong nhat trong camera 
+    private int x1, x2, y1, y2;
+    // chi so hang va cot cua ma tran map 
+    private int map_x, map_y;
 
     public Camera(Level level, Player player) {
         this.level = level;

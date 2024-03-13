@@ -5,30 +5,32 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
 import gamestate.StateMethods;
-import helpmethods.CheckKeyPress;
 import playing.camera.Camera;
 import playing.entity.Player;
 
 public class LevelManager implements StateMethods {
 
     private Level levels[];
-    private int currentLevel=0;
+    private int currentLevel = 0;
     private String[] nameFile;
     private Camera camera;
     private Player player;
 
     // constructor of TileManager
     public LevelManager() {
-        // nameFile = {"Map/Map01.txt", "Map/Map02.txt", "Map/Map03.txt", "Map/Map04.txt", "Map/Map05.txt"};
-        nameFile = new String[5];
-        nameFile[0]=new String("Map/Map01.txt");
-        nameFile[1]=new String("Map/Map02.txt");
-        nameFile[2]=new String("Map/Map03.txt");
-        nameFile[3]=new String("Map/Map04.txt");
-        nameFile[4]=new String("Map/Map05.txt");
+        initPathMap();
         initMap();
-        player = new Player(levels[currentLevel].getMap());
+        player = new Player(levels[currentLevel]);
         camera = new Camera(levels[currentLevel], player);
+    }
+
+    private void initPathMap() {
+        nameFile = new String[5];
+        nameFile[0] = new String("Map/Map01.txt");
+        nameFile[1] = new String("Map/Map02.txt");
+        nameFile[2] = new String("Map/Map03.txt");
+        nameFile[3] = new String("Map/Map04.txt");
+        nameFile[4] = new String("Map/Map05.txt");
     }
 
     private void initMap() {
@@ -70,13 +72,13 @@ public class LevelManager implements StateMethods {
     public void keyPressed(KeyEvent e) {
         switch (e.getKeyCode()) {
             case KeyEvent.VK_A:
-                player.setKeyPress(CheckKeyPress.Left);
-                break;
-            case KeyEvent.VK_W:
-                player.setKeyPress(CheckKeyPress.Up);
+                player.setLeft(true);
                 break;
             case KeyEvent.VK_D:
-                player.setKeyPress(CheckKeyPress.Right);
+                player.setRight(true);
+                break;
+            case KeyEvent.VK_SPACE:
+                player.setUp(true);
                 break;
             default:
                 break;
@@ -87,14 +89,13 @@ public class LevelManager implements StateMethods {
     public void keyReleased(KeyEvent e) {
         switch (e.getKeyCode()) {
             case KeyEvent.VK_A:
-                player.setKeyPress(CheckKeyPress.Down);
-                break;
-            case KeyEvent.VK_W:
-                player.setKeyPress(CheckKeyPress.Down);
+                player.setLeft(false);
                 break;
             case KeyEvent.VK_D:
-                player.setKeyPress(CheckKeyPress.Down);
+                player.setLeft(false);
                 break;
+                case KeyEvent.VK_SPACE:
+                player.setUp(false);
             default:
                 break;
         }

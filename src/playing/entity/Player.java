@@ -10,6 +10,7 @@ import core.Vector2D;
 import helpmethods.CheckKeyPress;
 import helpmethods.LoadSave;
 import helpmethods.PlayerAnimationType;
+import playing.tile.Level;
 import playing.tile.Tile;
 
 public class Player extends GameObject {
@@ -21,22 +22,22 @@ public class Player extends GameObject {
     private float speedX, speedY;
 
     private BufferedImage[][] animations;
-    private int[][] TileMapNum;
-
+    private Level level;
     private int aniType;
     private int aniTick, aniIndex, aniSpeed;
     private int mapStartX, mapStartY;
+    // set status
+    private boolean Up, Left, Right;
+    private boolean moving;
 
     // private boolean moving;
-
     private Rectangle hitBox;
     private boolean onGround;
 
-    private int keyPressed;
     private int startAni;
 
-    public Player(int[][] TileMapNum) {
-        position = new Position(60f, 60f);
+    public Player(Level level) {
+        position = new Position(200f, 200f);
         size = new Size(PLAYER_WIDTH, PLAYER_HEIGHT);
 
         velocity = new Vector2D(0f, 0f);
@@ -44,12 +45,12 @@ public class Player extends GameObject {
         speedY = 7f;
         aniSpeed = 3;
         animations = new BufferedImage[6][26];
+        this.level = level;
         // box of player
-        hitBox = new Rectangle(8, 8, 48, 48);
-        keyPressed = CheckKeyPress.Down;
-        startAni = PlayerAnimationType.IDLE;
-        this.TileMapNum = TileMapNum;
+        hitBox = new Rectangle(200, 200, 48, 48);
+        aniType = PlayerAnimationType.IDLE;
         onGround = false;
+        moving = false;
         mapStartX = 0;
         mapStartY = 0;
         loadAnimations();
@@ -76,6 +77,8 @@ public class Player extends GameObject {
     }
 
     private void setAnimationType() {
+        StartAniOld();
+        setAniType();
         // If start anitype is not equal to startAni reset aniTick and aniIndex
         if (aniType != startAni) {
             // Reset animation index and animation tick
@@ -90,125 +93,90 @@ public class Player extends GameObject {
 
     private void upDatePosition() {
 
-        if (!checkTile()) {
-            if (keyPressed == CheckKeyPress.Up) {
-                velocity.setY(-speedY);
-                velocity.setX(0f);
-                onGround = false;
-            } else if (keyPressed == CheckKeyPress.Down) {
-                velocity.setY(speedY);
-                velocity.setX(0f);
-            } else if (keyPressed == CheckKeyPress.Right && keyPressed != CheckKeyPress.Left) {
-                if (onGround) {
-                    velocity.setX(speedX);
-                    velocity.setY(0f);
-                } else {
-                    velocity.setX(speedX);
-                    velocity.setY(speedY);
-                }
-                velocity.setX(speedX);
+        velocity = new Vector2D(0, 0);
+        moving = false;
 
-            } else if (keyPressed == CheckKeyPress.Left && keyPressed != CheckKeyPress.Right) {
-                if (onGround) {
-                    velocity.setX(-speedX);
-                    velocity.setY(0f);
-                } else {
-                    velocity.setX(-speedX);
-                    velocity.setY(speedY);
-                }
-            }
-            position.setY(position.getY() + velocity.getY());
-            position.setX(position.getX() + velocity.getX());
+        if (Up) {
+            velocity.setY(-speedY);
+        }
+
+        if (Right && !Left) {
+            moving = true;
+            velocity.setX(speedX);
+        }
+
+        if (Left && !Right) {
+            moving = true;
+            velocity.setX(-speedX);
+        }
+
+        Position newPos = new Position(position.getX() + velocity.getX(), position.getY() + velocity.getY());
+        Rectangle newHitbox = new Rectangle((int) newPos.getX(), (int) newPos.getY(), size.getWidth(),
+                size.getHeight());
+
+        // // Move the character
+        if (canMove(newHitbox, newPos)) {
+            position = new Position(position.getX() + velocity.getX(), position.getY() + velocity.getY());
+            hitBox = new Rectangle((int) position.getX(), (int) position.getY(), size.getWidth(), size.getHeight());
         }
     }
 
-    private boolean checkTile() {
-        int entityLeftWorldX = (int) position.getX() + hitBox.x;
-        int entityRightWorldX = (int) position.getX() + hitBox.x + hitBox.width;
-        int entityTopWorldY = (int) position.getY() + hitBox.y;
-        int entityBottomWorldY = (int) position.getY() + hitBox.y + hitBox.height;
+    private boolean canMove(Rectangle newHitbox, Position newPos) {
 
-        int entityLeftCol = entityLeftWorldX / Tile.TILE_SIZE;
-        int entityRightCol = entityRightWorldX / Tile.TILE_SIZE;
-        int entityTopRow = entityTopWorldY / Tile.TILE_SIZE;
-        int entityBottomRow = entityBottomWorldY / Tile.TILE_SIZE;
+        int x = (int) newPos.getX() / Tile.TILE_SIZE;
+        int y = (int) newPos.getY() / Tile.TILE_SIZE;
 
-        int tileNum1, tileNum2;
-        boolean flag = false;
+        System.out.println(x + " " + y);
 
-        switch (keyPressed) {
-            case CheckKeyPress.Up: {
-                entityTopRow = (entityTopWorldY - (int) speedY) / Tile.TILE_SIZE;
-                tileNum1 = TileMapNum[entityLeftCol][entityTopRow];
-                tileNum2 = TileMapNum[entityRightCol][entityTopRow];
-                if (tileNum1 != 0 || tileNum2 != 0) {
-                    flag = true;
-                }
-                break;
-            }
-            case CheckKeyPress.Down: {
-                entityBottomRow = (entityBottomWorldY + (int) speedY) / Tile.TILE_SIZE;
-                tileNum1 = TileMapNum[entityLeftCol][entityBottomRow];
-                tileNum2 = TileMapNum[entityRightCol][entityBottomRow];
-                if (tileNum1 != 0 || tileNum2 != 0) {
-                    flag = true;
-                    onGround = true;
-                }
-                break;
-            }
-            case CheckKeyPress.Left: {
-                entityLeftCol = (entityLeftWorldX - (int) speedX) / Tile.TILE_SIZE;
-                tileNum1 = TileMapNum[entityLeftCol][entityTopRow];
-                tileNum2 = TileMapNum[entityLeftCol][entityBottomRow];
-                if (tileNum1 != 0 || tileNum2 != 0) {
-                    flag = true;
-                }
-                break;
-            }
-            case CheckKeyPress.Right: {
-                entityRightCol = (entityRightWorldX + (int) speedX) / Tile.TILE_SIZE;
-                tileNum1 = TileMapNum[entityRightCol][entityTopRow];
-                tileNum2 = TileMapNum[entityRightCol][entityBottomRow];
-                if (tileNum1 != 0 || tileNum2 != 0) {
-                    flag = true;
-                }
-                break;
-            }
+        if (level.getMap()[x][y] == 1 && isCollision(x, y, newHitbox)) {
+            return false;
         }
-        return flag;
+
+        return true;
+    }
+
+    private boolean isCollision(int i, int j, Rectangle newHitbox) {
+        // Hit box of tile
+        Rectangle tileBox = new Rectangle(j * Tile.TILE_SIZE, i * Tile.TILE_SIZE, Tile.TILE_SIZE, Tile.TILE_SIZE);
+        int topA, topB;
+        int leftA, leftB;
+        int rightA, rightB;
+        int bottomA, bottomB;
+
+        // All side of player after move
+        topA = newHitbox.y;
+        leftA = newHitbox.x;
+        rightA = newHitbox.x + newHitbox.width;
+        bottomA = newHitbox.y + newHitbox.height;
+
+        // All side of tile
+        topB = tileBox.y;
+        leftB = tileBox.x;
+        rightB = tileBox.x + tileBox.width;
+        bottomB = tileBox.y + tileBox.height;
+
+        if (leftA > rightB || rightA < leftB) {
+            return false;
+        }
+        if (topA > bottomB || bottomA < topB) {
+            return false;
+        }
+        return true;
     }
 
     public void setAniType() {
-        switch (keyPressed) {
-            case CheckKeyPress.Up: {
-                aniType = PlayerAnimationType.JUMP;
-                break;
-            }
-            case CheckKeyPress.Down: {
-                if (!onGround) {
-                    aniType = PlayerAnimationType.FALL;
-                } else {
-                    aniType = PlayerAnimationType.IDLE;
-                }
-                break;
-            }
-            case CheckKeyPress.Left: {
-                if (!onGround) {
-                    aniType = PlayerAnimationType.FALL;
-                } else {
-                    aniType = PlayerAnimationType.RUN;
-                }
-                break;
-            }
-            case CheckKeyPress.Right: {
-                if (!onGround) {
-                    aniType = PlayerAnimationType.FALL;
-                } else {
-                    aniType = PlayerAnimationType.RUN;
-                }
-                break;
-            }
+        if (Up) {
+            aniType = PlayerAnimationType.JUMP;
         }
+
+        if (moving) {
+            aniType = PlayerAnimationType.RUN;
+        }
+
+        if (!moving) {
+            aniType = PlayerAnimationType.IDLE;
+        }
+
     }
 
     public void setScreen(int mapStartX, int mapStartY) {
@@ -220,12 +188,6 @@ public class Player extends GameObject {
 
         // Update tick to render animation
         updateAnimationTick();
-
-        // take AniType Old
-        StartAniOld();
-
-        // set Anitype new
-        setAniType();
 
         // Set current type of animation
         setAnimationType();
@@ -256,10 +218,6 @@ public class Player extends GameObject {
         this.aniType = aniType;
     }
 
-    public void setKeyPress(int keyPressed) {
-        this.keyPressed = keyPressed;
-    }
-
     public BufferedImage[][] getAnimations() {
         return animations;
     }
@@ -270,5 +228,29 @@ public class Player extends GameObject {
 
     public void inPos() {
         System.out.println(position.getX() + " " + position.getY());
+    }
+
+    public boolean isUp() {
+        return Up;
+    }
+
+    public boolean isLeft() {
+        return Left;
+    }
+
+    public boolean isRight() {
+        return Right;
+    }
+
+    public void setUp(boolean up) {
+        Up = up;
+    }
+
+    public void setLeft(boolean left) {
+        Left = left;
+    }
+
+    public void setRight(boolean right) {
+        Right = right;
     }
 }
