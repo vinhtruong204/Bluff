@@ -16,7 +16,7 @@ public class LevelManager implements StateMethods {
     private Camera camera;
     private Player player;
 
-    // constructor of TileManager
+    // Constructor
     public LevelManager() {
         initPathMap();
         initMap();
