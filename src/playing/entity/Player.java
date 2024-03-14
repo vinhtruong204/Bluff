@@ -93,7 +93,7 @@ public class Player extends GameObject {
 
     private void upDatePosition() {
 
-        velocity = new Vector2D(0, 0);
+        velocity = new Vector2D(0, 5f);
         moving = false;
 
         if (Up) {
@@ -123,17 +123,14 @@ public class Player extends GameObject {
 
     private boolean canMove(Rectangle newHitbox) {
         int[][] map = level.getMap();
-        for (int i = 0; i < 42; i++) {
-            for (int j = 0; j < 14; j++) {
-                System.out.print(map[i][j] + "\t");
-                // if (map[i][j] == 1 && CheckCollision.isCollision(newHitbox,
-                //         new Rectangle(j * Tile.TILE_SIZE, i * Tile.TILE_SIZE, Tile.TILE_SIZE, Tile.TILE_SIZE))) {
-                //     return false;
-                // }
+        for (int i = 0; i < 14; i++) {
+            for (int j = 0; j < 42; j++) {
+                if (map[i][j] == 1 && CheckCollision.isCollision(newHitbox,
+                        new Rectangle(j * Tile.TILE_SIZE, i * Tile.TILE_SIZE, Tile.TILE_SIZE, Tile.TILE_SIZE))) {
+                    return false;
+                }
             }
-            System.out.println();
         }
-        System.out.println("=========================");
         return true;
     }
 

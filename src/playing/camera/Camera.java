@@ -12,14 +12,14 @@ public class Camera {
     private int maxMapX;
     private int maxMapY;
 
-    private int mapStartX,mapStartY;
+    private int mapStartX, mapStartY;
 
     private Level level;
     private Player player;
-    // x1 va y1 la vi tri bat dau de tai gach 
-    // x2 va y2 la vi tri dai nhat rong nhat trong camera 
+    // x1 va y1 la vi tri bat dau de tai gach
+    // x2 va y2 la vi tri dai nhat rong nhat trong camera
     private int x1, x2, y1, y2;
-    // chi so hang va cot cua ma tran map 
+    // chi so hang va cot cua ma tran map
     private int map_x, map_y;
 
     public Camera(Level level, Player player) {
@@ -105,7 +105,7 @@ public class Camera {
             map_x = (mapStartX / Tile.TILE_SIZE);
             for (int j = x1; j < x2; j += Tile.TILE_SIZE) {
                 if (map_x >= 0 && map_x < level.getMaxCol() && map_y >=0 && map_y < level.getMaxRow()) {
-                    int tileNum = level.getMap()[map_x][map_y];
+                    int tileNum = level.getMap()[map_y][map_x];
                     g.drawImage(level.getTiles()[tileNum].getImage(), j, i, Tile.TILE_SIZE, Tile.TILE_SIZE, null);
                 }
                 map_x++;
