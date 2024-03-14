@@ -8,13 +8,13 @@ import core.Size;
 import core.Vector2D;
 import helpmethods.*;
 import helpmethods.EnemyConstants.CucumberConstants;
+import playing.camera.Camera;
 import playing.tile.Tile;
 
 public class Cucumber extends Enemy {
     private float attackDistance;
     private Vector2D velocity;
     private float traveled; // distance traveled
-    private int mapStartX, mapStartY;
 
     public Cucumber(int enemyType, int i, int j) {
         super(enemyType);
@@ -24,11 +24,6 @@ public class Cucumber extends Enemy {
         attackDistance = 100.0f;
         velocity = new Vector2D(-1.0f, 0);
         loadAni();
-    }
-
-    private void setMapStartXY(int mapStartX, int mapStartY) {
-        this.mapStartX = mapStartX;
-        this.mapStartY = mapStartY;
     }
 
     @Override
@@ -81,26 +76,21 @@ public class Cucumber extends Enemy {
         }
     }
 
-    public void update(int mapStartX, int mapStartY) {
-        setMapStartXY(mapStartX, mapStartY);
+    @Override
+    public void update() {
         updateAnimationTick();
         upDatePosition();
     }
 
     @Override
-    public void render(Graphics g) {
+    public void render(Graphics g, Camera camera) {
         g.drawImage(
                 animations[aniType][aniIndex],
-                (int) position.getX() - mapStartX,
-                (int) position.getY() - mapStartY,
+                (int) position.getX() - camera.getMapStartX(),
+                (int) position.getY() - camera.getMapStartY(),
                 size.getWidth(),
                 size.getHeight(),
                 null);
-    }
-
-    @Override
-    public void update() {
-
     }
 
 }

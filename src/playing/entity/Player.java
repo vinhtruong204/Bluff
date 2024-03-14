@@ -10,6 +10,7 @@ import core.Vector2D;
 import helpmethods.CheckCollision;
 import helpmethods.LoadSave;
 import helpmethods.PlayerAnimationType;
+import playing.camera.Camera;
 import playing.tile.Level;
 import playing.tile.Tile;
 
@@ -25,7 +26,7 @@ public class Player extends GameObject {
     private Level level;
     private int aniType;
     private int aniTick, aniIndex, aniSpeed;
-    private int mapStartX, mapStartY;
+
     // set status
     private boolean Up, Left, Right;
     private boolean moving;
@@ -42,7 +43,7 @@ public class Player extends GameObject {
 
         velocity = new Vector2D(0f, 0f);
         speedX = 5.0f;
-        speedY = 7.0f;
+        speedY = 100.0f;
         aniSpeed = 3;
         animations = new BufferedImage[6][26];
         this.level = level;
@@ -51,8 +52,6 @@ public class Player extends GameObject {
         aniType = PlayerAnimationType.IDLE;
         onGround = false;
         moving = false;
-        mapStartX = 0;
-        mapStartY = 0;
         loadAnimations();
     }
 
@@ -92,44 +91,68 @@ public class Player extends GameObject {
     }
 
     private void upDatePosition() {
-
-        velocity = new Vector2D(0, 5f);
+        // Reset vetor velocity and gravity
+        velocity = onGround ? new Vector2D(0.0f, 0.0f) : new Vector2D(0.0f, 5.0f);
         moving = false;
 
-        if (Up) {
+        // If player onground and request jump
+        if (Up && onGround) {
             velocity.setY(-speedY);
+            aniType = PlayerAnimationType.JUMP;
+            onGround = false;
         }
 
+        // Move right
         if (Right && !Left) {
             moving = true;
             velocity.setX(speedX);
-            velocity.setY(0);
         }
 
+        // Move left
         if (Left && !Right) {
             moving = true;
             velocity.setX(-speedX);
-            velocity.setY(0);
         }
 
+        // Caculate new position and hit box
         Position newPos = new Position(position.getX() + velocity.getX(), position.getY() + velocity.getY());
-        Rectangle newHitbox = new Rectangle((int) newPos.getX(), (int) newPos.getY(), size.getWidth(),
+        Rectangle newHitbox = new Rectangle(
+                (int) newPos.getX(),
+                (int) newPos.getY(),
+                size.getWidth(),
                 size.getHeight());
 
         // Move the character
         if (canMove(newHitbox)) {
+            System.out.println(onGround);
             position = new Position(position.getX() + velocity.getX(), position.getY() + velocity.getY());
             hitBox = new Rectangle((int) position.getX(), (int) position.getY(), size.getWidth(), size.getHeight());
         }
     }
 
     private boolean canMove(Rectangle newHitbox) {
+        // Get matrix map from current level
         int[][] map = level.getMap();
-        for (int i = 0; i < 14; i++) {
-            for (int j = 0; j < 42; j++) {
-                if (map[i][j] == 1 && CheckCollision.isCollision(newHitbox,
-                        new Rectangle(j * Tile.TILE_SIZE, i * Tile.TILE_SIZE, Tile.TILE_SIZE, Tile.TILE_SIZE))) {
-                    return false;
+
+        // Check collision
+        for (int i = 0; i < map.length; i++) {
+            for (int j = 0; j < map[i].length; j++) {
+                // If tile is a brick
+                if (map[i][j] == 1) {
+                    // Create new rectangle for brick
+                    Rectangle tileRect = new Rectangle(
+                            j * Tile.TILE_SIZE,
+                            i * Tile.TILE_SIZE,
+                            Tile.TILE_SIZE,
+                            Tile.TILE_SIZE);
+                    // Colliding with a brick
+                    if (CheckCollision.isCollision(newHitbox, tileRect)) {
+                        // If brick is ground set onground to true
+                        if (newHitbox.y + newHitbox.height > tileRect.y) {
+                            onGround = true;
+                        }
+                        return false;
+                    }
                 }
             }
         }
@@ -141,7 +164,7 @@ public class Player extends GameObject {
             aniType = PlayerAnimationType.JUMP;
         }
 
-        if (moving) {
+        if (moving && !Up) {
             aniType = PlayerAnimationType.RUN;
         }
 
@@ -151,12 +174,8 @@ public class Player extends GameObject {
 
     }
 
-    public void setScreen(int mapStartX, int mapStartY) {
-        this.mapStartX = mapStartX;
-        this.mapStartY = mapStartY;
-    }
-
-    public void update(int mapStartX, int mapStartY) {
+    @Override
+    public void update() {
         // Change position if player is moving
         upDatePosition();
 
@@ -165,25 +184,16 @@ public class Player extends GameObject {
 
         // Set current type of animation
         setAnimationType();
-
-        // set screen
-        setScreen(mapStartX, mapStartY);
-
     }
 
     @Override
-    public void render(Graphics g) {
+    public void render(Graphics g, Camera camera) {
         g.drawImage(animations[aniType][aniIndex],
-                (int) position.getX() - mapStartX,
-                (int) position.getY() - mapStartY,
+                (int) position.getX() - camera.getMapStartX(),
+                (int) position.getY() - camera.getMapStartY(),
                 size.getWidth(),
                 size.getHeight(),
                 null);
-    }
-
-    @Override
-    public void update() {
-
     }
 
     public void setAniType(int aniType) {
@@ -196,10 +206,6 @@ public class Player extends GameObject {
 
     public void setOnGround(boolean onGround) {
         this.onGround = onGround;
-    }
-
-    public void inPos() {
-        System.out.println(position.getX() + " " + position.getY());
     }
 
     public boolean isUp() {
@@ -215,14 +221,14 @@ public class Player extends GameObject {
     }
 
     public void setUp(boolean up) {
-        Up = up;
+        this.Up = up;
     }
 
     public void setLeft(boolean left) {
-        Left = left;
+        this.Left = left;
     }
 
     public void setRight(boolean right) {
-        Right = right;
+        this.Right = right;
     }
 }

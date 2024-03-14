@@ -7,9 +7,10 @@ import core.Position;
 import core.Size;
 import gamestate.MenuState;
 import helpmethods.LoadSave;
-import playing.entity.GameObject;
 
-public class Help extends GameObject {
+public class Help {
+    private Position position;
+    private Size size;
     private BufferedImage image;
 
     public Help() {
@@ -19,12 +20,10 @@ public class Help extends GameObject {
         size = new Size(image.getWidth(), image.getHeight());
     }
 
-    @Override
     public void update() {
 
     }
 
-    @Override
     public void render(Graphics g) {
         g.drawImage(image,
                 (int) position.getX(),
