@@ -126,10 +126,10 @@ public class Player extends GameObject {
         for (int i = 0; i < 42; i++) {
             for (int j = 0; j < 14; j++) {
                 System.out.print(map[i][j] + "\t");
-                // if (map[i][j] == 1 && CheckCollision.isCollision(newHitbox,
-                //         new Rectangle(j * Tile.TILE_SIZE, i * Tile.TILE_SIZE, Tile.TILE_SIZE, Tile.TILE_SIZE))) {
-                //     return false;
-                // }
+                if (map[i][j] == 1 && CheckCollision.isCollision(newHitbox,
+                        new Rectangle(j * Tile.TILE_SIZE, i * Tile.TILE_SIZE, Tile.TILE_SIZE, Tile.TILE_SIZE))) {
+                    return false;
+                }
             }
             System.out.println();
         }
