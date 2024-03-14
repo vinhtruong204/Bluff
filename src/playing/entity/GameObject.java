@@ -4,6 +4,7 @@ import java.awt.Graphics;
 
 import core.Position;
 import core.Size;
+import playing.camera.Camera;
 
 public abstract class GameObject {
     // Default attributes of a game object
@@ -29,7 +30,6 @@ public abstract class GameObject {
     // The objects have to provide update and render functions
     public abstract void update();
 
-    //public abstract void update(int x,int y);
-
-    public abstract void render(Graphics g);
+    // Render game object depend on camera
+    public abstract void render(Graphics g, Camera camera);
 }
