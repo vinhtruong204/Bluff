@@ -103,11 +103,13 @@ public class Player extends GameObject {
         if (Right && !Left) {
             moving = true;
             velocity.setX(speedX);
+            velocity.setY(0);
         }
 
         if (Left && !Right) {
             moving = true;
             velocity.setX(-speedX);
+            velocity.setY(0);
         }
 
         Position newPos = new Position(position.getX() + velocity.getX(), position.getY() + velocity.getY());
