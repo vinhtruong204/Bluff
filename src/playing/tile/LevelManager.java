@@ -72,12 +72,15 @@ public class LevelManager implements StateMethods {
     public void keyPressed(KeyEvent e) {
         switch (e.getKeyCode()) {
             case KeyEvent.VK_A:
+                System.out.println("A");
                 player.setLeft(true);
                 break;
             case KeyEvent.VK_D:
+                System.out.println("D");
                 player.setRight(true);
                 break;
             case KeyEvent.VK_SPACE:
+                System.out.println("SPACE");
                 player.setUp(true);
                 break;
             default:
@@ -89,13 +92,17 @@ public class LevelManager implements StateMethods {
     public void keyReleased(KeyEvent e) {
         switch (e.getKeyCode()) {
             case KeyEvent.VK_A:
+                System.out.println("a");
                 player.setLeft(false);
                 break;
             case KeyEvent.VK_D:
-                player.setLeft(false);
+                System.out.println("d");
+                player.setRight(false);
                 break;
-                case KeyEvent.VK_SPACE:
+            case KeyEvent.VK_SPACE:
+                System.out.println("space");
                 player.setUp(false);
+                break;
             default:
                 break;
         }

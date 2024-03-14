@@ -7,7 +7,7 @@ import java.awt.Rectangle;
 import core.Position;
 import core.Size;
 import core.Vector2D;
-import helpmethods.CheckKeyPress;
+import helpmethods.CheckCollision;
 import helpmethods.LoadSave;
 import helpmethods.PlayerAnimationType;
 import playing.tile.Level;
@@ -41,8 +41,8 @@ public class Player extends GameObject {
         size = new Size(PLAYER_WIDTH, PLAYER_HEIGHT);
 
         velocity = new Vector2D(0f, 0f);
-        speedX = 5f;
-        speedY = 7f;
+        speedX = 5.0f;
+        speedY = 7.0f;
         aniSpeed = 3;
         animations = new BufferedImage[6][26];
         this.level = level;
@@ -114,53 +114,26 @@ public class Player extends GameObject {
         Rectangle newHitbox = new Rectangle((int) newPos.getX(), (int) newPos.getY(), size.getWidth(),
                 size.getHeight());
 
-        // // Move the character
-        if (canMove(newHitbox, newPos)) {
+        // Move the character
+        if (canMove(newHitbox)) {
             position = new Position(position.getX() + velocity.getX(), position.getY() + velocity.getY());
             hitBox = new Rectangle((int) position.getX(), (int) position.getY(), size.getWidth(), size.getHeight());
         }
     }
 
-    private boolean canMove(Rectangle newHitbox, Position newPos) {
-
-        int x = (int) newPos.getX() / Tile.TILE_SIZE;
-        int y = (int) newPos.getY() / Tile.TILE_SIZE;
-
-        System.out.println(x + " " + y);
-
-        if (level.getMap()[x][y] == 1 && isCollision(x, y, newHitbox)) {
-            return false;
+    private boolean canMove(Rectangle newHitbox) {
+        int[][] map = level.getMap();
+        for (int i = 0; i < 42; i++) {
+            for (int j = 0; j < 14; j++) {
+                System.out.print(map[i][j] + "\t");
+                // if (map[i][j] == 1 && CheckCollision.isCollision(newHitbox,
+                //         new Rectangle(j * Tile.TILE_SIZE, i * Tile.TILE_SIZE, Tile.TILE_SIZE, Tile.TILE_SIZE))) {
+                //     return false;
+                // }
+            }
+            System.out.println();
         }
-
-        return true;
-    }
-
-    private boolean isCollision(int i, int j, Rectangle newHitbox) {
-        // Hit box of tile
-        Rectangle tileBox = new Rectangle(j * Tile.TILE_SIZE, i * Tile.TILE_SIZE, Tile.TILE_SIZE, Tile.TILE_SIZE);
-        int topA, topB;
-        int leftA, leftB;
-        int rightA, rightB;
-        int bottomA, bottomB;
-
-        // All side of player after move
-        topA = newHitbox.y;
-        leftA = newHitbox.x;
-        rightA = newHitbox.x + newHitbox.width;
-        bottomA = newHitbox.y + newHitbox.height;
-
-        // All side of tile
-        topB = tileBox.y;
-        leftB = tileBox.x;
-        rightB = tileBox.x + tileBox.width;
-        bottomB = tileBox.y + tileBox.height;
-
-        if (leftA > rightB || rightA < leftB) {
-            return false;
-        }
-        if (topA > bottomB || bottomA < topB) {
-            return false;
-        }
+        System.out.println("=========================");
         return true;
     }
 
@@ -185,6 +158,8 @@ public class Player extends GameObject {
     }
 
     public void update(int mapStartX, int mapStartY) {
+        // Change position if player is moving
+        upDatePosition();
 
         // Update tick to render animation
         updateAnimationTick();
@@ -195,8 +170,6 @@ public class Player extends GameObject {
         // set screen
         setScreen(mapStartX, mapStartY);
 
-        // Change position if player is moving
-        upDatePosition();
     }
 
     @Override

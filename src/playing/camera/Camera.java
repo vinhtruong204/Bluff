@@ -104,7 +104,7 @@ public class Camera {
         for (int i = y1; i < y2; i += Tile.TILE_SIZE) {
             map_x = (mapStartX / Tile.TILE_SIZE);
             for (int j = x1; j < x2; j += Tile.TILE_SIZE) {
-                if (map_x < level.getMaxCol() && map_y < level.getMaxRow()) {
+                if (map_x >= 0 && map_x < level.getMaxCol() && map_y >=0 && map_y < level.getMaxRow()) {
                     int tileNum = level.getMap()[map_x][map_y];
                     g.drawImage(level.getTiles()[tileNum].getImage(), j, i, Tile.TILE_SIZE, Tile.TILE_SIZE, null);
                 }
