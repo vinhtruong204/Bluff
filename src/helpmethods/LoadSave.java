@@ -22,7 +22,7 @@ public class LoadSave {
     
 
     public static int[][] loadMap(String filePath,int maxWorldCol,int maxWorldRow) {
-        int map[][] = new int[maxWorldCol][maxWorldRow];
+        int map[][] = new int[maxWorldRow][maxWorldCol];
         try {
             BufferedReader br = new BufferedReader(new FileReader(filePath));
             int col = 0, row = 0;
@@ -31,7 +31,7 @@ public class LoadSave {
                 while (col < maxWorldCol) {
                     String Number[] = Line.split("\\s+");
                     int Num = Integer.parseInt(Number[col]);
-                    map[col][row] = Num;
+                    map[row][col] = Num;
                     col++;
                 }
                 if (col == maxWorldCol) {
