@@ -6,6 +6,7 @@ import java.awt.image.BufferedImage;
 import core.Position;
 import core.Size;
 import core.Vector2D;
+import game.Game;
 import helpmethods.*;
 import helpmethods.EnemyConstants.CucumberConstants;
 import playing.camera.Camera;
@@ -84,13 +85,17 @@ public class Cucumber extends Enemy {
 
     @Override
     public void render(Graphics g, Camera camera) {
-        g.drawImage(
-                animations[aniType][aniIndex],
-                (int) position.getX() - camera.getMapStartX(),
-                (int) position.getY() - camera.getMapStartY(),
-                size.getWidth(),
-                size.getHeight(),
-                null);
+        if ((int) position.getX() - camera.getMapStartX() >= 0
+                && (int) position.getX() - camera.getMapStartX() <= Game.SCREEN_WIDTH
+                && (int) position.getY() - camera.getMapStartY() >= 0
+                && (int) position.getY() - camera.getMapStartY() <= Game.SCREEN_HEIGHT)
+            g.drawImage(
+                    animations[aniType][aniIndex],
+                    (int) position.getX() - camera.getMapStartX(),
+                    (int) position.getY() - camera.getMapStartY(),
+                    size.getWidth(),
+                    size.getHeight(),
+                    null);
     }
 
 }
