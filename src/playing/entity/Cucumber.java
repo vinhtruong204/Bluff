@@ -88,16 +88,21 @@ public class Cucumber extends Enemy {
 
     @Override
     public void render(Graphics g, Camera camera) {
-        BufferedImage temp = animations[aniType][aniIndex];
-        if (changeDirection)
-            temp = FlipImage.flipImage(temp);
-        g.drawImage(
-                temp,
-                (int) position.getX() - camera.getMapStartX(),
-                (int) position.getY() - camera.getMapStartY(),
-                size.getWidth(),
-                size.getHeight(),
-                null);
+        if ((int) position.getX() - camera.getMapStartX() >= 0
+                && (int) position.getX() - camera.getMapStartX() <= Game.SCREEN_WIDTH
+                && (int) position.getY() - camera.getMapStartY() >= 0
+                && (int) position.getY() - camera.getMapStartY() <= Game.SCREEN_HEIGHT) {
+            BufferedImage temp = animations[aniType][aniIndex];
+            if (changeDirection)
+                temp = FlipImage.flipImage(temp);
+            g.drawImage(
+                    temp,
+                    (int) position.getX() - camera.getMapStartX(),
+                    (int) position.getY() - camera.getMapStartY(),
+                    size.getWidth(),
+                    size.getHeight(),
+                    null);
+        }
     }
 
 }
