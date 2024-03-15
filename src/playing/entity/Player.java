@@ -41,7 +41,7 @@ public class Player extends GameObject {
     // private boolean onGround;
 
     public Player(Level level) {
-        position = new Position(1 * Tile.TILE_SIZE, 1 * Tile.TILE_SIZE);
+        position = new Position(2 * Tile.TILE_SIZE, 1 * Tile.TILE_SIZE);
         size = new Size(PLAYER_WIDTH, PLAYER_HEIGHT);
 
         velocity = new Vector2D(0f, 0f);
@@ -68,10 +68,9 @@ public class Player extends GameObject {
         // 60fps => 20 animation frames rendered
         aniTick++;
 
-        if (aniTick >= aniSpeed) {
+        if (aniTick > aniSpeed) {
             aniTick = 0;
             aniIndex++;
-
             if (aniIndex >= PlayerAnimationType.getSpriteAmount(aniType))
                 aniIndex = 0;
         }

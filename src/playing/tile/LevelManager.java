@@ -6,7 +6,6 @@ import java.awt.event.MouseEvent;
 
 import bomb.Bomb;
 import gamestate.StateMethods;
-import helpmethods.BombConstants;
 import playing.camera.Camera;
 import playing.entity.EnemyManager;
 import playing.entity.Player;
@@ -98,7 +97,10 @@ public class LevelManager implements StateMethods {
                 player.setUp(true);
                 break;
             case KeyEvent.VK_E:
-                bomb = new Bomb();
+                int posX = (int) player.getPosition().getX() - camera.getMapStartX();
+                int posY = (int) player.getPosition().getY() - camera.getMapStartY();
+                bomb = new Bomb(posX, posY);
+                break;
             case KeyEvent.VK_SPACE:
                 player.setUp(true);
                 break;
@@ -123,6 +125,7 @@ public class LevelManager implements StateMethods {
                 player.setUp(false);
                 break;
             case KeyEvent.VK_E:
+                break;
             case KeyEvent.VK_SPACE:
                 player.setUp(false);
                 break;

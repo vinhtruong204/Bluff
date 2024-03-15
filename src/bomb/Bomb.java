@@ -3,11 +3,13 @@ package bomb;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
+import core.Position;
 import core.Size;
 import helpmethods.BombConstants;
 import helpmethods.LoadSave;
 import playing.camera.Camera;
 import playing.entity.GameObject;
+import playing.entity.Player;
 
 public class Bomb extends GameObject {
     private BufferedImage animations[][];
@@ -18,11 +20,14 @@ public class Bomb extends GameObject {
     private int aniTick, aniIndex, aniSpeed;
     private long currentTime, afterTime;
 
-    public Bomb() {
+    public Bomb(int posX,int posY) {
         animations = new BufferedImage[3][6];
-        size = new Size(BOMB_WIDTH, BOMB_HEIGHT);
-        aniSpeed = 3;
+        size = new Size(BOMB_WIDTH + 40, BOMB_HEIGHT + 40);
+        System.out.println("yes");
+        position = new Position((float)(posX),(float)(posY));
+        aniSpeed = 1;
         currentTime = System.currentTimeMillis() / 1000;
+        afterTime = 0;
         loadAnimations();
     }
 
@@ -35,15 +40,15 @@ public class Bomb extends GameObject {
 
     private void setAniType() {
         afterTime = System.currentTimeMillis() / 1000;
-        if (afterTime - currentTime <= 1) {
+        if (afterTime - currentTime <= 0.5) {
             aniType = BombConstants.PLACINGBOMB;
             aniTick = 0;
             aniIndex = 0;
-        } else if (afterTime - currentTime > 1 && afterTime - currentTime <= 2) {
+        } else if (afterTime - currentTime > 0.5 && afterTime - currentTime <= 2) {
             aniType = BombConstants.ACTIVATINGBOMB;
             aniTick = 0;
             aniIndex = 1;
-        } else if (afterTime - currentTime >= 2) {
+        } else if (afterTime - currentTime > 2) {
             aniType = BombConstants.EXPLODINGBOMB;
             aniTick = 0;
             aniIndex = 2;
@@ -57,11 +62,10 @@ public class Bomb extends GameObject {
         if (aniTick >= aniSpeed) {
             aniTick = 0;
             aniIndex++;
-
-            if (aniIndex >= BombConstants.getSpriteAmount(aniType))
+            if (aniIndex >= BombConstants.getSpriteAmount(aniType)) {
                 aniIndex = 0;
+            }
         }
-        System.out.println(aniIndex);
     }
 
     public int getAniType() {
@@ -72,6 +76,14 @@ public class Bomb extends GameObject {
         this.aniType = aniType;
     }
 
+    public long getAfterTime() {
+        return afterTime;
+    }
+
+    public void setAfterTime(long afterTime) {
+        this.afterTime = afterTime;
+    }
+
     @Override
     public void update() {
         setAniType();
@@ -80,6 +92,8 @@ public class Bomb extends GameObject {
 
     @Override
     public void render(Graphics g, Camera camera) {
-        g.drawImage(animations[aniType][aniIndex], 400, 200, size.getWidth(), size.getHeight(), null);
+        g.drawImage(animations[aniType][aniIndex], (int) position.getX(),
+                (int) position.getY(), size.getWidth(), size.getHeight(), null);
     }
+
 }
