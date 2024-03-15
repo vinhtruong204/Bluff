@@ -20,13 +20,9 @@ public class EnemyManager {
         for (int i = 0; i < map.length; i++) {
             for (int j = 0; j < map[i].length; j++) {
                 if (map[i][j] == 5) {
-                    System.out.println(i + " " + j);
                     cucumbers.add(new Cucumber(EnemyConstants.CUCUMBER, i, j));
                 }
             }
-        }
-        for (Cucumber cucumber : cucumbers) {
-            System.out.println(cucumber.getPosition().getX() + "\t" + cucumber.getPosition().getY());
         }
     }
 

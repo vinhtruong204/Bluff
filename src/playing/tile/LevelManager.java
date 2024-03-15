@@ -6,6 +6,7 @@ import java.awt.event.MouseEvent;
 
 import gamestate.StateMethods;
 import playing.camera.Camera;
+import playing.entity.EnemyManager;
 import playing.entity.Player;
 
 public class LevelManager implements StateMethods {
@@ -15,6 +16,7 @@ public class LevelManager implements StateMethods {
     private String[] nameFile;
     private Camera camera;
     private Player player;
+    private EnemyManager enemyManager;
 
     // Constructor
     public LevelManager() {
@@ -22,6 +24,7 @@ public class LevelManager implements StateMethods {
         initMap();
         player = new Player(levels[currentLevel]);
         camera = new Camera(levels[currentLevel], player);
+        enemyManager = new EnemyManager(levels[currentLevel].getMap());
     }
 
     private void initPathMap() {
@@ -44,12 +47,14 @@ public class LevelManager implements StateMethods {
     public void update() {
         camera.update();
         player.update();
+        enemyManager.update();
     }
 
     // Render Map
     public void render(Graphics g) {
         camera.render(g);
         player.render(g, camera);
+        enemyManager.render(g, camera);
     }
 
     @Override
@@ -77,10 +82,13 @@ public class LevelManager implements StateMethods {
             case KeyEvent.VK_D:
                 player.setRight(true);
                 break;
-            case KeyEvent.VK_SPACE:
-                player.setUp(true);
+            case KeyEvent.VK_S:
+                player.setDown(true);
                 break;
             case KeyEvent.VK_W:
+                player.setUp(true);
+                break;
+            case KeyEvent.VK_SPACE:
                 player.setUp(true);
                 break;
             default:
@@ -97,10 +105,13 @@ public class LevelManager implements StateMethods {
             case KeyEvent.VK_D:
                 player.setRight(false);
                 break;
-            case KeyEvent.VK_SPACE:
-                player.setUp(false);
+            case KeyEvent.VK_S:
+                player.setDown(false);
                 break;
             case KeyEvent.VK_W:
+                player.setUp(false);
+                break;
+            case KeyEvent.VK_SPACE:
                 player.setUp(false);
                 break;
             default:
