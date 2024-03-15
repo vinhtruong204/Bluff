@@ -16,6 +16,7 @@ public class Cucumber extends Enemy {
     private float attackDistance;
     private Vector2D velocity;
     private float traveled; // distance traveled
+    private boolean changeDirection;
 
     public Cucumber(int enemyType, int i, int j) {
         super(enemyType);
@@ -62,12 +63,14 @@ public class Cucumber extends Enemy {
 
     @Override
     protected void upDatePosition() {
+        changeDirection = false;
         if (traveled <= attackDistance) {
             traveled += Math.abs(velocity.getX());
             position.setX(position.getX() + velocity.getX());
         } else {
             traveled = 0.0f;
             velocity.setX(-velocity.getX());
+            changeDirection = true;
             // flip image
             for (int i = 0; i < animations.length; i++) {
                 for (int j = 0; j < animations[i].length; j++) {
@@ -85,17 +88,16 @@ public class Cucumber extends Enemy {
 
     @Override
     public void render(Graphics g, Camera camera) {
-        if ((int) position.getX() - camera.getMapStartX() >= 0
-                && (int) position.getX() - camera.getMapStartX() <= Game.SCREEN_WIDTH
-                && (int) position.getY() - camera.getMapStartY() >= 0
-                && (int) position.getY() - camera.getMapStartY() <= Game.SCREEN_HEIGHT)
-            g.drawImage(
-                    animations[aniType][aniIndex],
-                    (int) position.getX() - camera.getMapStartX(),
-                    (int) position.getY() - camera.getMapStartY(),
-                    size.getWidth(),
-                    size.getHeight(),
-                    null);
+        BufferedImage temp = animations[aniType][aniIndex];
+        if (changeDirection)
+            temp = FlipImage.flipImage(temp);
+        g.drawImage(
+                temp,
+                (int) position.getX() - camera.getMapStartX(),
+                (int) position.getY() - camera.getMapStartY(),
+                size.getWidth(),
+                size.getHeight(),
+                null);
     }
 
 }

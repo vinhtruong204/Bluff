@@ -8,6 +8,7 @@ import core.Position;
 import core.Size;
 import core.Vector2D;
 import helpmethods.CheckCollision;
+import helpmethods.FlipImage;
 import helpmethods.LoadSave;
 import helpmethods.PlayerAnimationType;
 import playing.camera.Camera;
@@ -38,7 +39,7 @@ public class Player extends GameObject {
 
     // private boolean moving;
     private Rectangle hitBox;
-    // private boolean onGround;
+    private boolean changeDirection;
 
     public Player(Level level) {
         position = new Position(1 * Tile.TILE_SIZE, 1 * Tile.TILE_SIZE);
@@ -54,6 +55,7 @@ public class Player extends GameObject {
         hitBox = new Rectangle((int) position.getX(), (int) position.getY(), size.getWidth(), size.getHeight());
         aniType = PlayerAnimationType.IDLE;
         moving = false;
+        changeDirection = false;
         loadAnimations();
     }
 
@@ -97,6 +99,7 @@ public class Player extends GameObject {
         // Reset vetor velocity and gravity
         velocity = new Vector2D(0.0f, 0.0f);
         moving = false;
+        changeDirection = false;
 
         // If player onground and request jump
         if (Up) {
@@ -117,6 +120,7 @@ public class Player extends GameObject {
         if (Left && !Right) {
             moving = true;
             velocity.setX(-speedX);
+            changeDirection = true;
         }
 
         // Caculate new position and hit box
@@ -190,7 +194,10 @@ public class Player extends GameObject {
 
     @Override
     public void render(Graphics g, Camera camera) {
-        g.drawImage(animations[aniType][aniIndex],
+        BufferedImage temp = animations[aniType][aniIndex];
+        if (changeDirection)
+            temp = FlipImage.flipImage(temp);
+        g.drawImage(temp,
                 (int) position.getX() - camera.getMapStartX(),
                 (int) position.getY() - camera.getMapStartY(),
                 size.getWidth(),
