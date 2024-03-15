@@ -15,9 +15,11 @@ import playing.tile.Level;
 import playing.tile.Tile;
 
 public class Player extends GameObject {
-
+    // Player dimension
     private final int PLAYER_WIDTH = 58;
     private final int PLAYER_HEIGHT = 58;
+
+    private final float MAX_JUMP_HEIGHT = 100.0f;
 
     private Vector2D velocity;
     private float speedX, speedY;
@@ -30,12 +32,15 @@ public class Player extends GameObject {
     // set status
     private boolean Up, Left, Right;
     private boolean moving;
+    private boolean jumping;
+    private boolean falling;
+
+    // Current jump distance
+    private float currJumpHeight;
 
     // private boolean moving;
     private Rectangle hitBox;
     private boolean onGround;
-
-    private int startAni;
 
     public Player(Level level) {
         position = new Position(200f, 200f);
@@ -43,7 +48,7 @@ public class Player extends GameObject {
 
         velocity = new Vector2D(0f, 0f);
         speedX = 5.0f;
-        speedY = 100.0f;
+        speedY = 10.0f;
         aniSpeed = 3;
         animations = new BufferedImage[6][26];
         this.level = level;
@@ -52,6 +57,7 @@ public class Player extends GameObject {
         aniType = PlayerAnimationType.IDLE;
         onGround = false;
         moving = false;
+        falling = true;
         loadAnimations();
     }
 
@@ -76,8 +82,12 @@ public class Player extends GameObject {
     }
 
     private void setAnimationType() {
-        StartAniOld();
+        // Initialize start animation type
+        int startAni = aniType;
+
+        // Set type of animation depend on current state
         setAniType();
+
         // If start anitype is not equal to startAni reset aniTick and aniIndex
         if (aniType != startAni) {
             // Reset animation index and animation tick
@@ -86,20 +96,41 @@ public class Player extends GameObject {
         }
     }
 
-    private void StartAniOld() {
-        startAni = aniType;
+    private void jump() {
+        if (jumping) {
+            velocity.setY(-speedY);
+            currJumpHeight += speedY;
+
+            if (currJumpHeight >= MAX_JUMP_HEIGHT) {
+                currJumpHeight = 0.0f;
+                aniType = PlayerAnimationType.FALL;
+                jumping = false;
+                falling = true;
+            }
+
+            return;
+        }
+
+        if (onGround && !falling && !jumping) {
+            velocity.setY(-speedY);
+            currJumpHeight += speedY;
+
+            aniType = PlayerAnimationType.JUMP;
+            jumping = true;
+            onGround = false;
+        }
+
     }
 
     private void upDatePosition() {
+        System.out.println("onGround " + onGround + "\t" + "falling " + falling + "\t" + "jumping " + jumping);
         // Reset vetor velocity and gravity
-        velocity = onGround ? new Vector2D(0.0f, 0.0f) : new Vector2D(0.0f, 5.0f);
+        velocity = (jumping || !falling || onGround) ? new Vector2D(0.0f, 0.0f) : new Vector2D(0.0f, 5.0f);
         moving = false;
 
         // If player onground and request jump
-        if (Up && onGround) {
-            velocity.setY(-speedY);
-            aniType = PlayerAnimationType.JUMP;
-            onGround = false;
+        if (Up) {
+            jump();
         }
 
         // Move right
@@ -124,7 +155,6 @@ public class Player extends GameObject {
 
         // Move the character
         if (canMove(newHitbox)) {
-            System.out.println(onGround);
             position = new Position(position.getX() + velocity.getX(), position.getY() + velocity.getY());
             hitBox = new Rectangle((int) position.getX(), (int) position.getY(), size.getWidth(), size.getHeight());
         }
@@ -148,7 +178,8 @@ public class Player extends GameObject {
                     // Colliding with a brick
                     if (CheckCollision.isCollision(newHitbox, tileRect)) {
                         // If brick is ground set onground to true
-                        if (newHitbox.y + newHitbox.height > tileRect.y) {
+                        if ((!Left && !Right) && (newHitbox.y + newHitbox.height > tileRect.y)) {
+                            falling = false;
                             onGround = true;
                         }
                         return false;
@@ -179,11 +210,12 @@ public class Player extends GameObject {
         // Change position if player is moving
         upDatePosition();
 
+        // Set current type of animation
+        setAnimationType();
+
         // Update tick to render animation
         updateAnimationTick();
 
-        // Set current type of animation
-        setAnimationType();
     }
 
     @Override
