@@ -24,6 +24,7 @@ public class Cucumber extends Enemy {
         size = new Size(CucumberConstants.CUCUMBER_WIDTH, CucumberConstants.CUCUMBER_HEIGHT);
         aniType = CucumberConstants.RUN;
         attackDistance = 200.0f;
+        changeDirection = false;
         velocity = new Vector2D(-1.0f, 0);
         loadAni();
     }
@@ -63,20 +64,13 @@ public class Cucumber extends Enemy {
 
     @Override
     protected void upDatePosition() {
-        changeDirection = false;
         if (traveled <= attackDistance) {
             traveled += Math.abs(velocity.getX());
             position.setX(position.getX() + velocity.getX());
         } else {
             traveled = 0.0f;
             velocity.setX(-velocity.getX());
-            changeDirection = true;
-            // flip image
-            for (int i = 0; i < animations.length; i++) {
-                for (int j = 0; j < animations[i].length; j++) {
-                    animations[i][j] = FlipImage.flipImage(animations[i][j]);
-                }
-            }
+            changeDirection = !changeDirection;
         }
     }
 
@@ -88,13 +82,14 @@ public class Cucumber extends Enemy {
 
     @Override
     public void render(Graphics g, Camera camera) {
+        BufferedImage temp = animations[aniType][aniIndex];
+        if (changeDirection)
+            temp = FlipImage.flipImage(temp);
+        System.out.println(changeDirection);
         if ((int) position.getX() - camera.getMapStartX() >= 0
                 && (int) position.getX() - camera.getMapStartX() <= Game.SCREEN_WIDTH
                 && (int) position.getY() - camera.getMapStartY() >= 0
                 && (int) position.getY() - camera.getMapStartY() <= Game.SCREEN_HEIGHT) {
-            BufferedImage temp = animations[aniType][aniIndex];
-            if (changeDirection)
-                temp = FlipImage.flipImage(temp);
             g.drawImage(
                     temp,
                     (int) position.getX() - camera.getMapStartX(),
