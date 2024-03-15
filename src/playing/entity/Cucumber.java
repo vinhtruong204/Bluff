@@ -18,10 +18,10 @@ public class Cucumber extends Enemy {
 
     public Cucumber(int enemyType, int i, int j) {
         super(enemyType);
-        position = new Position(Tile.TILE_SIZE * i, Tile.TILE_SIZE * j);
+        position = new Position(Tile.TILE_SIZE * j, Tile.TILE_SIZE * i + 30.0f);
         size = new Size(CucumberConstants.CUCUMBER_WIDTH, CucumberConstants.CUCUMBER_HEIGHT);
-        aniType = CucumberConstants.IDLE;
-        attackDistance = 100.0f;
+        aniType = CucumberConstants.RUN;
+        attackDistance = 200.0f;
         velocity = new Vector2D(-1.0f, 0);
         loadAni();
     }

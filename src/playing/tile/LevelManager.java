@@ -8,6 +8,7 @@ import bomb.Bomb;
 import gamestate.StateMethods;
 import helpmethods.BombConstants;
 import playing.camera.Camera;
+import playing.entity.EnemyManager;
 import playing.entity.Player;
 
 public class LevelManager implements StateMethods {
@@ -18,6 +19,7 @@ public class LevelManager implements StateMethods {
     private Camera camera;
     private Player player;
     private Bomb bomb;
+    private EnemyManager enemyManager;
 
     // Constructor
     public LevelManager() {
@@ -25,6 +27,7 @@ public class LevelManager implements StateMethods {
         initMap();
         player = new Player(levels[currentLevel]);
         camera = new Camera(levels[currentLevel], player);
+        enemyManager = new EnemyManager(levels[currentLevel].getMap());
     }
 
     private void initPathMap() {
@@ -50,6 +53,7 @@ public class LevelManager implements StateMethods {
         if (bomb != null) {
             bomb.update();
         }
+        enemyManager.update();
     }
 
     // Render Map
@@ -59,6 +63,7 @@ public class LevelManager implements StateMethods {
         if (bomb != null) {
             bomb.render(g, camera);
         }
+        enemyManager.render(g, camera);
     }
 
     @Override
@@ -86,14 +91,16 @@ public class LevelManager implements StateMethods {
             case KeyEvent.VK_D:
                 player.setRight(true);
                 break;
-            case KeyEvent.VK_SPACE:
-                player.setUp(true);
+            case KeyEvent.VK_S:
+                player.setDown(true);
                 break;
             case KeyEvent.VK_W:
                 player.setUp(true);
                 break;
             case KeyEvent.VK_E:
                 bomb = new Bomb();
+            case KeyEvent.VK_SPACE:
+                player.setUp(true);
                 break;
             default:
                 break;
@@ -109,13 +116,15 @@ public class LevelManager implements StateMethods {
             case KeyEvent.VK_D:
                 player.setRight(false);
                 break;
-            case KeyEvent.VK_SPACE:
-                player.setUp(false);
+            case KeyEvent.VK_S:
+                player.setDown(false);
                 break;
             case KeyEvent.VK_W:
                 player.setUp(false);
                 break;
             case KeyEvent.VK_E:
+            case KeyEvent.VK_SPACE:
+                player.setUp(false);
                 break;
             default:
                 break;
