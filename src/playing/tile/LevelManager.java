@@ -4,7 +4,9 @@ import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
+import bomb.Bomb;
 import gamestate.StateMethods;
+import helpmethods.BombConstants;
 import playing.camera.Camera;
 import playing.entity.Player;
 
@@ -15,6 +17,7 @@ public class LevelManager implements StateMethods {
     private String[] nameFile;
     private Camera camera;
     private Player player;
+    private Bomb bomb;
 
     // Constructor
     public LevelManager() {
@@ -44,12 +47,18 @@ public class LevelManager implements StateMethods {
     public void update() {
         camera.update();
         player.update();
+        if (bomb != null) {
+            bomb.update();
+        }
     }
 
     // Render Map
     public void render(Graphics g) {
         camera.render(g);
         player.render(g, camera);
+        if (bomb != null) {
+            bomb.render(g, camera);
+        }
     }
 
     @Override
@@ -83,6 +92,9 @@ public class LevelManager implements StateMethods {
             case KeyEvent.VK_W:
                 player.setUp(true);
                 break;
+            case KeyEvent.VK_E:
+                bomb = new Bomb();
+                break;
             default:
                 break;
         }
@@ -102,6 +114,8 @@ public class LevelManager implements StateMethods {
                 break;
             case KeyEvent.VK_W:
                 player.setUp(false);
+                break;
+            case KeyEvent.VK_E:
                 break;
             default:
                 break;
