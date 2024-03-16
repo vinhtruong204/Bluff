@@ -246,4 +246,9 @@ public class Player extends GameObject {
     public void setRight(boolean right) {
         this.Right = right;
     }
+
+    public Rectangle getHitBox() {
+        return hitBox;
+    }
+    
 }
