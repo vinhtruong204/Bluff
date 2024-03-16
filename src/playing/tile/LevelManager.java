@@ -5,6 +5,8 @@ import java.awt.List;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Iterator;
+
 
 import gamestate.StateMethods;
 import playing.camera.Camera;
@@ -53,11 +55,17 @@ public class LevelManager implements StateMethods {
     public void update() {
         camera.update();
         player.update();
-        for(Bomb bomb : bombs)
+        Iterator itr = bombs.iterator();
+
+        while(itr.hasNext())
         {
-            if(bomb !=null){
-                bomb.update();
+            Bomb bomb = (Bomb)itr.next();
+            bomb.update();
+            if(bomb.isExploded())
+            {
+                itr.remove();
             }
+            ///System.out.println(bomb.getAfterTime());
         }
         enemyManager.update();
     }
@@ -68,10 +76,7 @@ public class LevelManager implements StateMethods {
         player.render(g, camera);
         for(Bomb bomb : bombs)
         {
-            if(bomb !=null)
-            {
-                bomb.render(g,camera);
-            }
+            bomb.render(g,camera);
         }
         enemyManager.render(g, camera);
     }
@@ -108,9 +113,7 @@ public class LevelManager implements StateMethods {
                 player.setUp(true);
                 break;
             case KeyEvent.VK_E:
-                int indexX = (int) (player.getPosition().getX()) / Tile.TILE_SIZE;
-                int indexY = (int) (player.getPosition().getY()) /Tile.TILE_SIZE;
-                bombs.add(new Bomb(indexX, indexY));
+                addBomb();
                 break;
             case KeyEvent.VK_SPACE:
                 player.setUp(true);
@@ -118,6 +121,12 @@ public class LevelManager implements StateMethods {
             default:
                 break;
         }
+    }
+
+    private void addBomb() {
+        int indexX = (int) (player.getPosition().getX()) / Tile.TILE_SIZE;
+        int indexY = (int) (player.getPosition().getY()) / Tile.TILE_SIZE;
+        bombs.add(new Bomb(indexX, indexY));
     }
 
     @Override

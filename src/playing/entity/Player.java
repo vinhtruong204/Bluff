@@ -1,5 +1,6 @@
 package playing.entity;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.awt.Rectangle;
@@ -196,6 +197,8 @@ public class Player extends GameObject {
 
     @Override
     public void render(Graphics g, Camera camera) {
+        g.setColor(Color.pink);
+        g.drawRect(hitBox.x-camera.getMapStartX(), hitBox.y-camera.getMapStartY(), hitBox.width, hitBox.height);
         BufferedImage temp = animations[aniType][aniIndex];
         if (currentDirection == PlayerDirection.LEFT)
             temp = FlipImage.flipImage(temp);

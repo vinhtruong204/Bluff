@@ -1,6 +1,7 @@
 package playing.entity.bomb;
 
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import core.Position;
@@ -21,13 +22,19 @@ public class Bomb extends GameObject {
     private int aniTick, aniIndex, aniSpeed;
     private long currentTime, afterTime;
 
+    private boolean exploded;
+    private Rectangle hitBox;
+
     public Bomb(int i, int j) {
         animations = new BufferedImage[3][6];
         size = new Size(BOMB_WIDTH * 2, BOMB_HEIGHT * 2);
         position = new Position(i * Tile.TILE_SIZE - 30.0f, j * Tile.TILE_SIZE);
-        aniSpeed = 1;
-        currentTime = System.currentTimeMillis() / 1000;
+        hitBox = new Rectangle((int) position.getX(), (int) position.getX(), size.getWidth(), size.getHeight());
+        aniSpeed = 3;
+        currentTime = System.currentTimeMillis();
+        aniType = BombConstants.PLACINGBOMB;
         afterTime = 0;
+        exploded = false;
         loadAnimations();
     }
 
@@ -39,20 +46,23 @@ public class Bomb extends GameObject {
     }
 
     private void setAniType() {
-        afterTime = System.currentTimeMillis() / 1000;
-        if (afterTime - currentTime <= 1) {
+        int startAni = aniType;
+
+        afterTime = System.currentTimeMillis();
+        if (afterTime - currentTime <= 500) {
             aniType = BombConstants.PLACINGBOMB;
+        } else if (afterTime - currentTime > 500 && afterTime - currentTime <= 3000) {
+            aniType = BombConstants.ACTIVATINGBOMB;
+        } else if (afterTime - currentTime > 3000) {
+            aniType = BombConstants.EXPLODINGBOMB;
+
+        }
+
+        if (startAni != aniType) {
             aniTick = 0;
             aniIndex = 0;
-        } else if (afterTime - currentTime > 1 && afterTime - currentTime <= 2) {
-            aniType = BombConstants.ACTIVATINGBOMB;
-            aniTick = 0;
-            aniIndex = 1;
-        } else if (afterTime - currentTime > 2) {
-            aniType = BombConstants.EXPLODINGBOMB;
-            aniTick = 0;
-            aniIndex = 2;
         }
+
     }
 
     private void updateAnimationTick() {
@@ -64,6 +74,8 @@ public class Bomb extends GameObject {
             aniIndex++;
             if (aniIndex >= BombConstants.getSpriteAmount(aniType)) {
                 aniIndex = 0;
+                if (aniType == BombConstants.EXPLODINGBOMB)
+                    exploded = true;
             }
         }
     }
@@ -82,6 +94,22 @@ public class Bomb extends GameObject {
 
     public void setAfterTime(long afterTime) {
         this.afterTime = afterTime;
+    }
+
+    public long getCurrentTime() {
+        return currentTime;
+    }
+
+    public void setCurrentTime(long currentTime) {
+        this.currentTime = currentTime;
+    }
+
+    public boolean isExploded() {
+        return exploded;
+    }
+
+    public void setExploded(boolean exploded) {
+        this.exploded = exploded;
     }
 
     @Override
