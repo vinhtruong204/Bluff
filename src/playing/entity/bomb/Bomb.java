@@ -59,7 +59,12 @@ public class Bomb extends GameObject {
         }
 
         if (startAni != aniType) {
+
+        }
+
+        if (startAni != aniType) {
             aniTick = 0;
+            aniIndex = 0;
             aniIndex = 0;
         }
 

@@ -12,7 +12,6 @@ import helpmethods.*;
 import helpmethods.EnemyConstants.CucumberConstants;
 import playing.camera.Camera;
 import playing.tile.Tile;
-import playing.entity.Player;
 
 public class Cucumber extends Enemy {
 
@@ -22,7 +21,7 @@ public class Cucumber extends Enemy {
         size = new Size(CucumberConstants.CUCUMBER_WIDTH, CucumberConstants.CUCUMBER_HEIGHT);
         hitBox = new Rectangle((int) position.getX(), (int) position.getY(), size.getWidth(), size.getHeight());
         aniType = CucumberConstants.RUN;
-        attackDistance = 200.0f;
+        foresight = 200.0f;
         changeDirection = false;
         velocity = new Vector2D(-1.0f, 0);
         loadAni();
@@ -66,7 +65,6 @@ public class Cucumber extends Enemy {
         int startAni = aniType;
 
         // Set type of animation depend on current state
-
         aniType = CheckCollision.isCollision(hitBox, playerHitbox) ? CucumberConstants.ATTACK : CucumberConstants.RUN;
 
         // If start anitype is not equal to startAni reset aniTick and aniIndex
@@ -77,13 +75,16 @@ public class Cucumber extends Enemy {
         }
     }
 
-    @Override
-    protected void upDatePosition() {
+    private void upDatePosition(Rectangle playerHitbox) {
+
+        if (seePlayer()) {
+
+        }
         if (aniType == CucumberConstants.ATTACK) {
             return;
         }
 
-        if (traveled <= attackDistance) {
+        if (traveled <= foresight) {
             traveled += Math.abs(velocity.getX());
             position.setX(position.getX() + velocity.getX());
         } else {
@@ -95,6 +96,10 @@ public class Cucumber extends Enemy {
         hitBox = new Rectangle((int) position.getX(), (int) position.getY(), size.getWidth(), size.getHeight());
     }
 
+    private boolean seePlayer() {
+        return true;
+    }
+
     public void update(Rectangle playerHitbox) {
         // Set animation depend on current state
         setAniType(playerHitbox);
@@ -103,7 +108,7 @@ public class Cucumber extends Enemy {
         updateAnimationTick();
 
         // Update current position and hitBox
-        upDatePosition();
+        upDatePosition(playerHitbox);
     }
 
     @Override
@@ -114,8 +119,10 @@ public class Cucumber extends Enemy {
         // If enemy change move direction flip horizontal image
         if (changeDirection)
             temp = FlipImage.flipImage(temp);
+
+        // Check cucumber if screen contain it and render
         if ((int) position.getX() - camera.getMapStartX() >= 0
-                && (int) position.getX() - camera.getMapStartX() <= Game.SCREEN_WIDTH 
+                && (int) position.getX() - camera.getMapStartX() <= Game.SCREEN_WIDTH
                 && (int) position.getY() - camera.getMapStartY() >= 0
                 && (int) position.getY() - camera.getMapStartY() <= Game.SCREEN_HEIGHT) {
             g.drawImage(
@@ -130,8 +137,6 @@ public class Cucumber extends Enemy {
 
     @Override
     public void update() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'update'");
     }
 
 }

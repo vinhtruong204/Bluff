@@ -16,7 +16,7 @@ public abstract class Enemy extends GameObject {
     protected boolean changeDirection;
 
     // Motion
-    protected float attackDistance;
+    protected float foresight;
     protected Vector2D velocity;
     protected float traveled; // distance traveled\
 
@@ -33,5 +33,5 @@ public abstract class Enemy extends GameObject {
 
     protected abstract void updateAnimationTick();
 
-    protected abstract void upDatePosition();
+    //protected abstract void upDatePosition();
 }

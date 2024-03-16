@@ -1,7 +1,6 @@
 package playing.tile;
 
 import java.awt.Graphics;
-import java.awt.List;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
