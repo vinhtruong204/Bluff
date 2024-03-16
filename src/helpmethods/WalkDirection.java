@@ -1,6 +1,6 @@
 package helpmethods;
 
-public enum PlayerDirection {
+public enum WalkDirection {
     LEFT,
     RIGHT,
     UP,

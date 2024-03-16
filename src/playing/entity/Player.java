@@ -12,7 +12,7 @@ import helpmethods.CheckCollision;
 import helpmethods.FlipImage;
 import helpmethods.LoadSave;
 import helpmethods.PlayerAnimationType;
-import helpmethods.PlayerDirection;
+import helpmethods.WalkDirection;
 import playing.camera.Camera;
 import playing.tile.Level;
 import playing.tile.Tile;
@@ -42,7 +42,7 @@ public class Player extends GameObject {
     // private boolean moving;
     private Rectangle hitBox;
 
-    private PlayerDirection currentDirection;
+    private WalkDirection currentDirection;
 
     public Player(Level level) {
         position = new Position(2 * Tile.TILE_SIZE, 1 * Tile.TILE_SIZE);
@@ -58,7 +58,7 @@ public class Player extends GameObject {
         hitBox = new Rectangle((int) position.getX(), (int) position.getY(), size.getWidth(), size.getHeight());
         aniType = PlayerAnimationType.IDLE;
 
-        currentDirection = PlayerDirection.RIGHT;
+        currentDirection = WalkDirection.RIGHT;
         moving = false;
         loadAnimations();
     }
@@ -116,14 +116,14 @@ public class Player extends GameObject {
         if (Right && !Left) {
             moving = true;
             velocity.setX(speedX);
-            currentDirection = PlayerDirection.RIGHT;
+            currentDirection = WalkDirection.RIGHT;
         }
 
         // Move left
         if (Left && !Right) {
             moving = true;
             velocity.setX(-speedX);
-            currentDirection = PlayerDirection.LEFT;
+            currentDirection = WalkDirection.LEFT;
         }
 
         // Caculate new position and hit box
@@ -200,7 +200,7 @@ public class Player extends GameObject {
         g.setColor(Color.pink);
         g.drawRect(hitBox.x-camera.getMapStartX(), hitBox.y-camera.getMapStartY(), hitBox.width, hitBox.height);
         BufferedImage temp = animations[aniType][aniIndex];
-        if (currentDirection == PlayerDirection.LEFT)
+        if (currentDirection == WalkDirection.LEFT)
             temp = FlipImage.flipImage(temp);
         g.drawImage(temp,
                 (int) position.getX() - camera.getMapStartX(),

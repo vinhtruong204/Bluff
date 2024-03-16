@@ -21,9 +21,9 @@ public class Cucumber extends Enemy {
         size = new Size(CucumberConstants.CUCUMBER_WIDTH, CucumberConstants.CUCUMBER_HEIGHT);
         hitBox = new Rectangle((int) position.getX(), (int) position.getY(), size.getWidth(), size.getHeight());
         aniType = CucumberConstants.RUN;
-        foresight = 200.0f;
-        changeDirection = false;
-        velocity = new Vector2D(-1.0f, 0);
+        foresight = 200.0d;
+        direction = WalkDirection.LEFT;
+        velocity = new Vector2D(enemySpeed, 0);
         loadAni();
     }
 
@@ -57,7 +57,6 @@ public class Cucumber extends Enemy {
                 aniIndex = 0;
             }
         }
-
     }
 
     private void setAniType(Rectangle playerHitbox) {
@@ -76,28 +75,50 @@ public class Cucumber extends Enemy {
     }
 
     private void upDatePosition(Rectangle playerHitbox) {
-
-        if (seePlayer()) {
-
+        // System.out.println(seePlayer(playerHitbox));
+        if (seePlayer(playerHitbox)) {
+            
         }
+
         if (aniType == CucumberConstants.ATTACK) {
+            // Change direction from position of player
+            direction = playerHitbox.x <= hitBox.x ? WalkDirection.LEFT : WalkDirection.RIGHT;
             return;
         }
 
-        if (traveled <= foresight) {
-            traveled += Math.abs(velocity.getX());
-            position.setX(position.getX() + velocity.getX());
-        } else {
-            traveled = 0.0f;
-            velocity.setX(-velocity.getX());
-            changeDirection = !changeDirection;
+        // Set velocity depend on current direction
+        switch (direction) {
+            case LEFT:
+                velocity.setX(-enemySpeed);
+                break;
+            case RIGHT:
+                velocity.setX(enemySpeed);
+                break;
+            default:
+                break;
         }
 
+        // If moved to a limited position
+        if (traveled <= foresight) {
+            traveled += enemySpeed;
+        } else {
+            traveled = 0.0f;
+            direction = direction == WalkDirection.LEFT ? WalkDirection.RIGHT : WalkDirection.LEFT;
+        }
+
+        position = new Position(position.getX() + velocity.getX(), position.getY() + velocity.getY());
         hitBox = new Rectangle((int) position.getX(), (int) position.getY(), size.getWidth(), size.getHeight());
     }
 
-    private boolean seePlayer() {
-        return true;
+    private boolean seePlayer(Rectangle playerHitbox) {
+        if (Math.abs(playerHitbox.y - hitBox.y) <= Tile.TILE_SIZE) {
+            double distance = Math.pow(playerHitbox.y - hitBox.y, 2) +
+                    Math.pow(playerHitbox.x - hitBox.x, 2);
+            System.out.println(distance);
+            if (Math.sqrt(distance) <= foresight)
+                return true;
+        }
+        return false;
     }
 
     public void update(Rectangle playerHitbox) {
@@ -117,7 +138,7 @@ public class Cucumber extends Enemy {
         BufferedImage temp = animations[aniType][aniIndex];
 
         // If enemy change move direction flip horizontal image
-        if (changeDirection)
+        if (direction == WalkDirection.RIGHT)
             temp = FlipImage.flipImage(temp);
 
         // Check cucumber if screen contain it and render
