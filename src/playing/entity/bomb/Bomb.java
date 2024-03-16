@@ -59,12 +59,7 @@ public class Bomb extends GameObject {
         }
 
         if (startAni != aniType) {
-
-        }
-
-        if (startAni != aniType) {
             aniTick = 0;
-            aniIndex = 0;
             aniIndex = 0;
         }
 
@@ -82,6 +77,23 @@ public class Bomb extends GameObject {
                 if (aniType == BombConstants.EXPLODINGBOMB)
                     exploded = true;
             }
+        }
+    }
+
+    @Override
+    public void update() {
+        setAniType();
+        updateAnimationTick();
+    }
+
+    @Override
+    public void render(Graphics g, Camera camera) {
+        if ((int) position.getX() - camera.getMapStartX() >= 0
+                && (int) position.getX() - camera.getMapStartX() <= Game.SCREEN_WIDTH
+                && (int) position.getY() - camera.getMapStartY() >= 0
+                && (int) position.getY() - camera.getMapStartY() <= Game.SCREEN_HEIGHT) {
+            g.drawImage(animations[aniType][aniIndex], (int) position.getX() - camera.getMapStartX(),
+                    (int) position.getY() - camera.getMapStartY(), size.getWidth(), size.getHeight(), null);
         }
     }
 
@@ -117,21 +129,9 @@ public class Bomb extends GameObject {
         this.exploded = exploded;
     }
 
-    @Override
-    public void update() {
-        setAniType();
-        updateAnimationTick();
+    public Rectangle getHitBox() {
+        return hitBox;
     }
 
-    @Override
-    public void render(Graphics g, Camera camera) {
-        if ((int) position.getX() - camera.getMapStartX() >= 0
-                && (int) position.getX() - camera.getMapStartX() <= Game.SCREEN_WIDTH
-                && (int) position.getY() - camera.getMapStartY() >= 0
-                && (int) position.getY() - camera.getMapStartY() <= Game.SCREEN_HEIGHT) {
-            g.drawImage(animations[aniType][aniIndex], (int) position.getX() - camera.getMapStartX(),
-                    (int) position.getY() - camera.getMapStartY(), size.getWidth(), size.getHeight(), null);
-        }
-    }
 
 }

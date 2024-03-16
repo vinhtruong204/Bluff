@@ -6,7 +6,6 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-
 import gamestate.StateMethods;
 import playing.camera.Camera;
 import playing.entity.EnemyManager;
@@ -54,17 +53,15 @@ public class LevelManager implements StateMethods {
     public void update() {
         camera.update();
         player.update();
-        Iterator itr = bombs.iterator();
+        Iterator<Bomb> itr = bombs.iterator();
 
-        while(itr.hasNext())
-        {
-            Bomb bomb = (Bomb)itr.next();
+        while (itr.hasNext()) {
+            Bomb bomb = (Bomb) itr.next();
             bomb.update();
-            if(bomb.isExploded())
-            {
+            if (bomb.isExploded()) {
                 itr.remove();
             }
-            ///System.out.println(bomb.getAfterTime());
+            /// System.out.println(bomb.getAfterTime());
         }
         enemyManager.update();
     }
@@ -73,9 +70,8 @@ public class LevelManager implements StateMethods {
     public void render(Graphics g) {
         camera.render(g);
         player.render(g, camera);
-        for(Bomb bomb : bombs)
-        {
-            bomb.render(g,camera);
+        for (Bomb bomb : bombs) {
+            bomb.render(g, camera);
         }
         enemyManager.render(g, camera);
     }
