@@ -9,10 +9,12 @@ import playing.camera.Camera;
 public class EnemyManager {
     private ArrayList<Cucumber> cucumbers;
     private int[][] map;
+    private Player player;
 
-    public EnemyManager(int[][] map) {
+    public EnemyManager(int[][] map, Player player) {
         cucumbers = new ArrayList<>();
         this.map = map;
+        this.player = player;
         addCucumber();
     }
 
@@ -28,7 +30,7 @@ public class EnemyManager {
 
     public void update() {
         for (Cucumber cucumber : cucumbers) {
-            cucumber.update();
+            cucumber.update(player.getHitBox());
         }
     }
 

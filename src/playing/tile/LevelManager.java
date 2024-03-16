@@ -26,7 +26,7 @@ public class LevelManager implements StateMethods {
         initMap();
         player = new Player(levels[currentLevel]);
         camera = new Camera(levels[currentLevel], player);
-        enemyManager = new EnemyManager(levels[currentLevel].getMap());
+        enemyManager = new EnemyManager(levels[currentLevel].getMap(), player);
     }
 
     private void initPathMap() {
