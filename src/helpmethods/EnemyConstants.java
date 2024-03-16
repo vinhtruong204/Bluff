@@ -3,10 +3,10 @@ package helpmethods;
 public class EnemyConstants {
     // All types of enemies
     public static final int CUCUMBER = 0;
-    public static final int WHALE = 1;
-    public static final int CAPTAIN = 2;
-    public static final int BOLD_PIRATE = 3;
-    public static final int BIG_GUY = 4;
+    public static final int CAPTAIN = 1;
+    public static final int BOLD_PIRATE = 2;
+    public static final int BIG_GUY = 3;
+    public static final int WHALE = 4;
 
     public class CucumberConstants {
         //
