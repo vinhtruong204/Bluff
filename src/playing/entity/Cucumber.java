@@ -12,6 +12,7 @@ import helpmethods.*;
 import helpmethods.EnemyConstants.CucumberConstants;
 import playing.camera.Camera;
 import playing.tile.Tile;
+import playing.entity.Player;
 
 public class Cucumber extends Enemy {
 
@@ -113,9 +114,8 @@ public class Cucumber extends Enemy {
         // If enemy change move direction flip horizontal image
         if (changeDirection)
             temp = FlipImage.flipImage(temp);
-
         if ((int) position.getX() - camera.getMapStartX() >= 0
-                && (int) position.getX() - camera.getMapStartX() <= Game.SCREEN_WIDTH
+                && (int) position.getX() - camera.getMapStartX() <= Game.SCREEN_WIDTH 
                 && (int) position.getY() - camera.getMapStartY() >= 0
                 && (int) position.getY() - camera.getMapStartY() <= Game.SCREEN_HEIGHT) {
             g.drawImage(

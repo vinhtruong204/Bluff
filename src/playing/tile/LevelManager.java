@@ -1,14 +1,16 @@
 package playing.tile;
 
 import java.awt.Graphics;
+import java.awt.List;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
-import bomb.Bomb;
 import gamestate.StateMethods;
 import playing.camera.Camera;
 import playing.entity.EnemyManager;
 import playing.entity.Player;
+import playing.entity.bomb.Bomb;
 
 public class LevelManager implements StateMethods {
 
@@ -17,7 +19,7 @@ public class LevelManager implements StateMethods {
     private String[] nameFile;
     private Camera camera;
     private Player player;
-    private Bomb bomb;
+    private ArrayList<Bomb> bombs;
     private EnemyManager enemyManager;
 
     // Constructor
@@ -27,6 +29,8 @@ public class LevelManager implements StateMethods {
         player = new Player(levels[currentLevel]);
         camera = new Camera(levels[currentLevel], player);
         enemyManager = new EnemyManager(levels[currentLevel].getMap(), player);
+        bombs = new ArrayList<>();
+
     }
 
     private void initPathMap() {
@@ -49,8 +53,11 @@ public class LevelManager implements StateMethods {
     public void update() {
         camera.update();
         player.update();
-        if (bomb != null) {
-            bomb.update();
+        for(Bomb bomb : bombs)
+        {
+            if(bomb !=null){
+                bomb.update();
+            }
         }
         enemyManager.update();
     }
@@ -59,8 +66,12 @@ public class LevelManager implements StateMethods {
     public void render(Graphics g) {
         camera.render(g);
         player.render(g, camera);
-        if (bomb != null) {
-            bomb.render(g, camera);
+        for(Bomb bomb : bombs)
+        {
+            if(bomb !=null)
+            {
+                bomb.render(g,camera);
+            }
         }
         enemyManager.render(g, camera);
     }
@@ -97,9 +108,9 @@ public class LevelManager implements StateMethods {
                 player.setUp(true);
                 break;
             case KeyEvent.VK_E:
-                int posX = (int) player.getPosition().getX() - camera.getMapStartX();
-                int posY = (int) player.getPosition().getY() - camera.getMapStartY();
-                bomb = new Bomb(posX, posY);
+                int indexX = (int) (player.getPosition().getX()) / Tile.TILE_SIZE;
+                int indexY = (int) (player.getPosition().getY()) /Tile.TILE_SIZE;
+                bombs.add(new Bomb(indexX, indexY));
                 break;
             case KeyEvent.VK_SPACE:
                 player.setUp(true);
