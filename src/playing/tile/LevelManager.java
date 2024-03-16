@@ -4,11 +4,11 @@ import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
-import bomb.Bomb;
 import gamestate.StateMethods;
 import playing.camera.Camera;
 import playing.entity.EnemyManager;
 import playing.entity.Player;
+import playing.entity.bomb.Bomb;
 
 public class LevelManager implements StateMethods {
 
@@ -97,9 +97,9 @@ public class LevelManager implements StateMethods {
                 player.setUp(true);
                 break;
             case KeyEvent.VK_E:
-                int posX = (int) player.getPosition().getX() - camera.getMapStartX();
-                int posY = (int) player.getPosition().getY() - camera.getMapStartY();
-                bomb = new Bomb(posX, posY);
+                int indexX = (int) (player.getPosition().getX()) / Tile.TILE_SIZE;
+                int indexY = (int) (player.getPosition().getY()) /Tile.TILE_SIZE;
+                bomb = new Bomb(indexX, indexY);
                 break;
             case KeyEvent.VK_SPACE:
                 player.setUp(true);

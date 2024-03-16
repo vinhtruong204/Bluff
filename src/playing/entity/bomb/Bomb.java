@@ -1,15 +1,16 @@
-package bomb;
+package playing.entity.bomb;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 import core.Position;
 import core.Size;
+import game.Game;
 import helpmethods.BombConstants;
 import helpmethods.LoadSave;
 import playing.camera.Camera;
 import playing.entity.GameObject;
-import playing.entity.Player;
+import playing.tile.Tile;
 
 public class Bomb extends GameObject {
     private BufferedImage animations[][];
@@ -20,11 +21,10 @@ public class Bomb extends GameObject {
     private int aniTick, aniIndex, aniSpeed;
     private long currentTime, afterTime;
 
-    public Bomb(int posX,int posY) {
+    public Bomb(int i, int j) {
         animations = new BufferedImage[3][6];
-        size = new Size(BOMB_WIDTH + 40, BOMB_HEIGHT + 40);
-        System.out.println("yes");
-        position = new Position((float)(posX),(float)(posY));
+        size = new Size(BOMB_WIDTH * 2, BOMB_HEIGHT * 2);
+        position = new Position(i * Tile.TILE_SIZE - 30.0f, j * Tile.TILE_SIZE);
         aniSpeed = 1;
         currentTime = System.currentTimeMillis() / 1000;
         afterTime = 0;
@@ -40,11 +40,11 @@ public class Bomb extends GameObject {
 
     private void setAniType() {
         afterTime = System.currentTimeMillis() / 1000;
-        if (afterTime - currentTime <= 0.5) {
+        if (afterTime - currentTime <= 1) {
             aniType = BombConstants.PLACINGBOMB;
             aniTick = 0;
             aniIndex = 0;
-        } else if (afterTime - currentTime > 0.5 && afterTime - currentTime <= 2) {
+        } else if (afterTime - currentTime > 1 && afterTime - currentTime <= 2) {
             aniType = BombConstants.ACTIVATINGBOMB;
             aniTick = 0;
             aniIndex = 1;
@@ -92,8 +92,13 @@ public class Bomb extends GameObject {
 
     @Override
     public void render(Graphics g, Camera camera) {
-        g.drawImage(animations[aniType][aniIndex], (int) position.getX(),
-                (int) position.getY(), size.getWidth(), size.getHeight(), null);
+        if ((int) position.getX() - camera.getMapStartX() >= 0
+                && (int) position.getX() - camera.getMapStartX() <= Game.SCREEN_WIDTH
+                && (int) position.getY() - camera.getMapStartY() >= 0
+                && (int) position.getY() - camera.getMapStartY() <= Game.SCREEN_HEIGHT) {
+            g.drawImage(animations[aniType][aniIndex], (int) position.getX() - camera.getMapStartX(),
+                    (int) position.getY() - camera.getMapStartY(), size.getWidth(), size.getHeight(), null);
+        }
     }
 
 }

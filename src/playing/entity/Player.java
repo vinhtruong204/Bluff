@@ -18,8 +18,8 @@ import playing.tile.Tile;
 
 public class Player extends GameObject {
     // Player dimension
-    private final int PLAYER_WIDTH = 58;
-    private final int PLAYER_HEIGHT = 58;
+    private static final int PLAYER_WIDTH = 58;
+    private static final int PLAYER_HEIGHT = 58;
 
     // private final float MAX_JUMP_HEIGHT = 100.0f;
 
