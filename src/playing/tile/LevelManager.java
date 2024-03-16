@@ -1,8 +1,10 @@
 package playing.tile;
 
 import java.awt.Graphics;
+import java.awt.List;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 import gamestate.StateMethods;
 import playing.camera.Camera;
@@ -17,7 +19,7 @@ public class LevelManager implements StateMethods {
     private String[] nameFile;
     private Camera camera;
     private Player player;
-    private Bomb bomb;
+    private ArrayList<Bomb> bombs;
     private EnemyManager enemyManager;
 
     // Constructor
@@ -26,6 +28,7 @@ public class LevelManager implements StateMethods {
         initMap();
         player = new Player(levels[currentLevel]);
         camera = new Camera(levels[currentLevel], player);
+        bombs = new ArrayList<>();
         enemyManager = new EnemyManager(levels[currentLevel].getMap());
     }
 
@@ -49,8 +52,11 @@ public class LevelManager implements StateMethods {
     public void update() {
         camera.update();
         player.update();
-        if (bomb != null) {
-            bomb.update();
+        for(Bomb bomb : bombs)
+        {
+            if(bomb !=null){
+                bomb.update();
+            }
         }
         enemyManager.update();
     }
@@ -59,8 +65,12 @@ public class LevelManager implements StateMethods {
     public void render(Graphics g) {
         camera.render(g);
         player.render(g, camera);
-        if (bomb != null) {
-            bomb.render(g, camera);
+        for(Bomb bomb : bombs)
+        {
+            if(bomb !=null)
+            {
+                bomb.render(g,camera);
+            }
         }
         enemyManager.render(g, camera);
     }
@@ -99,7 +109,7 @@ public class LevelManager implements StateMethods {
             case KeyEvent.VK_E:
                 int indexX = (int) (player.getPosition().getX()) / Tile.TILE_SIZE;
                 int indexY = (int) (player.getPosition().getY()) /Tile.TILE_SIZE;
-                bomb = new Bomb(indexX, indexY);
+                bombs.add(new Bomb(indexX, indexY));
                 break;
             case KeyEvent.VK_SPACE:
                 player.setUp(true);
