@@ -11,6 +11,7 @@ import helpmethods.CheckCollision;
 import helpmethods.FlipImage;
 import helpmethods.LoadSave;
 import helpmethods.PlayerAnimationType;
+import helpmethods.PlayerDirection;
 import playing.camera.Camera;
 import playing.tile.Level;
 import playing.tile.Tile;
@@ -39,7 +40,8 @@ public class Player extends GameObject {
 
     // private boolean moving;
     private Rectangle hitBox;
-    private boolean changeDirection;
+
+    private PlayerDirection currentDirection;
 
     public Player(Level level) {
         position = new Position(2 * Tile.TILE_SIZE, 1 * Tile.TILE_SIZE);
@@ -54,8 +56,9 @@ public class Player extends GameObject {
         // box of player
         hitBox = new Rectangle((int) position.getX(), (int) position.getY(), size.getWidth(), size.getHeight());
         aniType = PlayerAnimationType.IDLE;
+
+        currentDirection = PlayerDirection.RIGHT;
         moving = false;
-        changeDirection = false;
         loadAnimations();
     }
 
@@ -98,7 +101,6 @@ public class Player extends GameObject {
         // Reset vetor velocity and gravity
         velocity = new Vector2D(0.0f, 0.0f);
         moving = false;
-        changeDirection = false;
 
         // If player onground and request jump
         if (Up) {
@@ -113,13 +115,14 @@ public class Player extends GameObject {
         if (Right && !Left) {
             moving = true;
             velocity.setX(speedX);
+            currentDirection = PlayerDirection.RIGHT;
         }
 
         // Move left
         if (Left && !Right) {
             moving = true;
             velocity.setX(-speedX);
-            changeDirection = true;
+            currentDirection = PlayerDirection.LEFT;
         }
 
         // Caculate new position and hit box
@@ -194,7 +197,7 @@ public class Player extends GameObject {
     @Override
     public void render(Graphics g, Camera camera) {
         BufferedImage temp = animations[aniType][aniIndex];
-        if (changeDirection)
+        if (currentDirection == PlayerDirection.LEFT)
             temp = FlipImage.flipImage(temp);
         g.drawImage(temp,
                 (int) position.getX() - camera.getMapStartX(),
