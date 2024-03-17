@@ -16,6 +16,12 @@ public class Playing implements StateMethods {
         levelManager = new LevelManager();
         pauseButton = new PauseButton(3);
     }
+    
+    public void resetAll() {
+        levelManager = new LevelManager();
+        pauseButton = new PauseButton(3);
+
+    }
 
     @Override
     public void update() {
