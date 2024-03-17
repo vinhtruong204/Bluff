@@ -10,6 +10,8 @@ import game.Game;
 import gamestate.GameState;
 import helpmethods.LoadSave;
 
+// Button render when playing
+
 public class PauseButton extends Button {
     private final int PAUSE_BUTTON_WIDTH = 35;
     private final int PAUSE_BUTTON_HEIGHT = 35;

@@ -1,4 +1,4 @@
-package playing.pause;
+package playing.pause.main_pause;
 
 public class PauseOptionState {
     public static final int CONTINUE = 0;

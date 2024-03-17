@@ -5,7 +5,6 @@ import java.awt.image.BufferedImage;
 
 import core.Position;
 import core.Size;
-import gamestate.MenuState;
 import helpmethods.LoadSave;
 
 public class Help {
