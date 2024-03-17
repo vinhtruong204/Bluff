@@ -21,7 +21,7 @@ public class Game {
         // Create new playing and menu objects
         playing = new Playing();
         menu = new Menu();
-        pause = new Pause();
+        pause = new Pause(playing);
     }
 
     public void update() {
@@ -41,7 +41,6 @@ public class Game {
         }
     }
 
-    
     public void render(Graphics g) {
         // Render depend on game state
         switch (GameState.gameState) {
@@ -63,11 +62,11 @@ public class Game {
     public Playing getPlaying() {
         return playing;
     }
-    
+
     public Menu getMenu() {
         return menu;
     }
-    
+
     public Pause getPause() {
         return pause;
     }

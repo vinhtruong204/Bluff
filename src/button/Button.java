@@ -85,6 +85,10 @@ public abstract class Button {
         return mousePressed;
     }
 
+    public int getRowIndex() {
+        return rowIndex;
+    }
+
     public void setMouseOver(boolean mouseOver) {
         this.mouseOver = mouseOver;
     }

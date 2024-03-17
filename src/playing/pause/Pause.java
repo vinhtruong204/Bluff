@@ -8,15 +8,21 @@ import java.awt.image.BufferedImage;
 import game.Game;
 import gamestate.StateMethods;
 import helpmethods.LoadSave;
+import playing.Playing;
 
 public class Pause implements StateMethods {
     // Background image of the pause
-    BufferedImage background;
+    private BufferedImage background;
 
     // Array button of the menu
-    PauseOption[] pauseOptions;
+    private PauseOption[] pauseOptions;
 
-    public Pause() {
+    // Current playing
+    private Playing playing;
+
+    public Pause(Playing playing) {
+        this.playing = playing;
+
         // Load background of game pause
         background = LoadSave.loadImage("img/Pause/Pause_Background.png");
 
@@ -73,6 +79,9 @@ public class Pause implements StateMethods {
             if (button.isIn(e)) {
                 if (button.isMousePressed()) {
                     // Apply game state when mouse released on button
+                    if (button.getRowIndex() == PauseOptionState.RESTART) {
+                        playing.resetAll();
+                    }
                     button.applyGameState();
                 }
             }
