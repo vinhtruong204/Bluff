@@ -8,6 +8,7 @@ import helpmethods.EnemyConstants;
 import helpmethods.WalkDirection;
 
 public abstract class Enemy extends GameObject {
+    protected final double MAX_DISTANCE_TRAVEL = 400.0d;;
 
     protected int enemyType;
     protected BufferedImage[][] animations;
@@ -19,8 +20,8 @@ public abstract class Enemy extends GameObject {
     // Motion
     protected Vector2D velocity;
     protected float enemySpeed;
-    protected double foresight;
-    protected double traveled; // distance traveled\
+    protected double leftBoundX, rightBoundX;
+    protected double traveled; // distance traveled
 
     // Hit box
     protected Rectangle hitBox;
@@ -32,11 +33,20 @@ public abstract class Enemy extends GameObject {
     protected int health;
     protected boolean hitPlayer;
 
-    public Enemy(int enemyType) {
+    //
+    protected int[][] map;
+
+    public Enemy(int enemyType, int[][] map) {
         this.enemyType = enemyType;
-        enemySpeed = 1.0f;
+
+        this.map = map;
 
         hitPlayer = false;
+
+        enemySpeed = 1.0f;
+        velocity = new Vector2D(enemySpeed, 0);
+        traveled = 0.0d;
+
         // Initialize health depend on type of enemy
         initHealth();
     }
