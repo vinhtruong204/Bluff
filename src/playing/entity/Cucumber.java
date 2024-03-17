@@ -27,8 +27,7 @@ public class Cucumber extends Enemy {
         hitBox = new Rectangle((int) position.getX(), (int) position.getY(), size.getWidth(), size.getHeight());
 
         // Init left and right bounds
-        leftBoundX = position.getX() - MAX_DISTANCE_TRAVEL;
-        rightBoundX = position.getX() + MAX_DISTANCE_TRAVEL;
+        initBounds();
 
         // Init animation and direction
         aniType = CucumberConstants.RUN;
@@ -36,6 +35,12 @@ public class Cucumber extends Enemy {
 
         // Load all animation of the enemy
         loadAni();
+    }
+
+    private void initBounds() {
+        // Expected bound
+        leftBoundX = position.getX() - MAX_DISTANCE_TRAVEL;
+        rightBoundX = position.getX() + MAX_DISTANCE_TRAVEL;
     }
 
     @Override
@@ -70,12 +75,12 @@ public class Cucumber extends Enemy {
         }
     }
 
-    private void setAniType(Rectangle playerHitbox) {
+    private void setAniType() {
         // Initialize start animation type
         int startAni = aniType;
 
         // Set type of animation depend on current state
-        aniType = CheckCollision.isCollision(hitBox, playerHitbox) ? CucumberConstants.ATTACK : CucumberConstants.RUN;
+        aniType = hitPlayer ? CucumberConstants.ATTACK : CucumberConstants.RUN;
 
         // If start anitype is not equal to startAni reset aniTick and aniIndex
         if (aniType != startAni) {
@@ -126,16 +131,7 @@ public class Cucumber extends Enemy {
         }
 
         // Set velocity depend on current direction
-        switch (direction) {
-            case LEFT:
-                velocity.setX(-enemySpeed);
-                break;
-            case RIGHT:
-                velocity.setX(enemySpeed);
-                break;
-            default:
-                break;
-        }
+        setDirection(playerHitbox);
 
         // Calculate new position and hitbox of enemy
         Position newPosition = new Position(position.getX() + velocity.getX(),
@@ -156,6 +152,8 @@ public class Cucumber extends Enemy {
 
                 // Change direction of enemy if can't move left
                 else {
+                    // Get actual max left bound
+                    leftBoundX = position.getX();
                     direction = WalkDirection.RIGHT;
                 }
 
@@ -167,6 +165,8 @@ public class Cucumber extends Enemy {
                 }
                 // Change direction of enemy if can't move right
                 else {
+                    // Get actual max right bound
+                    rightBoundX = position.getX();
                     direction = WalkDirection.LEFT;
                 }
 
@@ -174,6 +174,34 @@ public class Cucumber extends Enemy {
             default:
                 break;
         }
+    }
+
+    private void setDirection(Rectangle playerHitbox) {
+        // If enemy saw the player
+        if (seePlayer(playerHitbox)) {
+            // Change direction depend on position of the player
+            direction = playerHitbox.x <= hitBox.x ? WalkDirection.LEFT : WalkDirection.RIGHT;
+        }
+
+        switch (direction) {
+            case LEFT:
+                velocity.setX(-enemySpeed);
+                break;
+            case RIGHT:
+                velocity.setX(enemySpeed);
+                break;
+            default:
+                break;
+        }
+    }
+
+    private boolean seePlayer(Rectangle playerHitbox) {
+        if (Math.abs(playerHitbox.y - hitBox.y) <= Tile.TILE_SIZE) {
+            if (playerHitbox.x >= leftBoundX && playerHitbox.x <= rightBoundX) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private boolean canMoveLeft(Rectangle newHitbox) {
@@ -224,14 +252,15 @@ public class Cucumber extends Enemy {
         // Check hit the player
         updateHit(playerHitbox);
 
+        // Update current position and hitBox
+        upDatePosition(playerHitbox);
+
         // Set animation depend on current state
-        setAniType(playerHitbox);
+        setAniType();
 
         // Set and update animation
         updateAnimationTick();
 
-        // Update current position and hitBox
-        upDatePosition(playerHitbox);
     }
 
     @Override
