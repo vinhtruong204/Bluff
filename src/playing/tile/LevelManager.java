@@ -9,7 +9,6 @@ import java.util.Iterator;
 import gamestate.StateMethods;
 import heart.HeartManager;
 
-
 import playing.camera.Camera;
 import playing.entity.EnemyManager;
 import playing.entity.Player;
