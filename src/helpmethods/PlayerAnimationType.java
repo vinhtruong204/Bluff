@@ -5,8 +5,10 @@ public class PlayerAnimationType {
     public static final int RUN = 1;
     public static final int JUMP = 2;
     public static final int FALL = 3;
-    public static final int DEAD_HIT = 4;
-    public static final int DEAD_GROUND = 5;
+    public static final int GROUND = 4;
+    public static final int HIT = 5;
+    public static final int DEAD_HIT = 6;
+    public static final int DEAD_GROUND = 7;
 
     public static int getSpriteAmount(int aniType) {
         switch (aniType) {
@@ -18,6 +20,10 @@ public class PlayerAnimationType {
                 return 4;
             case FALL:
                 return 2;
+            case GROUND:
+                return 3;
+            case HIT:
+                return 8;
             case DEAD_HIT:
                 return 6;
             case DEAD_GROUND:
@@ -27,4 +33,3 @@ public class PlayerAnimationType {
         }
     }
 }
-

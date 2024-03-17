@@ -31,6 +31,7 @@ public abstract class Enemy extends GameObject {
 
     // Health of enemy
     protected int health;
+
     protected boolean hitPlayer;
 
     //
@@ -74,6 +75,7 @@ public abstract class Enemy extends GameObject {
         }
     }
 
+    //Getter and Setter
     public int getHealth() {
         return health;
     }

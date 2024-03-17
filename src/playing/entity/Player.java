@@ -24,11 +24,12 @@ public class Player extends GameObject {
 
     // private final float MAX_JUMP_HEIGHT = 100.0f;
 
-    //velecity
+    // velecity
     private Vector2D velocity;
-    //speed
+    // speed
     private float speedX, speedY;
 
+    // animations of Player
     private BufferedImage[][] animations;
     private Level level;
     private int aniType;
@@ -41,16 +42,19 @@ public class Player extends GameObject {
     // Current jump distance
     // private float currJumpHeight;
 
-    //Box of player
+    // Box of player
     private Rectangle hitBox;
+
+    // max heart;
+    private int maxHeart;
+    private Boolean dangerTouch;
 
     private WalkDirection currentDirection;
 
-    //Contructor
+    // Contructor
     public Player(Level level) {
         position = new Position(2 * Tile.TILE_SIZE, 1 * Tile.TILE_SIZE);
         size = new Size(PLAYER_WIDTH, PLAYER_HEIGHT);
-
         velocity = new Vector2D(0f, 0f);
         speedX = 5.0f;
         speedY = 10.0f;
@@ -59,14 +63,15 @@ public class Player extends GameObject {
         this.level = level;
         // box of player
         hitBox = new Rectangle((int) position.getX(), (int) position.getY(), size.getWidth(), size.getHeight());
+        maxHeart = 5;
+        dangerTouch = false;
         aniType = PlayerAnimationType.IDLE;
-
         currentDirection = WalkDirection.RIGHT;
         moving = false;
         loadAnimations();
     }
 
-    //Load animations
+    // Load animations
     private void loadAnimations() {
         BufferedImage image = LoadSave.loadImage("img/Player/Player-Bomb Guy.png");
         for (int i = 0; i < animations.length; i++)
@@ -74,7 +79,7 @@ public class Player extends GameObject {
                 animations[i][j] = image.getSubimage(j * PLAYER_WIDTH, i * PLAYER_HEIGHT, PLAYER_WIDTH, PLAYER_HEIGHT);
     }
 
-    //Align Time 
+    // Align Time
     private void updateAnimationTick() {
         // 60fps => 20 animation frames rendered
         aniTick++;
@@ -82,12 +87,19 @@ public class Player extends GameObject {
         if (aniTick > aniSpeed) {
             aniTick = 0;
             aniIndex++;
-            if (aniIndex >= PlayerAnimationType.getSpriteAmount(aniType))
+            if (aniIndex >= PlayerAnimationType.getSpriteAmount(aniType)) {
+                if (aniType == PlayerAnimationType.HIT) {
+                    if (maxHeart > 0) {
+                        maxHeart = maxHeart - 1;
+                    }
+                    dangerTouch = false;
+                }
                 aniIndex = 0;
+            }
         }
     }
 
-    //Set type Animation
+    // Set type Animation
     private void setAnimationType() {
         // Initialize start animation type
         int startAni = aniType;
@@ -100,10 +112,13 @@ public class Player extends GameObject {
             // Reset animation index and animation tick
             aniTick = 0;
             aniIndex = 0;
+            if (aniType == PlayerAnimationType.HIT) {
+                position.setX(position.getX() - 90f);
+            }
         }
     }
 
-    //Update possition
+    // Update possition
     private void upDatePosition() {
         // "\t" + "jumping " + jumping);
         // Reset vetor velocity and gravity
@@ -148,7 +163,7 @@ public class Player extends GameObject {
         }
     }
 
-    //check collition with Map
+    // check collition with Map
     private boolean canMove(Rectangle newHitbox) {
         // Get matrix map from current level
         int[][] map = level.getMap();
@@ -189,9 +204,13 @@ public class Player extends GameObject {
             aniType = PlayerAnimationType.IDLE;
         }
 
+        if (dangerTouch) {
+            aniType = PlayerAnimationType.HIT;
+        }
+
     }
 
-    //Update 
+    // Update
     @Override
     public void update() {
         // Change position if player is moving
@@ -205,11 +224,11 @@ public class Player extends GameObject {
 
     }
 
-    //Render
+    // Render
     @Override
     public void render(Graphics g, Camera camera) {
         g.setColor(Color.pink);
-        g.drawRect(hitBox.x-camera.getMapStartX(), hitBox.y-camera.getMapStartY(), hitBox.width, hitBox.height);
+        g.drawRect(hitBox.x - camera.getMapStartX(), hitBox.y - camera.getMapStartY(), hitBox.width, hitBox.height);
         BufferedImage temp = animations[aniType][aniIndex];
         if (currentDirection == WalkDirection.LEFT)
             temp = FlipImage.flipImage(temp);
@@ -221,7 +240,7 @@ public class Player extends GameObject {
                 null);
     }
 
-    //Getter and Setter 
+    // Getter and Setter
     public void setAniType(int aniType) {
         this.aniType = aniType;
     }
@@ -265,5 +284,113 @@ public class Player extends GameObject {
     public Rectangle getHitBox() {
         return hitBox;
     }
-    
+
+    public int getMaxHeart() {
+        return maxHeart;
+    }
+
+    public void setMaxHeart(int maxHeart) {
+        this.maxHeart = maxHeart;
+    }
+
+    public static int getPlayerWidth() {
+        return PLAYER_WIDTH;
+    }
+
+    public static int getPlayerHeight() {
+        return PLAYER_HEIGHT;
+    }
+
+    public Vector2D getVelocity() {
+        return velocity;
+    }
+
+    public void setVelocity(Vector2D velocity) {
+        this.velocity = velocity;
+    }
+
+    public float getSpeedX() {
+        return speedX;
+    }
+
+    public void setSpeedX(float speedX) {
+        this.speedX = speedX;
+    }
+
+    public float getSpeedY() {
+        return speedY;
+    }
+
+    public void setSpeedY(float speedY) {
+        this.speedY = speedY;
+    }
+
+    public void setAnimations(BufferedImage[][] animations) {
+        this.animations = animations;
+    }
+
+    public Level getLevel() {
+        return level;
+    }
+
+    public void setLevel(Level level) {
+        this.level = level;
+    }
+
+    public int getAniType() {
+        return aniType;
+    }
+
+    public int getAniTick() {
+        return aniTick;
+    }
+
+    public void setAniTick(int aniTick) {
+        this.aniTick = aniTick;
+    }
+
+    public int getAniIndex() {
+        return aniIndex;
+    }
+
+    public void setAniIndex(int aniIndex) {
+        this.aniIndex = aniIndex;
+    }
+
+    public int getAniSpeed() {
+        return aniSpeed;
+    }
+
+    public void setAniSpeed(int aniSpeed) {
+        this.aniSpeed = aniSpeed;
+    }
+
+    public boolean isMoving() {
+        return moving;
+    }
+
+    public void setMoving(boolean moving) {
+        this.moving = moving;
+    }
+
+    public void setHitBox(Rectangle hitBox) {
+        this.hitBox = hitBox;
+    }
+
+    public Boolean getDangerTouch() {
+        return dangerTouch;
+    }
+
+    public void setDangerTouch(Boolean dangerTouch) {
+        this.dangerTouch = dangerTouch;
+    }
+
+    public WalkDirection getCurrentDirection() {
+        return currentDirection;
+    }
+
+    public void setCurrentDirection(WalkDirection currentDirection) {
+        this.currentDirection = currentDirection;
+    }
+
 }

@@ -32,7 +32,7 @@ public class LevelManager implements StateMethods {
         player = new Player(levels[currentLevel]);
         camera = new Camera(levels[currentLevel], player);
         enemyManager = new EnemyManager(levels[currentLevel].getMap(), player);
-        heartManager = new HeartManager(levels[currentLevel].getMap());
+        heartManager = new HeartManager(levels[currentLevel].getMap(),player);
         bombs = new ArrayList<>();
 
     }
