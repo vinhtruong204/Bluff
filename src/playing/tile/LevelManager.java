@@ -7,11 +7,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import gamestate.StateMethods;
-import heart.Heart;
 import heart.HeartManager;
 
 
-import heart.heartManager;
 import playing.camera.Camera;
 import playing.entity.EnemyManager;
 import playing.entity.Player;
@@ -85,6 +83,7 @@ public class LevelManager implements StateMethods {
         heartManager.render(g, camera);
     }
 
+    //Event 
     @Override
     public void mouseClicked(MouseEvent e) {
     }

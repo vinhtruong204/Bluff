@@ -9,19 +9,21 @@ import playing.tile.Tile;
 
 public class Camera {
 
+    //The largest location of the map
     private int maxMapX;
     private int maxMapY;
 
+    //Camera's starting position in x and y axes
     private int mapStartX, mapStartY;
 
     private Level level;
     private Player player;
-    // x1 va y1 la vi tri bat dau de tai gach
-    // x2 va y2 la vi tri dai nhat rong nhat trong camera
+    //Starting and ending position of image loading
     private int x1, x2, y1, y2;
-    // chi so hang va cot cua ma tran map
+    //Row index and column index of the map matrix
     private int map_x, map_y;
 
+    //Constructor
     public Camera(Level level, Player player) {
         this.level = level;
         this.player = player;
@@ -29,6 +31,8 @@ public class Camera {
         maxMapY = Tile.TILE_SIZE * level.getMaxRow();
     }
 
+
+    //Getter and setter of camera
     public int getMaxMapX() {
         return maxMapX;
     }
@@ -61,6 +65,7 @@ public class Camera {
         this.mapStartY = mapStartY;
     }
 
+    //Set the player always in the camera
     private void checkCenterToMap() {
         mapStartX = (int) player.getPosition().getX() - Game.SCREEN_WIDTH / 2;
         if (mapStartX < 0) {
@@ -76,6 +81,7 @@ public class Camera {
         }
     }
 
+    //Start and end location for image loading
     private void UpdatePositionRenderToMap() {
         x1 = 0;
         x2 = 0;
@@ -95,11 +101,13 @@ public class Camera {
         y2 = y1 + Game.SCREEN_HEIGHT + (y1 == 0 ? 0 : Tile.TILE_SIZE);
     }
 
+    //Update 
     public void update() {
         checkCenterToMap();
         UpdatePositionRenderToMap();
     }
 
+    //Render
     public void render(Graphics g) {
         for (int i = y1; i < y2; i += Tile.TILE_SIZE) {
             map_x = (mapStartX / Tile.TILE_SIZE);

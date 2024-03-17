@@ -24,7 +24,9 @@ public class Player extends GameObject {
 
     // private final float MAX_JUMP_HEIGHT = 100.0f;
 
+    //velecity
     private Vector2D velocity;
+    //speed
     private float speedX, speedY;
 
     private BufferedImage[][] animations;
@@ -39,11 +41,12 @@ public class Player extends GameObject {
     // Current jump distance
     // private float currJumpHeight;
 
-    // private boolean moving;
+    //Box of player
     private Rectangle hitBox;
 
     private WalkDirection currentDirection;
 
+    //Contructor
     public Player(Level level) {
         position = new Position(2 * Tile.TILE_SIZE, 1 * Tile.TILE_SIZE);
         size = new Size(PLAYER_WIDTH, PLAYER_HEIGHT);
@@ -63,6 +66,7 @@ public class Player extends GameObject {
         loadAnimations();
     }
 
+    //Load animations
     private void loadAnimations() {
         BufferedImage image = LoadSave.loadImage("img/Player/Player-Bomb Guy.png");
         for (int i = 0; i < animations.length; i++)
@@ -70,6 +74,7 @@ public class Player extends GameObject {
                 animations[i][j] = image.getSubimage(j * PLAYER_WIDTH, i * PLAYER_HEIGHT, PLAYER_WIDTH, PLAYER_HEIGHT);
     }
 
+    //Align Time 
     private void updateAnimationTick() {
         // 60fps => 20 animation frames rendered
         aniTick++;
@@ -82,6 +87,7 @@ public class Player extends GameObject {
         }
     }
 
+    //Set type Animation
     private void setAnimationType() {
         // Initialize start animation type
         int startAni = aniType;
@@ -97,6 +103,7 @@ public class Player extends GameObject {
         }
     }
 
+    //Update possition
     private void upDatePosition() {
         // "\t" + "jumping " + jumping);
         // Reset vetor velocity and gravity
@@ -141,6 +148,7 @@ public class Player extends GameObject {
         }
     }
 
+    //check collition with Map
     private boolean canMove(Rectangle newHitbox) {
         // Get matrix map from current level
         int[][] map = level.getMap();
@@ -170,6 +178,7 @@ public class Player extends GameObject {
         return true;
     }
 
+    // set type animations
     public void setAniType() {
 
         if (moving && !Up) {
@@ -182,6 +191,7 @@ public class Player extends GameObject {
 
     }
 
+    //Update 
     @Override
     public void update() {
         // Change position if player is moving
@@ -195,6 +205,7 @@ public class Player extends GameObject {
 
     }
 
+    //Render
     @Override
     public void render(Graphics g, Camera camera) {
         g.setColor(Color.pink);
@@ -210,6 +221,7 @@ public class Player extends GameObject {
                 null);
     }
 
+    //Getter and Setter 
     public void setAniType(int aniType) {
         this.aniType = aniType;
     }

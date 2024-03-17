@@ -14,17 +14,26 @@ import playing.entity.GameObject;
 import playing.tile.Tile;
 
 public class Bomb extends GameObject {
+    //Animations
     private BufferedImage animations[][];
+    //Size of bomb
     private final int BOMB_WIDTH = 80;
     private final int BOMB_HEIGHT = 80;
+    //Animation Type
     private int aniType;
 
+    //Align the speed and position of the bomb
     private int aniTick, aniIndex, aniSpeed;
+    //Align the time 
     private long currentTime, afterTime;
 
+
+    // Check exploded?
     private boolean exploded;
+    //Box of Bomb
     private Rectangle hitBox;
 
+    //Contructor
     public Bomb(int i, int j) {
         animations = new BufferedImage[3][6];
         size = new Size(BOMB_WIDTH * 2, BOMB_HEIGHT * 2);
@@ -38,6 +47,7 @@ public class Bomb extends GameObject {
         loadAnimations();
     }
 
+    //Load Animations
     private void loadAnimations() {
         BufferedImage image = LoadSave.loadImage("img/Player/Bomb.png");
         for (int i = 0; i < animations.length; i++)
@@ -45,6 +55,7 @@ public class Bomb extends GameObject {
                 animations[i][j] = image.getSubimage(j * BOMB_WIDTH, i * BOMB_HEIGHT, BOMB_WIDTH, BOMB_HEIGHT);
     }
 
+    //set Type Bomb
     private void setAniType() {
         int startAni = aniType;
 
@@ -65,6 +76,7 @@ public class Bomb extends GameObject {
 
     }
 
+    //Align Time frames
     private void updateAnimationTick() {
         // 60fps => 20 animation frames rendered
         aniTick++;
@@ -80,12 +92,14 @@ public class Bomb extends GameObject {
         }
     }
 
+    //Update 
     @Override
     public void update() {
         setAniType();
         updateAnimationTick();
     }
 
+    //Render
     @Override
     public void render(Graphics g, Camera camera) {
         if ((int) position.getX() - camera.getMapStartX() >= 0
@@ -97,6 +111,7 @@ public class Bomb extends GameObject {
         }
     }
 
+    //Getter and setter 
     public int getAniType() {
         return aniType;
     }
