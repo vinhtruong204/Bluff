@@ -30,11 +30,13 @@ public abstract class Enemy extends GameObject {
 
     // Health of enemy
     protected int health;
+    protected boolean hitPlayer;
 
     public Enemy(int enemyType) {
         this.enemyType = enemyType;
         enemySpeed = 1.0f;
 
+        hitPlayer = false;
         // Initialize health depend on type of enemy
         initHealth();
     }
@@ -60,6 +62,14 @@ public abstract class Enemy extends GameObject {
             default:
                 break;
         }
+    }
+
+    public int getHealth() {
+        return health;
+    }
+
+    public boolean isHitPlayer() {
+        return hitPlayer;
     }
 
     protected abstract void loadAni();

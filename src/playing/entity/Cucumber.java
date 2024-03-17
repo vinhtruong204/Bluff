@@ -1,6 +1,7 @@
 package playing.entity;
 
 import java.awt.Graphics;
+import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
@@ -14,6 +15,7 @@ import playing.camera.Camera;
 import playing.tile.Tile;
 
 public class Cucumber extends Enemy {
+
     private boolean onGround = false;
     private int[][] map;
 
@@ -136,24 +138,33 @@ public class Cucumber extends Enemy {
         // Calculate new position and hitbox of enemy
         Position newPosition = new Position(position.getX() + velocity.getX(),
                 position.getY() + velocity.getY());
-        Rectangle newHibox = new Rectangle((int) position.getX(), (int) position.getY(), size.getWidth(),
+        Rectangle newHibox = new Rectangle(
+                (int) newPosition.getX(),
+                (int) newPosition.getY(),
+                size.getWidth(),
                 size.getHeight());
 
-        // Update postion depend on
+        // Update postion depend on direction
         switch (direction) {
             case LEFT:
                 if (canMoveLeft(newHibox)) {
                     position = newPosition;
                     hitBox = newHibox;
-                } else {
+                }
+
+                // Change direction of enemy if can't move left
+                else {
                     direction = WalkDirection.RIGHT;
                 }
+
                 break;
             case RIGHT:
                 if (canMoveRight(newHibox)) {
                     position = newPosition;
                     hitBox = newHibox;
-                } else {
+                }
+                // Change direction of enemy if can't move right
+                else {
                     direction = WalkDirection.LEFT;
                 }
 
@@ -174,7 +185,7 @@ public class Cucumber extends Enemy {
          * 0 1 1
          */
 
-        // Ahead is an wall or abyss
+        // Ahead is a wall or abyss
         if (CheckCollision.isTileSolid(map[rowIndex][colIndex])
                 || !CheckCollision.isTileSolid(map[rowIndex + 1][colIndex])) {
             return false;
@@ -194,7 +205,7 @@ public class Cucumber extends Enemy {
          * 0 1 1
          */
 
-        // Ahead is an wall or abyss
+        // Ahead is a wall or abyss
         if (CheckCollision.isTileSolid(map[rowIndex][colIndex])
                 || !CheckCollision.isTileSolid(map[rowIndex + 1][colIndex])) {
             return false;
@@ -203,7 +214,14 @@ public class Cucumber extends Enemy {
         return true;
     }
 
+    private void updateHit(Rectangle playerHitbox) {
+        hitPlayer = CheckCollision.isCollision(hitBox, playerHitbox) ? true : false;
+    }
+
     public void update(Rectangle playerHitbox) {
+        // Check hit the player
+        updateHit(playerHitbox);
+
         // Set animation depend on current state
         setAniType(playerHitbox);
 
@@ -216,6 +234,7 @@ public class Cucumber extends Enemy {
 
     @Override
     public void render(Graphics g, Camera camera) {
+
         // Get current image rendrer
         BufferedImage temp = animations[aniType][aniIndex];
 
@@ -228,6 +247,11 @@ public class Cucumber extends Enemy {
                 && (int) position.getX() - camera.getMapStartX() <= Game.SCREEN_WIDTH
                 && (int) position.getY() - camera.getMapStartY() >= 0
                 && (int) position.getY() - camera.getMapStartY() <= Game.SCREEN_HEIGHT) {
+            // Draw hitbox
+            g.setColor(Color.red);
+            g.drawRect(hitBox.x - camera.getMapStartX(), hitBox.y - camera.getMapStartY(), hitBox.width, hitBox.height);
+
+            // Draw cucumber
             g.drawImage(
                     temp,
                     (int) position.getX() - camera.getMapStartX(),
