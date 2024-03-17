@@ -22,7 +22,7 @@ public class EnemyManager {
         for (int i = 0; i < map.length; i++) {
             for (int j = 0; j < map[i].length; j++) {
                 if (map[i][j] == 5) {
-                    cucumbers.add(new Cucumber(EnemyConstants.CUCUMBER, i, j));
+                    cucumbers.add(new Cucumber(EnemyConstants.CUCUMBER, i, j, map));
                 }
             }
         }
