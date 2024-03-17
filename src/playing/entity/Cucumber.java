@@ -17,22 +17,24 @@ import playing.tile.Tile;
 public class Cucumber extends Enemy {
 
     private boolean onGround = false;
-    private int[][] map;
 
     public Cucumber(int enemyType, int i, int j, int[][] map) {
-        super(enemyType);
+        super(enemyType, map);
 
+        // Init position
         position = new Position(Tile.TILE_SIZE * j, Tile.TILE_SIZE * i);
         size = new Size(CucumberConstants.CUCUMBER_WIDTH, CucumberConstants.CUCUMBER_HEIGHT);
         hitBox = new Rectangle((int) position.getX(), (int) position.getY(), size.getWidth(), size.getHeight());
 
-        velocity = new Vector2D(enemySpeed, 0);
-        foresight = 500.0d;
+        // Init left and right bounds
+        leftBoundX = position.getX() - MAX_DISTANCE_TRAVEL;
+        rightBoundX = position.getX() + MAX_DISTANCE_TRAVEL;
 
-        this.map = map;
-
+        // Init animation and direction
         aniType = CucumberConstants.RUN;
         direction = WalkDirection.LEFT;
+
+        // Load all animation of the enemy
         loadAni();
     }
 
@@ -144,10 +146,10 @@ public class Cucumber extends Enemy {
                 size.getWidth(),
                 size.getHeight());
 
-        // Update postion depend on direction
+        // Update postion depend on direction and in bounds
         switch (direction) {
             case LEFT:
-                if (canMoveLeft(newHibox)) {
+                if (canMoveLeft(newHibox) && newPosition.getX() >= leftBoundX) {
                     position = newPosition;
                     hitBox = newHibox;
                 }
@@ -159,7 +161,7 @@ public class Cucumber extends Enemy {
 
                 break;
             case RIGHT:
-                if (canMoveRight(newHibox)) {
+                if (canMoveRight(newHibox) && newPosition.getX() <= rightBoundX) {
                     position = newPosition;
                     hitBox = newHibox;
                 }
