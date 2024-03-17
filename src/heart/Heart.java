@@ -9,7 +9,6 @@ import core.Size;
 import game.Game;
 import helpmethods.HeartConstants;
 import helpmethods.LoadSave;
-import helpmethods.PlayerAnimationType;
 import playing.camera.Camera;
 import playing.entity.GameObject;
 import playing.tile.Tile;
@@ -68,6 +67,11 @@ public class Heart extends GameObject {
             g.drawImage(animations[aniType][aniIndex], (int) position.getX() - camera.getMapStartX(),
                     (int) position.getY() - camera.getMapStartY(), size.getWidth(), size.getHeight(), null);
         }
+    }
+
+    public void render(Graphics g) {
+        g.drawImage(animations[aniType][aniIndex], (int) position.getX(),
+                (int) position.getY(), size.getWidth(), size.getHeight(), null);
     }
 
 }

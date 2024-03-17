@@ -7,12 +7,15 @@ import playing.camera.Camera;
 
 public class HeartManager {
     private ArrayList<Heart> hearts;
+    private ArrayList<Heart> heartPlayer;
     private int[][] map;
 
     public HeartManager(int[][] map) {
         this.map = map;
         hearts = new ArrayList<>();
+        heartPlayer = new ArrayList<>();
         addHeart();
+        setHeartPlayer();
     }
 
     public void addHeart() {
@@ -25,8 +28,17 @@ public class HeartManager {
         }
     }
 
+    public void setHeartPlayer() {
+        for (int i = 0; i < 5; i++) {
+            heartPlayer.add(new Heart(0, (1 * i)));
+        }
+    }
+
     public void update() {
         for (Heart heart : hearts) {
+            heart.update();
+        }
+        for (Heart heart : heartPlayer) {
             heart.update();
         }
     }
@@ -34,6 +46,9 @@ public class HeartManager {
     public void render(Graphics g, Camera camera) {
         for (Heart heart : hearts) {
             heart.render(g, camera);
+        }
+        for (Heart heart : heartPlayer) {
+            heart.render(g);
         }
     }
 
