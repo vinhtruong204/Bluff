@@ -8,7 +8,6 @@ import core.Position;
 import core.Size;
 import game.Game;
 import gamestate.GameState;
-import gamestate.MenuState;
 import helpmethods.LoadSave;
 
 public class MenuButton extends Button {
@@ -62,15 +61,16 @@ public class MenuButton extends Button {
             images[i] = temp.getSubimage(i * BUTTON_WIDTH, rowIndex * BUTTON_HEIGHT, BUTTON_WIDTH, BUTTON_HEIGHT);
     }
 
-
     @Override
     public void applyGameState() {
         // Change game state depend on type of menu buttons
         switch (rowIndex) {
             case MenuButtonState.PLAY:
+                // Change game state
                 GameState.gameState = GameState.PLAYING;
                 break;
             case MenuButtonState.HELP:
+                // Change menu state
                 MenuState.menuState = MenuState.HELP;
                 break;
             case MenuButtonState.EXIT:

@@ -1,4 +1,4 @@
-package playing.pause;
+package playing.pause.main_pause;
 
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -9,6 +9,7 @@ import core.Size;
 import game.Game;
 import gamestate.GameState;
 import helpmethods.LoadSave;
+import playing.pause.PauseState;
 
 public class PauseOption extends Button {
 
@@ -72,13 +73,11 @@ public class PauseOption extends Button {
                 GameState.gameState = GameState.PLAYING;
                 break;
             case PauseOptionState.EXIT:
-                GameState.gameState = GameState.MENU;
+                PauseState.pauseState = PauseState.EXIT_POPUP;
                 break;
             default:
                 break;
         }
     }
-
-
 
 }
