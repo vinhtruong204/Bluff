@@ -24,7 +24,7 @@ public class LevelManager implements StateMethods {
     private Player player;
     private ArrayList<Bomb> bombs;
     private EnemyManager enemyManager;
-    private HeartManager heartManager; 
+    private HeartManager heartManager;
 
     // Constructor
     public LevelManager() {

@@ -2,6 +2,8 @@ package helpmethods;
 
 import java.awt.Rectangle;
 
+import playing.tile.Tile;
+
 public class CheckCollision {
     public static boolean isCollision(Rectangle a, Rectangle b) {
         // Hit box of tile
@@ -30,4 +32,32 @@ public class CheckCollision {
         }
         return true;
     }
+
+    public static boolean isEntityOnground(int[][] map, Rectangle newHitbox) {
+        // Get current row and column index of entity
+        int rowIndex = (newHitbox.y + newHitbox.height) / Tile.TILE_SIZE;
+        int colIndex = newHitbox.x / Tile.TILE_SIZE;
+
+        // Check if collided with not solid tile
+        if (!isTileSolid(map[rowIndex][colIndex])) {
+            // Return not on ground
+            return false;
+        }
+
+        // Return not on ground
+        return true;
+    }
+
+    public static boolean isTileSolid(int tileType) {
+        switch (tileType) {
+            // Is brick
+            case 1:
+                return true;
+            // Isn't brick
+            default:
+                return false;
+        }
+    }
+
+   
 }

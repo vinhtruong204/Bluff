@@ -14,16 +14,23 @@ import playing.camera.Camera;
 import playing.tile.Tile;
 
 public class Cucumber extends Enemy {
+    private boolean onGround = false;
+    private int[][] map;
 
-    public Cucumber(int enemyType, int i, int j) {
+    public Cucumber(int enemyType, int i, int j, int[][] map) {
         super(enemyType);
-        position = new Position(Tile.TILE_SIZE * j, Tile.TILE_SIZE * i + 30.0f);
+
+        position = new Position(Tile.TILE_SIZE * j, Tile.TILE_SIZE * i);
         size = new Size(CucumberConstants.CUCUMBER_WIDTH, CucumberConstants.CUCUMBER_HEIGHT);
         hitBox = new Rectangle((int) position.getX(), (int) position.getY(), size.getWidth(), size.getHeight());
-        aniType = CucumberConstants.RUN;
-        foresight = 200.0d;
-        direction = WalkDirection.LEFT;
+
         velocity = new Vector2D(enemySpeed, 0);
+        foresight = 500.0d;
+
+        this.map = map;
+
+        aniType = CucumberConstants.RUN;
+        direction = WalkDirection.LEFT;
         loadAni();
     }
 
@@ -74,12 +81,40 @@ public class Cucumber extends Enemy {
         }
     }
 
-    private void upDatePosition(Rectangle playerHitbox) {
-        // System.out.println(seePlayer(playerHitbox));
-        if (seePlayer(playerHitbox)) {
+    private void fall() {
+        // Set gravity
+        velocity = new Vector2D(0.0f, enemySpeed);
 
+        // Calculate new position and hibox
+        Position newPosition = new Position(position.getX() + velocity.getX(), position.getY() + velocity.getY());
+        Rectangle newHibox = new Rectangle((int) newPosition.getX(), (int) newPosition.getY(), size.getWidth(),
+                size.getHeight());
+
+        // If enemy is onground
+        if (CheckCollision.isEntityOnground(map, newHibox)) {
+
+            // Set onground is true
+            onGround = true;
+
+            // Reset velocity
+            velocity = new Vector2D(enemySpeed, 0.0f);
+
+        } else {
+            // Update position and hit box if enemy continue in air
+            position = newPosition;
+            hitBox = newHibox;
+        }
+    }
+
+    private void upDatePosition(Rectangle playerHitbox) {
+        // If the enemy in air
+        if (!onGround) {
+            // Move down
+            fall();
+            return;
         }
 
+        // If enemy colliding with player
         if (aniType == CucumberConstants.ATTACK) {
             // Change direction from position of player
             direction = playerHitbox.x <= hitBox.x ? WalkDirection.LEFT : WalkDirection.RIGHT;
@@ -98,27 +133,74 @@ public class Cucumber extends Enemy {
                 break;
         }
 
-        // If moved to a limited position
-        if (traveled <= foresight) {
-            traveled += enemySpeed;
-        } else {
-            traveled = 0.0f;
-            direction = direction == WalkDirection.LEFT ? WalkDirection.RIGHT : WalkDirection.LEFT;
-        }
+        // Calculate new position and hitbox of enemy
+        Position newPosition = new Position(position.getX() + velocity.getX(),
+                position.getY() + velocity.getY());
+        Rectangle newHibox = new Rectangle((int) position.getX(), (int) position.getY(), size.getWidth(),
+                size.getHeight());
 
-        position = new Position(position.getX() + velocity.getX(), position.getY() + velocity.getY());
-        hitBox = new Rectangle((int) position.getX(), (int) position.getY(), size.getWidth(), size.getHeight());
+        // Update postion depend on
+        switch (direction) {
+            case LEFT:
+                if (canMoveLeft(newHibox)) {
+                    position = newPosition;
+                    hitBox = newHibox;
+                } else {
+                    direction = WalkDirection.RIGHT;
+                }
+                break;
+            case RIGHT:
+                if (canMoveRight(newHibox)) {
+                    position = newPosition;
+                    hitBox = newHibox;
+                } else {
+                    direction = WalkDirection.LEFT;
+                }
+
+                break;
+            default:
+                break;
+        }
     }
 
-    private boolean seePlayer(Rectangle playerHitbox) {
-        if (Math.abs(playerHitbox.y - hitBox.y) <= Tile.TILE_SIZE) {
-            double distance = Math.pow(playerHitbox.y - hitBox.y, 2) +
-                    Math.pow(playerHitbox.x - hitBox.x, 2);
-            // System.out.println(distance);
-            if (Math.sqrt(distance) <= foresight)
-                return true;
+    private boolean canMoveLeft(Rectangle newHitbox) {
+        int colIndex = newHitbox.x / Tile.TILE_SIZE;
+        int rowIndex = (newHitbox.y + newHitbox.height) / Tile.TILE_SIZE;
+
+        /*
+         * 1: solid tile; 5: enemy; 0: background;
+         * 1 1 1
+         * 0 5 0
+         * 0 1 1
+         */
+
+        // Ahead is an wall or abyss
+        if (CheckCollision.isTileSolid(map[rowIndex][colIndex])
+                || !CheckCollision.isTileSolid(map[rowIndex + 1][colIndex])) {
+            return false;
         }
-        return false;
+
+        return true;
+    }
+
+    private boolean canMoveRight(Rectangle newHitbox) {
+        int colIndex = (newHitbox.x + newHitbox.width) / Tile.TILE_SIZE;
+        int rowIndex = (newHitbox.y + newHitbox.height) / Tile.TILE_SIZE;
+
+        /*
+         * 1: solid tile; 5: enemy; 0: background;
+         * 1 1 1
+         * 0 5 0
+         * 0 1 1
+         */
+
+        // Ahead is an wall or abyss
+        if (CheckCollision.isTileSolid(map[rowIndex][colIndex])
+                || !CheckCollision.isTileSolid(map[rowIndex + 1][colIndex])) {
+            return false;
+        }
+
+        return true;
     }
 
     public void update(Rectangle playerHitbox) {
