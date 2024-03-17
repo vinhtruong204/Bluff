@@ -15,16 +15,21 @@ import playing.camera.Camera;
 import playing.tile.Tile;
 
 public class Cucumber extends Enemy {
-
+    private int offsetX = 16;
+    private int offsetY = 5;
     private boolean onGround = false;
 
     public Cucumber(int enemyType, int i, int j, int[][] map) {
         super(enemyType, map);
 
         // Init position
-        position = new Position(Tile.TILE_SIZE * j, Tile.TILE_SIZE * i);
+        position = new Position(Tile.TILE_SIZE * j + offsetX, Tile.TILE_SIZE * i + offsetY);
         size = new Size(CucumberConstants.CUCUMBER_WIDTH, CucumberConstants.CUCUMBER_HEIGHT);
-        hitBox = new Rectangle((int) position.getX(), (int) position.getY(), size.getWidth(), size.getHeight());
+        hitBox = new Rectangle(
+                (int) position.getX(),
+                (int) position.getY(),
+                size.getWidth() - offsetX * 2,
+                size.getHeight() - offsetY);
 
         // Init left and right bounds
         initBounds();
@@ -96,8 +101,11 @@ public class Cucumber extends Enemy {
 
         // Calculate new position and hibox
         Position newPosition = new Position(position.getX() + velocity.getX(), position.getY() + velocity.getY());
-        Rectangle newHibox = new Rectangle((int) newPosition.getX(), (int) newPosition.getY(), size.getWidth(),
-                size.getHeight());
+        Rectangle newHibox = new Rectangle(
+                (int) newPosition.getX(),
+                (int) newPosition.getY(),
+                size.getWidth() - offsetX * 2,
+                size.getHeight() - offsetY);
 
         // If enemy is onground
         if (CheckCollision.isEntityOnground(map, newHibox)) {
@@ -139,8 +147,8 @@ public class Cucumber extends Enemy {
         Rectangle newHibox = new Rectangle(
                 (int) newPosition.getX(),
                 (int) newPosition.getY(),
-                size.getWidth(),
-                size.getHeight());
+                size.getWidth() - offsetX * 2,
+                size.getHeight() - offsetY);
 
         // Update postion depend on direction and in bounds
         switch (direction) {
@@ -282,11 +290,11 @@ public class Cucumber extends Enemy {
             g.setColor(Color.red);
             g.drawRect(hitBox.x - camera.getMapStartX(), hitBox.y - camera.getMapStartY(), hitBox.width, hitBox.height);
 
-            // Draw cucumber
+            // Draw cucumber minus offset 
             g.drawImage(
                     temp,
-                    (int) position.getX() - camera.getMapStartX(),
-                    (int) position.getY() - camera.getMapStartY(),
+                    (int) position.getX() - offsetX - camera.getMapStartX() ,
+                    (int) position.getY() - offsetY- camera.getMapStartY() ,
                     size.getWidth(),
                     size.getHeight(),
                     null);
