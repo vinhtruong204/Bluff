@@ -77,7 +77,7 @@ public class Cucumber extends Enemy {
     private void upDatePosition(Rectangle playerHitbox) {
         // System.out.println(seePlayer(playerHitbox));
         if (seePlayer(playerHitbox)) {
-            
+
         }
 
         if (aniType == CucumberConstants.ATTACK) {
@@ -114,7 +114,7 @@ public class Cucumber extends Enemy {
         if (Math.abs(playerHitbox.y - hitBox.y) <= Tile.TILE_SIZE) {
             double distance = Math.pow(playerHitbox.y - hitBox.y, 2) +
                     Math.pow(playerHitbox.x - hitBox.x, 2);
-            System.out.println(distance);
+            // System.out.println(distance);
             if (Math.sqrt(distance) <= foresight)
                 return true;
         }

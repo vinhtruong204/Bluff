@@ -7,6 +7,11 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import gamestate.StateMethods;
+import heart.Heart;
+import heart.HeartManager;
+
+
+import heart.heartManager;
 import playing.camera.Camera;
 import playing.entity.EnemyManager;
 import playing.entity.Player;
@@ -21,6 +26,7 @@ public class LevelManager implements StateMethods {
     private Player player;
     private ArrayList<Bomb> bombs;
     private EnemyManager enemyManager;
+    private HeartManager heartManager; 
 
     // Constructor
     public LevelManager() {
@@ -29,6 +35,7 @@ public class LevelManager implements StateMethods {
         player = new Player(levels[currentLevel]);
         camera = new Camera(levels[currentLevel], player);
         enemyManager = new EnemyManager(levels[currentLevel].getMap(), player);
+        heartManager = new HeartManager(levels[currentLevel].getMap());
         bombs = new ArrayList<>();
 
     }
@@ -64,6 +71,7 @@ public class LevelManager implements StateMethods {
             /// System.out.println(bomb.getAfterTime());
         }
         enemyManager.update();
+        heartManager.update();
     }
 
     // Render Map
@@ -74,6 +82,7 @@ public class LevelManager implements StateMethods {
             bomb.render(g, camera);
         }
         enemyManager.render(g, camera);
+        heartManager.render(g, camera);
     }
 
     @Override
