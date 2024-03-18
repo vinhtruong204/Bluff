@@ -54,7 +54,8 @@ public class LevelManager implements StateMethods {
         }
     }
 
-    public void collisionBombWithPlayer() {
+    // collision bomb with cucumber
+    public void collisionBombWithCucumber() {
         for (Bomb bomb : bombs) {
             Iterator<Cucumber> itr = enemyManager.getCucumbers().iterator();
             while (itr.hasNext()) {
@@ -66,6 +67,21 @@ public class LevelManager implements StateMethods {
         }
     }
 
+    // collision bomb with Player
+    public void collisionBombWithPlayer() {
+        Iterator<Bomb> itr = bombs.iterator();
+        while (itr.hasNext()) {
+            Bomb bomb = (Bomb) itr.next();
+            if (bomb.isExploded() && CheckCollision.isCollision(player.getHitBox(), bomb.getHitBox())) {
+                if (player.getMaxHeart() > 0) {
+                    player.setMaxHeart(player.getMaxHeart() - 1);
+                    heartManager.getHeartPlayer().remove(heartManager.getHeartPlayer().size() - 1);
+                }
+            }
+        }
+    }
+
+    // Delete cucumber dead
     public void deleteCucumber() {
         Iterator<Cucumber> itr = enemyManager.getCucumbers().iterator();
         while (itr.hasNext()) {
@@ -76,6 +92,7 @@ public class LevelManager implements StateMethods {
         }
     }
 
+    // Delete bomb Exploded
     public void deleteBomb() {
         Iterator<Bomb> itr = bombs.iterator();
         while (itr.hasNext()) {
@@ -93,6 +110,7 @@ public class LevelManager implements StateMethods {
         for (Bomb bomb : bombs) {
             bomb.update();
         }
+        collisionBombWithCucumber();
         collisionBombWithPlayer();
         deleteCucumber();
         deleteBomb();

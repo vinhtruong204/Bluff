@@ -12,6 +12,7 @@ import playing.entity.Player;
 public class HeartManager {
     private ArrayList<Heart> hearts;
     private ArrayList<Heart> heartPlayer;
+
     private int[][] map;
     private Player player;
 
@@ -60,6 +61,15 @@ public class HeartManager {
         } else if(player.getMaxHeart() > heartPlayer.size()) {
             heartPlayer.add(new Heart(HeartConstants.redHeart, 0, 1 * (heartPlayer.size())));
         }
+    }
+
+    //Getter and Setter
+    public ArrayList<Heart> getHeartPlayer() {
+        return heartPlayer;
+    }
+
+    public void setHeartPlayer(ArrayList<Heart> heartPlayer) {
+        this.heartPlayer = heartPlayer;
     }
 
     public void update() {
