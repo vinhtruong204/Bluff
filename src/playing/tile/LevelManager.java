@@ -7,12 +7,11 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import gamestate.StateMethods;
-import heart.HeartManager;
-
 import playing.camera.Camera;
 import playing.entity.EnemyManager;
 import playing.entity.Player;
 import playing.entity.bomb.Bomb;
+import playing.entity.heart.HeartManager;
 
 public class LevelManager implements StateMethods {
 
@@ -58,14 +57,13 @@ public class LevelManager implements StateMethods {
         camera.update();
         player.update();
         Iterator<Bomb> itr = bombs.iterator();
-
+        
         while (itr.hasNext()) {
             Bomb bomb = (Bomb) itr.next();
             bomb.update();
             if (bomb.isExploded()) {
                 itr.remove();
             }
-            /// System.out.println(bomb.getAfterTime());
         }
         enemyManager.update();
         heartManager.update();

@@ -1,4 +1,4 @@
-package heart;
+package playing.entity.heart;
 
 import java.awt.Graphics;
 import java.util.ArrayList;
@@ -57,8 +57,8 @@ public class HeartManager {
     private void removeHeartPlayer() {
         if (player.getMaxHeart() < heartPlayer.size()) {
             heartPlayer.remove(heartPlayer.size() - 1);
-        } else {
-            heartPlayer.add(new Heart(HeartConstants.redHeart, 0, 1 * (heartPlayer.size() - 1)));
+        } else if(player.getMaxHeart() > heartPlayer.size()) {
+            heartPlayer.add(new Heart(HeartConstants.redHeart, 0, 1 * (heartPlayer.size())));
         }
     }
 

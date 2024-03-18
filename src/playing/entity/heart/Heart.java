@@ -1,4 +1,4 @@
-package heart;
+package playing.entity.heart;
 
 import java.awt.Graphics;
 import java.awt.Rectangle;

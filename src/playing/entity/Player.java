@@ -59,7 +59,7 @@ public class Player extends GameObject {
         speedX = 5.0f;
         speedY = 10.0f;
         aniSpeed = 3;
-        animations = new BufferedImage[6][26];
+        animations = new BufferedImage[8][26];
         this.level = level;
         // box of player
         hitBox = new Rectangle((int) position.getX(), (int) position.getY(), size.getWidth(), size.getHeight());
@@ -88,12 +88,13 @@ public class Player extends GameObject {
             aniTick = 0;
             aniIndex++;
             if (aniIndex >= PlayerAnimationType.getSpriteAmount(aniType)) {
-                if (aniType == PlayerAnimationType.HIT) {
+                if (aniType == PlayerAnimationType.HIT || aniType == PlayerAnimationType.DEAD_HIT || aniType == PlayerAnimationType.DEAD_GROUND) {
                     if (maxHeart > 0) {
                         maxHeart = maxHeart - 1;
                     }
                     dangerTouch = false;
                 }
+               // System.out.println(aniIndex);
                 aniIndex = 0;
             }
         }
@@ -112,8 +113,11 @@ public class Player extends GameObject {
             // Reset animation index and animation tick
             aniTick = 0;
             aniIndex = 0;
-            if (aniType == PlayerAnimationType.HIT) {
-                position.setX(position.getX() - 90f);
+            if (aniType == PlayerAnimationType.DEAD_HIT || aniType == PlayerAnimationType.HIT
+                    || aniType == PlayerAnimationType.DEAD_GROUND) {
+                position.setX(2 * Tile.TILE_SIZE - 20f);
+                position.setY(2 * Tile.TILE_SIZE);
+                hitBox = new Rectangle((int) position.getX(), (int) position.getY(), size.getWidth(), size.getHeight());
             }
         }
     }
@@ -203,9 +207,17 @@ public class Player extends GameObject {
         if (!moving) {
             aniType = PlayerAnimationType.IDLE;
         }
-
-        if (dangerTouch) {
+        
+        if (dangerTouch && maxHeart > 1) {
             aniType = PlayerAnimationType.HIT;
+        }
+
+        if (dangerTouch && maxHeart == 1) {
+            aniType = PlayerAnimationType.DEAD_HIT;
+        }
+
+        if (dangerTouch && maxHeart == 0) {
+            aniType = PlayerAnimationType.DEAD_GROUND;
         }
 
     }
