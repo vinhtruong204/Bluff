@@ -1,5 +1,6 @@
 package playing.entity.bomb;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -38,7 +39,7 @@ public class Bomb extends GameObject {
         animations = new BufferedImage[3][6];
         size = new Size(BOMB_WIDTH * 2, BOMB_HEIGHT * 2);
         position = new Position(i * Tile.TILE_SIZE - 30.0f, j * Tile.TILE_SIZE);
-        hitBox = new Rectangle((int) position.getX(), (int) position.getX(), size.getWidth(), size.getHeight());
+        hitBox = new Rectangle((int) position.getX(), (int) position.getY(), size.getWidth(), size.getHeight());
         aniSpeed = 3;
         currentTime = System.currentTimeMillis();
         aniType = BombConstants.PLACINGBOMB;

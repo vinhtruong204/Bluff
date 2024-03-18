@@ -30,6 +30,7 @@ public class Cucumber extends Enemy {
                 (int) position.getY(),
                 size.getWidth() - offsetX * 2,
                 size.getHeight() - offsetY);
+        dead = false;
 
         // Init left and right bounds
         initBounds();

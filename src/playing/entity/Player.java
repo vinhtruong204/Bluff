@@ -47,6 +47,7 @@ public class Player extends GameObject {
 
     // max heart;
     private int maxHeart;
+    // danger
     private Boolean dangerTouch;
 
     private WalkDirection currentDirection;
@@ -88,13 +89,14 @@ public class Player extends GameObject {
             aniTick = 0;
             aniIndex++;
             if (aniIndex >= PlayerAnimationType.getSpriteAmount(aniType)) {
-                if (aniType == PlayerAnimationType.HIT || aniType == PlayerAnimationType.DEAD_HIT || aniType == PlayerAnimationType.DEAD_GROUND) {
+                if (aniType == PlayerAnimationType.HIT || aniType == PlayerAnimationType.DEAD_HIT
+                        || aniType == PlayerAnimationType.DEAD_GROUND) {
                     if (maxHeart > 0) {
                         maxHeart = maxHeart - 1;
                     }
                     dangerTouch = false;
                 }
-               // System.out.println(aniIndex);
+                // System.out.println(aniIndex);
                 aniIndex = 0;
             }
         }
@@ -207,7 +209,7 @@ public class Player extends GameObject {
         if (!moving) {
             aniType = PlayerAnimationType.IDLE;
         }
-        
+
         if (dangerTouch && maxHeart > 1) {
             aniType = PlayerAnimationType.HIT;
         }

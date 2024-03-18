@@ -31,10 +31,12 @@ public abstract class Enemy extends GameObject {
 
     // Health of enemy
     protected int health;
+    // dead
+    protected boolean dead;
 
     protected boolean hitPlayer;
 
-    //
+    //Map
     protected int[][] map;
 
     public Enemy(int enemyType, int[][] map) {
@@ -82,6 +84,23 @@ public abstract class Enemy extends GameObject {
 
     public boolean isHitPlayer() {
         return hitPlayer;
+    }
+
+    public boolean isDead(){
+        return dead;
+    }
+
+    public void setDead(boolean dead)
+    {
+        this.dead = dead;
+    }
+
+    public Rectangle getHitBox() {
+        return hitBox;
+    }
+
+    public void setHitBox(Rectangle hitBox) {
+        this.hitBox = hitBox;
     }
 
     protected abstract void loadAni();

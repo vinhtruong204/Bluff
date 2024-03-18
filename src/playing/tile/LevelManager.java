@@ -7,7 +7,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import gamestate.StateMethods;
+import helpmethods.CheckCollision;
 import playing.camera.Camera;
+import playing.entity.Cucumber;
 import playing.entity.EnemyManager;
 import playing.entity.Player;
 import playing.entity.bomb.Bomb;
@@ -31,7 +33,7 @@ public class LevelManager implements StateMethods {
         player = new Player(levels[currentLevel]);
         camera = new Camera(levels[currentLevel], player);
         enemyManager = new EnemyManager(levels[currentLevel].getMap(), player);
-        heartManager = new HeartManager(levels[currentLevel].getMap(),player);
+        heartManager = new HeartManager(levels[currentLevel].getMap(), player);
         bombs = new ArrayList<>();
 
     }
@@ -52,19 +54,48 @@ public class LevelManager implements StateMethods {
         }
     }
 
-    // Update Map
-    public void update() {
-        camera.update();
-        player.update();
+    public void collisionBombWithPlayer() {
+        for (Bomb bomb : bombs) {
+            Iterator<Cucumber> itr = enemyManager.getCucumbers().iterator();
+            while (itr.hasNext()) {
+                Cucumber cucumber = (Cucumber) itr.next();
+                if (bomb.isExploded() && CheckCollision.isCollision(bomb.getHitBox(), cucumber.getHitBox())) {
+                    cucumber.setDead(true);
+                }
+            }
+        }
+    }
+
+    public void deleteCucumber() {
+        Iterator<Cucumber> itr = enemyManager.getCucumbers().iterator();
+        while (itr.hasNext()) {
+            Cucumber cucumber = (Cucumber) itr.next();
+            if (cucumber.isDead()) {
+                itr.remove();
+            }
+        }
+    }
+
+    public void deleteBomb() {
         Iterator<Bomb> itr = bombs.iterator();
-        
         while (itr.hasNext()) {
             Bomb bomb = (Bomb) itr.next();
-            bomb.update();
             if (bomb.isExploded()) {
                 itr.remove();
             }
         }
+    }
+
+    // Update Map
+    public void update() {
+        camera.update();
+        player.update();
+        for (Bomb bomb : bombs) {
+            bomb.update();
+        }
+        collisionBombWithPlayer();
+        deleteCucumber();
+        deleteBomb();
         enemyManager.update();
         heartManager.update();
     }
@@ -80,7 +111,7 @@ public class LevelManager implements StateMethods {
         heartManager.render(g, camera);
     }
 
-    //Event 
+    // Event
     @Override
     public void mouseClicked(MouseEvent e) {
     }

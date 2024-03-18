@@ -8,6 +8,7 @@ import playing.camera.Camera;
 
 public class EnemyManager {
     private ArrayList<Cucumber> cucumbers;
+
     private int[][] map;
     private Player player;
 
@@ -30,7 +31,7 @@ public class EnemyManager {
 
     private void eraseHeart() {
         for (Cucumber cucumber : cucumbers)
-            if (cucumber.isHitPlayer()){
+            if (cucumber.isHitPlayer()) {
                 player.setDangerTouch(true);
             }
     }
@@ -46,5 +47,13 @@ public class EnemyManager {
         for (Cucumber cucumber : cucumbers) {
             cucumber.render(g, camera);
         }
+    }
+
+    public ArrayList<Cucumber> getCucumbers() {
+        return cucumbers;
+    }
+
+    public void setCucumbers(ArrayList<Cucumber> cucumbers) {
+        this.cucumbers = cucumbers;
     }
 }
