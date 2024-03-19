@@ -169,7 +169,7 @@ public class Player extends GameObject {
         }
     }
 
-    // check collition with Map
+    //check collition with Map
     private boolean canMove(Rectangle newHitbox) {
         // Get matrix map from current level
         int[][] map = level.getMap();

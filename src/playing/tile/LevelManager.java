@@ -35,7 +35,6 @@ public class LevelManager implements StateMethods {
         enemyManager = new EnemyManager(levels[currentLevel].getMap(), player);
         heartManager = new HeartManager(levels[currentLevel].getMap(), player);
         bombs = new ArrayList<>();
-
     }
 
     private void initPathMap() {
@@ -51,6 +50,18 @@ public class LevelManager implements StateMethods {
         levels = new Level[5];
         for (int i = 0; i < levels.length; i++) {
             levels[i] = new Level(nameFile[i]);
+        }
+    }
+
+    public void setNewMap(){
+        if(enemyManager.getCucumbers().size() == 0)
+        {
+            currentLevel = currentLevel + 1;
+            System.out.println(currentLevel);
+            player = new Player(levels[currentLevel]);
+            camera = new Camera(levels[currentLevel], player);
+            enemyManager = new EnemyManager(levels[currentLevel].getMap(), player);
+            heartManager = new HeartManager(levels[currentLevel].getMap(), player);
         }
     }
 
@@ -101,6 +112,7 @@ public class LevelManager implements StateMethods {
 
     // Update Map
     public void update() {
+        setNewMap();
         camera.update();
         player.update();
         for (Bomb bomb : bombs) {
