@@ -78,17 +78,18 @@ public class Cucumber extends Enemy {
             aniIndex++;
             if (aniIndex >= CucumberConstants.getSpriteAmount(aniType)) {
                 switch (aniType) {
+                    case CucumberConstants.DEAD_GROUND:
+                        // Set dead to true when play all animation dead
+                        dead = true;
+                        break;
                     case CucumberConstants.ATTACK:
                         // Check if the attack hits the player
                         hitPlayer = CheckCollision.isCollision(hitBox, playerHitbox) ? true : false;
+                        aniType = CucumberConstants.RUN;
                         break;
                     case CucumberConstants.DEAD_HIT:
                         // Set next animation is dead ground
                         aniType = CucumberConstants.DEAD_GROUND;
-                        break;
-                    case CucumberConstants.DEAD_GROUND:
-                        // Set dead to true when play all animation dead
-                        dead = true;
                         break;
 
                     default:
@@ -241,7 +242,7 @@ public class Cucumber extends Enemy {
     }
 
     private boolean canMoveLeft(Rectangle newHitbox) {
-        // Get current index 
+        // Get current index
         int colIndex = newHitbox.x / Tile.TILE_SIZE;
         int rowIndex = (newHitbox.y + newHitbox.height) / Tile.TILE_SIZE;
 
@@ -290,15 +291,14 @@ public class Cucumber extends Enemy {
         updateHitting(playerHitbox);
         hitPlayer = false;
 
-        if (aniType == CucumberConstants.RUN) {
+        if (aniType != CucumberConstants.DEAD_HIT && aniType != CucumberConstants.DEAD_GROUND) {
 
             // Update current position and hitBox
             upDatePosition(playerHitbox);
 
+            // Set animation depend on current state
+            setAniType();
         }
-
-        // Set animation depend on current state
-        setAniType();
 
         // Set and update animation
         updateAnimationTick(playerHitbox);
