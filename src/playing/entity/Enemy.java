@@ -15,7 +15,7 @@ public abstract class Enemy extends GameObject {
 
     // Animation
     protected int aniType;
-    protected int aniTick, aniIndex, aniSpeed = 4;
+    protected int aniTick, aniIndex, aniSpeed = 2;
 
     // Motion
     protected Vector2D velocity;
@@ -34,9 +34,11 @@ public abstract class Enemy extends GameObject {
     // dead
     protected boolean dead;
 
+    //
+    protected boolean hitting;
     protected boolean hitPlayer;
 
-    //Map
+    // Map
     protected int[][] map;
 
     public Enemy(int enemyType, int[][] map) {
@@ -45,6 +47,7 @@ public abstract class Enemy extends GameObject {
         this.map = map;
 
         hitPlayer = false;
+        hitting = false;
 
         enemySpeed = 1.0f;
         velocity = new Vector2D(enemySpeed, 0);
@@ -77,11 +80,10 @@ public abstract class Enemy extends GameObject {
         }
     }
 
-    //Getter and Setter
+    // Getter and Setter
     public int getHealth() {
         return health;
     }
-
 
     public void setHealth(int health) {
         this.health = health;
@@ -91,12 +93,11 @@ public abstract class Enemy extends GameObject {
         return hitPlayer;
     }
 
-    public boolean isDead(){
+    public boolean isDead() {
         return dead;
     }
 
-    public void setDead(boolean dead)
-    {
+    public void setDead(boolean dead) {
         this.dead = dead;
     }
 
@@ -112,7 +113,7 @@ public abstract class Enemy extends GameObject {
 
     // protected abstract void setAniType();
 
-    protected abstract void updateAnimationTick();
+    // protected abstract void updateAnimationTick();
 
     // protected abstract void upDatePosition();
 }

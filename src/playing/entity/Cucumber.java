@@ -71,19 +71,31 @@ public class Cucumber extends Enemy {
 
     }
 
-    @Override
-    protected void updateAnimationTick() {
+    protected void updateAnimationTick(Rectangle playerHitbox) {
         aniTick++;
         if (aniTick > aniSpeed) {
             aniTick = 0;
             aniIndex++;
             if (aniIndex >= CucumberConstants.getSpriteAmount(aniType)) {
-                if (aniType == CucumberConstants.DEAD_HIT) {
-                    aniType = CucumberConstants.DEAD_GROUND;
-                } else if (aniType == CucumberConstants.DEAD_GROUND) {
-                    // set dead to true when play all animation dead
-                    dead = true;
+                switch (aniType) {
+                    case CucumberConstants.ATTACK:
+                        // Check if the attack hits the player
+                        hitPlayer = CheckCollision.isCollision(hitBox, playerHitbox) ? true : false;
+                        break;
+                    case CucumberConstants.DEAD_HIT:
+                        // Set next animation is dead ground
+                        aniType = CucumberConstants.DEAD_GROUND;
+                        break;
+                    case CucumberConstants.DEAD_GROUND:
+                        // Set dead to true when play all animation dead
+                        dead = true;
+                        break;
+
+                    default:
+                        break;
                 }
+
+                // Reset index of an animation type
                 aniIndex = 0;
             }
         }
@@ -94,7 +106,7 @@ public class Cucumber extends Enemy {
         int startAni = aniType;
 
         // Set type of animation depend on current state
-        if (hitPlayer)
+        if (hitting)
             aniType = CucumberConstants.ATTACK;
         else if (health == 0)
             aniType = CucumberConstants.DEAD_HIT;
@@ -205,6 +217,7 @@ public class Cucumber extends Enemy {
             direction = playerHitbox.x <= hitBox.x ? WalkDirection.LEFT : WalkDirection.RIGHT;
         }
 
+        // Set velocity depend on direction of enemy
         switch (direction) {
             case LEFT:
                 velocity.setX(-enemySpeed);
@@ -218,7 +231,8 @@ public class Cucumber extends Enemy {
     }
 
     private boolean seePlayer(Rectangle playerHitbox) {
-        if (Math.abs(playerHitbox.y - hitBox.y) <= Tile.TILE_SIZE) {
+        // If within the enemy's line of sight and the distance is less than 1 tile
+        if (Math.abs((playerHitbox.y + playerHitbox.height) - (hitBox.y + hitBox.height)) <= Tile.TILE_SIZE) {
             if (playerHitbox.x >= leftBoundX && playerHitbox.x <= rightBoundX) {
                 return true;
             }
@@ -227,6 +241,7 @@ public class Cucumber extends Enemy {
     }
 
     private boolean canMoveLeft(Rectangle newHitbox) {
+        // Get current index 
         int colIndex = newHitbox.x / Tile.TILE_SIZE;
         int rowIndex = (newHitbox.y + newHitbox.height) / Tile.TILE_SIZE;
 
@@ -266,24 +281,27 @@ public class Cucumber extends Enemy {
         return true;
     }
 
-    private void updateHit(Rectangle playerHitbox) {
-        hitPlayer = CheckCollision.isCollision(hitBox, playerHitbox) ? true : false;
+    private void updateHitting(Rectangle playerHitbox) {
+        hitting = CheckCollision.isCollision(hitBox, playerHitbox) ? true : false;
     }
 
     public void update(Rectangle playerHitbox) {
-        if (aniType != CucumberConstants.DEAD_HIT && aniType != CucumberConstants.DEAD_GROUND) {
-            // Check hit the player
-            updateHit(playerHitbox);
+        // Check hitting the player and reset hitplayer
+        updateHitting(playerHitbox);
+        hitPlayer = false;
+
+        if (aniType == CucumberConstants.RUN) {
 
             // Update current position and hitBox
             upDatePosition(playerHitbox);
 
-            // Set animation depend on current state
-            setAniType();
         }
 
+        // Set animation depend on current state
+        setAniType();
+
         // Set and update animation
-        updateAnimationTick();
+        updateAnimationTick(playerHitbox);
 
     }
 
@@ -320,5 +338,4 @@ public class Cucumber extends Enemy {
     @Override
     public void update() {
     }
-
 }
