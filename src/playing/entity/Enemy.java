@@ -82,6 +82,11 @@ public abstract class Enemy extends GameObject {
         return health;
     }
 
+
+    public void setHealth(int health) {
+        this.health = health;
+    }
+
     public boolean isHitPlayer() {
         return hitPlayer;
     }

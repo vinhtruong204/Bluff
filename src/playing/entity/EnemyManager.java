@@ -29,18 +29,14 @@ public class EnemyManager {
         }
     }
 
-    private void eraseHeart() {
-        for (Cucumber cucumber : cucumbers)
-            if (cucumber.isHitPlayer()) {
-                player.setDangerTouch(true);
-            }
-    }
 
     public void update() {
         for (Cucumber cucumber : cucumbers) {
             cucumber.update(player.getHitBox());
+            if (cucumber.isHitPlayer()) {
+                player.setDangerTouch(true);
+            }
         }
-        eraseHeart();
     }
 
     public void render(Graphics g, Camera camera) {

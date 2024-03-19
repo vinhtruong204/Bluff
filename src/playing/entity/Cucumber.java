@@ -30,6 +30,8 @@ public class Cucumber extends Enemy {
                 (int) position.getY(),
                 size.getWidth() - offsetX * 2,
                 size.getHeight() - offsetY);
+
+        // Initialize boolean dea
         dead = false;
 
         // Init left and right bounds
@@ -76,6 +78,12 @@ public class Cucumber extends Enemy {
             aniTick = 0;
             aniIndex++;
             if (aniIndex >= CucumberConstants.getSpriteAmount(aniType)) {
+                if (aniType == CucumberConstants.DEAD_HIT) {
+                    aniType = CucumberConstants.DEAD_GROUND;
+                } else if (aniType == CucumberConstants.DEAD_GROUND) {
+                    // set dead to true when play all animation dead
+                    dead = true;
+                }
                 aniIndex = 0;
             }
         }
@@ -86,7 +94,12 @@ public class Cucumber extends Enemy {
         int startAni = aniType;
 
         // Set type of animation depend on current state
-        aniType = hitPlayer ? CucumberConstants.ATTACK : CucumberConstants.RUN;
+        if (hitPlayer)
+            aniType = CucumberConstants.ATTACK;
+        else if (health == 0)
+            aniType = CucumberConstants.DEAD_HIT;
+        else
+            aniType = CucumberConstants.RUN;
 
         // If start anitype is not equal to startAni reset aniTick and aniIndex
         if (aniType != startAni) {
@@ -258,14 +271,16 @@ public class Cucumber extends Enemy {
     }
 
     public void update(Rectangle playerHitbox) {
-        // Check hit the player
-        updateHit(playerHitbox);
+        if (aniType != CucumberConstants.DEAD_HIT && aniType != CucumberConstants.DEAD_GROUND) {
+            // Check hit the player
+            updateHit(playerHitbox);
 
-        // Update current position and hitBox
-        upDatePosition(playerHitbox);
+            // Update current position and hitBox
+            upDatePosition(playerHitbox);
 
-        // Set animation depend on current state
-        setAniType();
+            // Set animation depend on current state
+            setAniType();
+        }
 
         // Set and update animation
         updateAnimationTick();
@@ -291,11 +306,11 @@ public class Cucumber extends Enemy {
             g.setColor(Color.red);
             g.drawRect(hitBox.x - camera.getMapStartX(), hitBox.y - camera.getMapStartY(), hitBox.width, hitBox.height);
 
-            // Draw cucumber minus offset 
+            // Draw cucumber minus offset
             g.drawImage(
                     temp,
-                    (int) position.getX() - offsetX - camera.getMapStartX() ,
-                    (int) position.getY() - offsetY- camera.getMapStartY() ,
+                    (int) position.getX() - offsetX - camera.getMapStartX(),
+                    (int) position.getY() - offsetY - camera.getMapStartY(),
                     size.getWidth(),
                     size.getHeight(),
                     null);
