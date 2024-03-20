@@ -77,6 +77,8 @@ public class Cucumber extends Enemy {
             aniTick = 0;
             aniIndex++;
             if (aniIndex >= CucumberConstants.getSpriteAmount(aniType)) {
+
+                // Set animation type and dead
                 switch (aniType) {
                     case CucumberConstants.DEAD_GROUND:
                         // Set dead to true when play all animation dead

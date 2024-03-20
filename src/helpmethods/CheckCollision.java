@@ -38,6 +38,16 @@ public class CheckCollision {
         int rowIndex = (newHitbox.y + newHitbox.height) / Tile.TILE_SIZE;
         int colIndex = newHitbox.x / Tile.TILE_SIZE;
 
+        if (rowIndex < 0)
+            rowIndex = 0;
+        else if (rowIndex >= map.length)
+            rowIndex = map.length - 1;
+
+        if (colIndex < 0)
+            colIndex = 0;
+        else if (colIndex >= map[0].length)
+            colIndex = map[0].length - 1;
+
         // Check if collided with not solid tile
         if (!isTileSolid(map[rowIndex][colIndex])) {
             // Return not on ground
@@ -59,5 +69,4 @@ public class CheckCollision {
         }
     }
 
-   
 }
