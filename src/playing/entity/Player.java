@@ -55,7 +55,7 @@ public class Player extends GameObject {
     private WalkDirection currentDirection;
 
     // Contructor
-    public Player(Level level,int maxHeart) {
+    public Player(Level level, int maxHeart) {
         position = new Position(2 * Tile.TILE_SIZE, 1 * Tile.TILE_SIZE);
         size = new Size(PLAYER_WIDTH, PLAYER_HEIGHT);
         velocity = new Vector2D(0f, 0f);
@@ -172,7 +172,7 @@ public class Player extends GameObject {
         }
     }
 
-    //check collition with Map
+    // check collition with Map
     private boolean canMove(Rectangle newHitbox) {
         // Get matrix map from current level
         int[][] map = level.getMap();

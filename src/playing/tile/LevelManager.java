@@ -23,6 +23,8 @@ public class LevelManager implements StateMethods {
     private Camera camera;
     private Player player;
     private ArrayList<Bomb> bombs;
+    private int maxBomb;
+    private int numberOfBombsExploded;
     private EnemyManager enemyManager;
     private HeartManager heartManager;
 
@@ -30,11 +32,13 @@ public class LevelManager implements StateMethods {
     public LevelManager() {
         initPathMap();
         initMap();
-        player = new Player(levels[currentLevel],5 + currentLevel);
+        player = new Player(levels[currentLevel], 5 + currentLevel);
         camera = new Camera(levels[currentLevel], player);
         enemyManager = new EnemyManager(levels[currentLevel].getMap(), player);
         heartManager = new HeartManager(levels[currentLevel].getMap(), player);
         bombs = new ArrayList<>();
+        maxBomb = 20;
+        numberOfBombsExploded = 0;
     }
 
     private void initPathMap() {
@@ -53,9 +57,8 @@ public class LevelManager implements StateMethods {
         }
     }
 
-    public void setNewMap(){
-        if(enemyManager.getCucumbers().size() == 0)
-        {
+    public void setNewMap() {
+        if (enemyManager.getCucumbers().size() == 0) {
             currentLevel = currentLevel + 1;
             System.out.println(currentLevel);
             player = new Player(levels[currentLevel], 5 + currentLevel);
@@ -122,7 +125,6 @@ public class LevelManager implements StateMethods {
         handleBombCollision();
         deleteCucumber();
 
-        
         enemyManager.update();
         heartManager.update();
     }
@@ -182,9 +184,12 @@ public class LevelManager implements StateMethods {
     }
 
     private void addBomb() {
-        int indexX = (int) (player.getPosition().getX()) / Tile.TILE_SIZE;
-        int indexY = (int) (player.getPosition().getY()) / Tile.TILE_SIZE;
-        bombs.add(new Bomb(indexX, indexY, levels[currentLevel].getMap()));
+        if (numberOfBombsExploded < maxBomb) {
+            int indexX = (int) (player.getPosition().getX()) / Tile.TILE_SIZE;
+            int indexY = (int) (player.getPosition().getY()) / Tile.TILE_SIZE;
+            bombs.add(new Bomb(indexX, indexY, levels[currentLevel].getMap()));
+            numberOfBombsExploded++;
+        }
     }
 
     @Override
