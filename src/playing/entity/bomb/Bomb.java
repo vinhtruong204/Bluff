@@ -6,56 +6,85 @@ import java.awt.image.BufferedImage;
 
 import core.Position;
 import core.Size;
+import core.Vector2D;
 import game.Game;
 import helpmethods.BombConstants;
+import helpmethods.CheckCollision;
 import helpmethods.LoadSave;
 import playing.camera.Camera;
 import playing.entity.GameObject;
 import playing.tile.Tile;
 
 public class Bomb extends GameObject {
-    //Animations
-    private BufferedImage animations[][];
-    //Size of bomb
+    private final float GRAVITY = 3.0f;
+    // Size of bomb
     private final int BOMB_WIDTH = 80;
     private final int BOMB_HEIGHT = 80;
-    //Animation Type
+
+    // Animations
+    private BufferedImage animations[][];
+
+    // Animation Type
     private int aniType;
 
-    //Align the speed and position of the bomb
+    // Align the speed and position of the bomb
     private int aniTick, aniIndex, aniSpeed;
-    //Align the time 
+    // Align the time
     private long currentTime, afterTime;
 
-
-    // Check exploded?
+    // Check exploded
     private boolean exploded;
-    //Box of Bomb
+    // Box of Bomb
     private Rectangle hitBox;
 
-    //Contructor
-    public Bomb(int i, int j) {
-        animations = new BufferedImage[3][6];
+    private Vector2D velocity;
+    private int[][] map;
+    private boolean onGround;
+    private Rectangle moveBox;
+
+    // Contructor
+    public Bomb(int i, int j, int[][] map) {
+        // Init map
+        this.map = map;
+
+        // Set size, position and hitbox
         size = new Size(BOMB_WIDTH * 2, BOMB_HEIGHT * 2);
         position = new Position(i * Tile.TILE_SIZE - 30.0f, j * Tile.TILE_SIZE);
         hitBox = new Rectangle((int) position.getX(), (int) position.getY(), size.getWidth(), size.getHeight());
+        moveBox = new Rectangle((int) position.getX() + 64, (int) position.getY() + 64, 32, 32);
+
+        // Speed of animation
         aniSpeed = 3;
+
+        // Start timer
         currentTime = System.currentTimeMillis();
+
+        // Init
         aniType = BombConstants.PLACINGBOMB;
         afterTime = 0;
+
         exploded = false;
+
+        onGround = false;
+
+        velocity = new Vector2D(0.0f, GRAVITY);
+
+        // Load Animations
         loadAnimations();
     }
 
-    //Load Animations
     private void loadAnimations() {
+        // Allocate
+        animations = new BufferedImage[3][6];
+
+        // Load all image
         BufferedImage image = LoadSave.loadImage("img/Player/Bomb.png");
         for (int i = 0; i < animations.length; i++)
             for (int j = 0; j < animations[i].length; j++)
                 animations[i][j] = image.getSubimage(j * BOMB_WIDTH, i * BOMB_HEIGHT, BOMB_WIDTH, BOMB_HEIGHT);
     }
 
-    //set Type Bomb
+    // set Type Bomb
     private void setAniType() {
         int startAni = aniType;
 
@@ -76,7 +105,7 @@ public class Bomb extends GameObject {
 
     }
 
-    //Align Time frames
+    // Align Time frames
     private void updateAnimationTick() {
         // 60fps => 20 animation frames rendered
         aniTick++;
@@ -92,16 +121,38 @@ public class Bomb extends GameObject {
         }
     }
 
-    //Update 
-    @Override
-    public void update() {
-        setAniType();
-        updateAnimationTick();
+    private void upDatePosition() {
+        // Calculate new pos
+        Position newPos = new Position(position.getX() + velocity.getX(), position.getY() + velocity.getY());
+        Rectangle newMoveBox = new Rectangle(
+                (int) newPos.getX() + 64,
+                (int) newPos.getY() + 64,
+                32,
+                32);
+
+        if (!CheckCollision.isEntityOnground(map, newMoveBox)) {
+            // Set new position and hit box of bomb
+            position = newPos;
+            moveBox = newMoveBox;
+            hitBox = new Rectangle((int) position.getX(), (int) position.getY(), size.getWidth(), size.getHeight());
+        } else
+            onGround = true;
     }
 
-    //Render
+    // Update
+    @Override
+    public void update() {
+        if (!onGround)
+            upDatePosition();
+        setAniType();
+        updateAnimationTick();
+
+    }
+
+    // Render
     @Override
     public void render(Graphics g, Camera camera) {
+        g.drawRect(moveBox.x, moveBox.y, moveBox.width, moveBox.height);
         if ((int) position.getX() - camera.getMapStartX() >= 0
                 && (int) position.getX() - camera.getMapStartX() <= Game.SCREEN_WIDTH
                 && (int) position.getY() - camera.getMapStartY() >= 0
@@ -111,7 +162,7 @@ public class Bomb extends GameObject {
         }
     }
 
-    //Getter and setter 
+    // Getter and setter
     public int getAniType() {
         return aniType;
     }
@@ -147,6 +198,5 @@ public class Bomb extends GameObject {
     public Rectangle getHitBox() {
         return hitBox;
     }
-
 
 }

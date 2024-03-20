@@ -184,7 +184,7 @@ public class LevelManager implements StateMethods {
     private void addBomb() {
         int indexX = (int) (player.getPosition().getX()) / Tile.TILE_SIZE;
         int indexY = (int) (player.getPosition().getY()) / Tile.TILE_SIZE;
-        bombs.add(new Bomb(indexX, indexY));
+        bombs.add(new Bomb(indexX, indexY, levels[currentLevel].getMap()));
     }
 
     @Override
