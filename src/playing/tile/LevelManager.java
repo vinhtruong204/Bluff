@@ -30,7 +30,7 @@ public class LevelManager implements StateMethods {
     public LevelManager() {
         initPathMap();
         initMap();
-        player = new Player(levels[currentLevel]);
+        player = new Player(levels[currentLevel],5 + currentLevel);
         camera = new Camera(levels[currentLevel], player);
         enemyManager = new EnemyManager(levels[currentLevel].getMap(), player);
         heartManager = new HeartManager(levels[currentLevel].getMap(), player);
@@ -58,7 +58,7 @@ public class LevelManager implements StateMethods {
         {
             currentLevel = currentLevel + 1;
             System.out.println(currentLevel);
-            player = new Player(levels[currentLevel]);
+            player = new Player(levels[currentLevel], 5 + currentLevel);
             camera = new Camera(levels[currentLevel], player);
             enemyManager = new EnemyManager(levels[currentLevel].getMap(), player);
             heartManager = new HeartManager(levels[currentLevel].getMap(), player);
@@ -85,8 +85,8 @@ public class LevelManager implements StateMethods {
                 // Collision with player
                 if (CheckCollision.isCollision(player.getHitBox(), bomb.getHitBox())) {
                     // If player's heart larger than 0
-                    if (player.getMaxHeart() > 0) {
-                        player.setMaxHeart(player.getMaxHeart() - 1);
+                    if (player.getHeartPlayer() > 0) {
+                        player.setHeartPlayer(player.getHeartPlayer() - 1);
 
                         //
                         heartManager.getHeartPlayer().remove(heartManager.getHeartPlayer().size() - 1);

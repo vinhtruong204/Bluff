@@ -152,7 +152,6 @@ public class Bomb extends GameObject {
     // Render
     @Override
     public void render(Graphics g, Camera camera) {
-        g.drawRect(moveBox.x, moveBox.y, moveBox.width, moveBox.height);
         if ((int) position.getX() - camera.getMapStartX() >= 0
                 && (int) position.getX() - camera.getMapStartX() <= Game.SCREEN_WIDTH
                 && (int) position.getY() - camera.getMapStartY() >= 0

@@ -47,13 +47,15 @@ public class Player extends GameObject {
 
     // max heart;
     private int maxHeart;
+    // heart Player
+    private int heartPlayer;
     // danger
     private Boolean dangerTouch;
 
     private WalkDirection currentDirection;
 
     // Contructor
-    public Player(Level level) {
+    public Player(Level level,int maxHeart) {
         position = new Position(2 * Tile.TILE_SIZE, 1 * Tile.TILE_SIZE);
         size = new Size(PLAYER_WIDTH, PLAYER_HEIGHT);
         velocity = new Vector2D(0f, 0f);
@@ -64,7 +66,8 @@ public class Player extends GameObject {
         this.level = level;
         // box of player
         hitBox = new Rectangle((int) position.getX(), (int) position.getY(), size.getWidth(), size.getHeight());
-        maxHeart = 5;
+        this.maxHeart = maxHeart;
+        this.heartPlayer = maxHeart;
         dangerTouch = false;
         aniType = PlayerAnimationType.IDLE;
         currentDirection = WalkDirection.RIGHT;
@@ -91,8 +94,8 @@ public class Player extends GameObject {
             if (aniIndex >= PlayerAnimationType.getSpriteAmount(aniType)) {
                 if (aniType == PlayerAnimationType.HIT || aniType == PlayerAnimationType.DEAD_HIT
                         || aniType == PlayerAnimationType.DEAD_GROUND) {
-                    if (maxHeart > 0) {
-                        maxHeart = maxHeart - 1;
+                    if (heartPlayer > 0) {
+                        heartPlayer = heartPlayer - 1;
                     }
                     dangerTouch = false;
                 }
@@ -210,15 +213,15 @@ public class Player extends GameObject {
             aniType = PlayerAnimationType.IDLE;
         }
 
-        if (dangerTouch && maxHeart > 1) {
+        if (dangerTouch && heartPlayer > 1) {
             aniType = PlayerAnimationType.HIT;
         }
 
-        if (dangerTouch && maxHeart == 1) {
+        if (dangerTouch && heartPlayer == 1) {
             aniType = PlayerAnimationType.DEAD_HIT;
         }
 
-        if (dangerTouch && maxHeart == 0) {
+        if (dangerTouch && heartPlayer == 0) {
             aniType = PlayerAnimationType.DEAD_GROUND;
         }
 
@@ -303,18 +306,6 @@ public class Player extends GameObject {
         return maxHeart;
     }
 
-    public void setMaxHeart(int maxHeart) {
-        this.maxHeart = maxHeart;
-    }
-
-    public static int getPlayerWidth() {
-        return PLAYER_WIDTH;
-    }
-
-    public static int getPlayerHeight() {
-        return PLAYER_HEIGHT;
-    }
-
     public Vector2D getVelocity() {
         return velocity;
     }
@@ -337,10 +328,6 @@ public class Player extends GameObject {
 
     public void setSpeedY(float speedY) {
         this.speedY = speedY;
-    }
-
-    public void setAnimations(BufferedImage[][] animations) {
-        this.animations = animations;
     }
 
     public Level getLevel() {
@@ -405,6 +392,14 @@ public class Player extends GameObject {
 
     public void setCurrentDirection(WalkDirection currentDirection) {
         this.currentDirection = currentDirection;
+    }
+
+    public int getHeartPlayer() {
+        return heartPlayer;
+    }
+
+    public void setHeartPlayer(int heartPlayer) {
+        this.heartPlayer = heartPlayer;
     }
 
 }
