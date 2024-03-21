@@ -58,12 +58,12 @@ public class HeartManager {
     private void removeHeartPlayer() {
         if (player.getHeartPlayer() < heartPlayer.size()) {
             heartPlayer.remove(heartPlayer.size() - 1);
-        } else if(player.getHeartPlayer() > heartPlayer.size()) {
+        } else if (player.getHeartPlayer() > heartPlayer.size()) {
             heartPlayer.add(new Heart(HeartConstants.redHeart, 0, 1 * (heartPlayer.size())));
         }
     }
 
-    //Getter and Setter
+    // Getter and Setter
     public ArrayList<Heart> getHeartPlayer() {
         return heartPlayer;
     }

@@ -36,20 +36,26 @@ public class CheckCollision {
     public static boolean isEntityOnground(int[][] map, Rectangle newHitbox) {
         // Get current row and column index of entity
         int rowIndex = (newHitbox.y + newHitbox.height) / Tile.TILE_SIZE;
-        int colIndex = newHitbox.x / Tile.TILE_SIZE;
+        int colIndexLeft = newHitbox.x / Tile.TILE_SIZE;
+        int colIndexRight = (newHitbox.x + newHitbox.width) / Tile.TILE_SIZE;
 
         if (rowIndex < 0)
             rowIndex = 0;
         else if (rowIndex >= map.length)
             rowIndex = map.length - 1;
 
-        if (colIndex < 0)
-            colIndex = 0;
-        else if (colIndex >= map[0].length)
-            colIndex = map[0].length - 1;
+        if (colIndexLeft < 0)
+            colIndexLeft = 0;
+        else if (colIndexLeft >= map[0].length)
+            colIndexLeft = map[0].length - 1;
+
+        if(colIndexRight < 0)
+            colIndexRight = 0;
+        else if(colIndexRight >= map[0].length)
+            colIndexRight = map[0].length - 1;
 
         // Check if collided with not solid tile
-        if (!isTileSolid(map[rowIndex][colIndex])) {
+        if (!isTileSolid(map[rowIndex][colIndexLeft]) && !isTileSolid(map[rowIndex][colIndexRight])) {
             // Return not on ground
             return false;
         }
