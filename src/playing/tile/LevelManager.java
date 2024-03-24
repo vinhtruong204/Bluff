@@ -3,6 +3,7 @@ package playing.tile;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -14,6 +15,8 @@ import playing.entity.EnemyManager;
 import playing.entity.Player;
 import playing.entity.bomb.Bomb;
 import playing.entity.heart.HeartManager;
+import helpmethods.Draw;
+import helpmethods.LoadSave;
 
 public class LevelManager implements StateMethods {
 
@@ -25,6 +28,7 @@ public class LevelManager implements StateMethods {
     private ArrayList<Bomb> bombs;
     private int maxBomb;
     private int numberOfBombsExploded;
+    private BufferedImage bombItem;
     private EnemyManager enemyManager;
     private HeartManager heartManager;
 
@@ -39,6 +43,7 @@ public class LevelManager implements StateMethods {
         bombs = new ArrayList<>();
         maxBomb = 20;
         numberOfBombsExploded = 0;
+        initBombItem();
     }
 
     private void initPathMap() {
@@ -57,6 +62,10 @@ public class LevelManager implements StateMethods {
         }
     }
 
+    private void initBombItem() {
+        bombItem = LoadSave.loadImage("img/Object/BombItem.png");
+    }
+
     public void setNewMap() {
         if (enemyManager.getCucumbers().size() == 0) {
             currentLevel = currentLevel + 1;
@@ -65,6 +74,8 @@ public class LevelManager implements StateMethods {
             camera = new Camera(levels[currentLevel], player);
             enemyManager = new EnemyManager(levels[currentLevel].getMap(), player);
             heartManager = new HeartManager(levels[currentLevel].getMap(), player);
+            maxBomb = 20;
+            numberOfBombsExploded = 0;
         }
     }
 
@@ -138,6 +149,8 @@ public class LevelManager implements StateMethods {
         }
         enemyManager.render(g, camera);
         heartManager.render(g, camera);
+        Draw.drawString(g, "x" + Integer.toString(maxBomb - numberOfBombsExploded), 50, 32);
+        Draw.drawImage(g, bombItem, 15, -8);
     }
 
     // Event
