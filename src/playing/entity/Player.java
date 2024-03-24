@@ -63,6 +63,7 @@ public class Player extends GameObject {
     private boolean onGround = false;
 
     // Contructor
+
     public Player(Level level, int maxHeart) {
         position = new Position(2 * Tile.TILE_SIZE, 1 * Tile.TILE_SIZE + 6.0f);
         size = new Size(PLAYER_WIDTH, PLAYER_HEIGHT);
