@@ -56,7 +56,7 @@ public class Player extends GameObject {
     private WalkDirection currentDirection;
 
     // Contructor
-    public Player(Level level, int maxHeart) {
+    public Player(Level level,int heart) {
         position = new Position(2 * Tile.TILE_SIZE, 1 * Tile.TILE_SIZE);
         size = new Size(PLAYER_WIDTH, PLAYER_HEIGHT);
         velocity = new Vector2D(0f, 0f);
@@ -68,7 +68,7 @@ public class Player extends GameObject {
         // box of player
         hitBox = new Rectangle((int) position.getX(), (int) position.getY(), size.getWidth(), size.getHeight());
         //this.maxHeart = maxHeart;
-        this.heartPlayer = maxHeart;
+        this.heartPlayer = heart;
         dangerTouch = false;
         aniType = PlayerAnimationType.IDLE;
         currentDirection = WalkDirection.RIGHT;
