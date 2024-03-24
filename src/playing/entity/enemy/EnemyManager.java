@@ -1,10 +1,11 @@
-package playing.entity;
+package playing.entity.enemy;
 
 import java.awt.Graphics;
 import java.util.ArrayList;
 
 import helpmethods.EnemyConstants;
 import playing.camera.Camera;
+import playing.entity.Player;
 
 public class EnemyManager {
     private ArrayList<Cucumber> cucumbers;

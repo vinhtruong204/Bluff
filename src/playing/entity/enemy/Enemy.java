@@ -1,4 +1,4 @@
-package playing.entity;
+package playing.entity.enemy;
 
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -6,6 +6,7 @@ import java.awt.image.BufferedImage;
 import core.Vector2D;
 import helpmethods.EnemyConstants;
 import helpmethods.WalkDirection;
+import playing.entity.GameObject;
 
 public abstract class Enemy extends GameObject {
     protected final double MAX_DISTANCE_TRAVEL = 400.0d;;

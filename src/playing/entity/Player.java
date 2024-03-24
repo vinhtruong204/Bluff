@@ -18,19 +18,26 @@ import playing.tile.Level;
 import playing.tile.Tile;
 
 public class Player extends GameObject {
-    public static final int MAX_HEART = 5;
+    private final float MAX_GRAVITY = 9.0f;
+    private final float MIN_JUMP_SPEED = 1.0f;
+
+    private final float MIN_GRAVITY = 0.5f;
+    private final float MAX_JUMP_SPEED = 9.0f;
+    private final float MAX_JUMP_HEIGHT = 200.0f;
+
+    public static final int MAX_HEART = 10;
 
     // Player dimension
-    private static final int PLAYER_WIDTH = 58;
-    private static final int PLAYER_HEIGHT = 58;
+    private final int PLAYER_WIDTH = 58;
+    private final int PLAYER_HEIGHT = 58;
 
-    // private final float MAX_JUMP_HEIGHT = 100.0f;
-
-    // velecity
+    // Move
+    private float horizontalSpeed = 5.0f;
     private Vector2D velocity;
-    
-    // speed
-    private float speedX, speedY;
+    private boolean up, left, right;
+    private boolean moving;
+    private boolean jumping;
+    private float maxHeightJump;
 
     // animations of Player
     private BufferedImage[][] animations;
@@ -38,37 +45,36 @@ public class Player extends GameObject {
     private int aniType;
     private int aniTick, aniIndex, aniSpeed;
 
-    // set status
-    private boolean Up, Left, Right, Down;
-    private boolean moving;
-
-    // Current jump distance
-    // private float currJumpHeight;
-
     // Box of player
     private Rectangle hitBox;
 
     // heart Player
     private static int heartPlayer;
+
     // danger
     private Boolean dangerTouch;
 
     private WalkDirection currentDirection;
 
+    // Jump and gravity
+    private float offsetVertical = 0.2f;
+    private float gravity = MIN_GRAVITY; // Init begin gravity
+    private float jumpSpeed = MAX_JUMP_SPEED; // Init begin jumpspeed
+    private boolean onGround = false;
+
     // Contructor
-    public Player(Level level,int heart) {
-        position = new Position(2 * Tile.TILE_SIZE, 1 * Tile.TILE_SIZE);
+
+    public Player(Level level, int maxHeart) {
+        position = new Position(2 * Tile.TILE_SIZE, 1 * Tile.TILE_SIZE + 6.0f);
         size = new Size(PLAYER_WIDTH, PLAYER_HEIGHT);
         velocity = new Vector2D(0f, 0f);
-        speedX = 5.0f;
-        speedY = 10.0f;
         aniSpeed = 3;
         animations = new BufferedImage[8][26];
         this.level = level;
         // box of player
         hitBox = new Rectangle((int) position.getX(), (int) position.getY(), size.getWidth(), size.getHeight());
-        //this.maxHeart = maxHeart;
-        this.heartPlayer = heart;
+        // this.maxHeart = maxHeart;
+        Player.heartPlayer = maxHeart;
         dangerTouch = false;
         aniType = PlayerAnimationType.IDLE;
         currentDirection = WalkDirection.RIGHT;
@@ -128,49 +134,129 @@ public class Player extends GameObject {
         }
     }
 
-    // Update possition
-    private void upDatePosition() {
-        // "\t" + "jumping " + jumping);
+    // update possition
+    private void updatePosition() {
+
+        // Update vertical position
+        updateVerticalPos();
+
+        // Update horizontal position
+        updateHorizontalPos();
+
+    }
+
+    private void updateHorizontalPos() {
         // Reset vetor velocity and gravity
-        velocity = new Vector2D(0.0f, 0.0f);
         moving = false;
 
-        // If player onground and request jump
-        if (Up) {
-            velocity.setY(-speedY);
-        }
-
-        if (Down) {
-            velocity.setY(speedY);
-        }
-
         // Move right
-        if (Right && !Left) {
+        if (right && !left) {
             moving = true;
-            velocity.setX(speedX);
+            velocity.setX(horizontalSpeed);
             currentDirection = WalkDirection.RIGHT;
         }
 
         // Move left
-        if (Left && !Right) {
+        if (left && !right) {
             moving = true;
-            velocity.setX(-speedX);
+            velocity.setX(-horizontalSpeed);
             currentDirection = WalkDirection.LEFT;
         }
 
-        // Caculate new position and hit box
-        Position newPos = new Position(position.getX() + velocity.getX(), position.getY() + velocity.getY());
+        {
+            // Caculate new hit box
+            Rectangle newHitbox = new Rectangle(
+                    (int) (position.getX() + velocity.getX()),
+                    (int) position.getY(),
+                    size.getWidth(),
+                    size.getHeight());
+
+            // Move the character
+            if (canMove(newHitbox)) {
+                hitBox = newHitbox;
+                position = new Position(hitBox.x, hitBox.y);
+                if (!CheckCollision.isEntityOnground(level.getMap(), newHitbox)) {
+                    onGround = false;
+                }
+            }
+        }
+
+        // Reset velocity
+        velocity.setX(0.0f);
+    }
+
+    private void updateVerticalPos() {
+
+        // If player in the air
+        if (!jumping && !onGround) {
+            // Move down
+            fall(); // Reset onground in here
+        }
+
+        // Move up
+        if (up && !jumping && onGround) {
+            // Set onground to false
+            onGround = false;
+
+            // Jumping is true
+            jumping = true;
+
+            // Calculate max height jump
+            maxHeightJump = position.getY() - MAX_JUMP_HEIGHT;
+        }
+
+        // If player is jumping
+        if (jumping)
+            jump();
+
+    }
+
+    private void jump() {
+
+        // Set velocity jump
+        velocity.setY(-jumpSpeed);
+
+        if (jumpSpeed >= MIN_JUMP_SPEED)
+            jumpSpeed -= offsetVertical;
+
+        // If player is not reach max jump height
+        if (!CheckCollision.isCollisionWithFloor(level.getMap(), hitBox) && position.getY() >= maxHeightJump) {
+            position = new Position(position.getX(), position.getY() + velocity.getY());
+            hitBox = new Rectangle((int) position.getX(), (int) position.getY(), size.getWidth(), size.getHeight());
+        } else {
+            // falling = true;
+            jumping = false;
+
+            jumpSpeed = 9.0f;
+        }
+
+    }
+
+    private void fall() {
+        // Set vector gravity
+        velocity.setY(gravity);
+
+        if (gravity <= MAX_GRAVITY) {
+            gravity += offsetVertical;
+        }
+
+        // Calculate hitbox
         Rectangle newHitbox = new Rectangle(
-                (int) newPos.getX(),
-                (int) newPos.getY(),
+                (int) position.getX(),
+                (int) (position.getY() + velocity.getY()),
                 size.getWidth(),
                 size.getHeight());
 
-        // Move the character
-        if (canMove(newHitbox)) {
-            position = newPos;
+        // Move down player if player in the air
+        if (!CheckCollision.isEntityOnground(level.getMap(), newHitbox)) {
             hitBox = newHitbox;
+            position = new Position(hitBox.x, hitBox.y);
+        } else {
+            onGround = true;
+            // Reset gravity if player on ground
+            gravity = 0.5f;
         }
+
     }
 
     // check collition with Map
@@ -206,7 +292,7 @@ public class Player extends GameObject {
     // set type animations
     public void setAniType() {
 
-        if (moving && !Up) {
+        if (moving && !up) {
             aniType = PlayerAnimationType.RUN;
         }
 
@@ -228,16 +314,16 @@ public class Player extends GameObject {
 
     }
 
-    // Update
+    // update
     @Override
     public void update() {
         // Change position if player is moving
-        upDatePosition();
+        updatePosition();
 
         // Set current type of animation
         setAnimationType();
 
-        // Update tick to render animation
+        // update tick to render animation
         updateAnimationTick();
 
     }
@@ -259,21 +345,17 @@ public class Player extends GameObject {
     }
 
     // Getter and Setter
-    
-    public void setUp(boolean up) {
-        this.Up = up;
-    }
 
-    public void setDown(boolean down) {
-        Down = down;
+    public void setUp(boolean up) {
+        this.up = up;
     }
 
     public void setLeft(boolean left) {
-        this.Left = left;
+        this.left = left;
     }
 
     public void setRight(boolean right) {
-        this.Right = right;
+        this.right = right;
     }
 
     public Rectangle getHitBox() {
@@ -292,7 +374,4 @@ public class Player extends GameObject {
         Player.heartPlayer = heartPlayer;
     }
 
-    
-
-    
 }
