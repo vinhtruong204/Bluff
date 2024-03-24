@@ -17,7 +17,6 @@ import playing.entity.bomb.Bomb;
 import playing.entity.bomb.BombManager;
 import playing.entity.heart.HeartManager;
 import helpmethods.Draw;
-import helpmethods.LoadSave;
 
 public class LevelManager implements StateMethods {
 
@@ -60,7 +59,6 @@ public class LevelManager implements StateMethods {
     public void setNewMap() {
         if (enemyManager.getCucumbers().size() == 0) {
             currentLevel = currentLevel + 1;
-            System.out.println(currentLevel);
             player = new Player(levels[currentLevel], 5 + currentLevel);
             camera = new Camera(levels[currentLevel], player);
             enemyManager = new EnemyManager(levels[currentLevel].getMap(), player);
@@ -139,8 +137,7 @@ public class LevelManager implements StateMethods {
         }
         enemyManager.render(g, camera);
         heartManager.render(g, camera);
-        Draw.drawString(g, "x" + Integer.toString(bombManager.getMaxBomb() - bombManager.getNumberOfBombsExploded()), 50, 32);
-        Draw.drawImage(g,bombManager.getBombItem() , 15, -8);
+        bombManager.render(g);
     }
 
     // Event

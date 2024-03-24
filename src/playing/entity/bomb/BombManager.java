@@ -1,19 +1,26 @@
 package playing.entity.bomb;
 
+import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
+import helpmethods.Draw;
 import helpmethods.LoadSave;
 
 public class BombManager {
 
+    //List bomb
     private ArrayList<Bomb> bombs;
 
+    //Max bomb
     private int maxBomb;
+    //number of bombs used
     private int numberOfBombsExploded;
 
+    //bomb item
     private BufferedImage bombItem;
 
+    //contructor
     public BombManager(int maxBomb,int numberOfBombsExploded)
     {
         bombs = new ArrayList<>();
@@ -22,6 +29,14 @@ public class BombManager {
         initBombItem();
     }
 
+    //render
+    public void render(Graphics g)
+    {
+        Draw.drawString(g, "x" + Integer.toString(maxBomb - numberOfBombsExploded), 50, 32);
+        Draw.drawImage(g,bombItem , 15, -8);
+    }
+
+    //getter and setter
     private void initBombItem() {
         bombItem = LoadSave.loadImage("img/Object/BombItem.png");
     }
