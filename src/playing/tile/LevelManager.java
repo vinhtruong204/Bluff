@@ -14,6 +14,7 @@ import playing.entity.Cucumber;
 import playing.entity.EnemyManager;
 import playing.entity.Player;
 import playing.entity.bomb.Bomb;
+import playing.entity.bomb.BombManager;
 import playing.entity.heart.HeartManager;
 import helpmethods.Draw;
 import helpmethods.LoadSave;
@@ -25,12 +26,9 @@ public class LevelManager implements StateMethods {
     private String[] nameFile;
     private Camera camera;
     private Player player;
-    private ArrayList<Bomb> bombs;
-    private int maxBomb;
-    private int numberOfBombsExploded;
-    private BufferedImage bombItem;
     private EnemyManager enemyManager;
     private HeartManager heartManager;
+    private BombManager bombManager;
 
     // Constructor
     public LevelManager() {
@@ -40,10 +38,7 @@ public class LevelManager implements StateMethods {
         camera = new Camera(levels[currentLevel], player);
         enemyManager = new EnemyManager(levels[currentLevel].getMap(), player);
         heartManager = new HeartManager(levels[currentLevel].getMap(), player);
-        bombs = new ArrayList<>();
-        maxBomb = 20;
-        numberOfBombsExploded = 0;
-        initBombItem();
+        bombManager = new BombManager(20,0);
     }
 
     private void initPathMap() {
@@ -62,10 +57,6 @@ public class LevelManager implements StateMethods {
         }
     }
 
-    private void initBombItem() {
-        bombItem = LoadSave.loadImage("img/Object/BombItem.png");
-    }
-
     public void setNewMap() {
         if (enemyManager.getCucumbers().size() == 0) {
             currentLevel = currentLevel + 1;
@@ -74,14 +65,13 @@ public class LevelManager implements StateMethods {
             camera = new Camera(levels[currentLevel], player);
             enemyManager = new EnemyManager(levels[currentLevel].getMap(), player);
             heartManager = new HeartManager(levels[currentLevel].getMap(), player);
-            maxBomb = 20;
-            numberOfBombsExploded = 0;
+            bombManager = new BombManager(20, 0);
         }
     }
 
     // collision bomb with cucumber
     public void handleBombCollision() {
-        Iterator<Bomb> itrBomb = bombs.iterator();
+        Iterator<Bomb> itrBomb = bombManager.getBombs().iterator();
         while (itrBomb.hasNext()) {
             Bomb bomb = (Bomb) itrBomb.next();
             if (bomb.isExploded()) {
@@ -129,7 +119,7 @@ public class LevelManager implements StateMethods {
         setNewMap();
         camera.update();
         player.update();
-        for (Bomb bomb : bombs) {
+        for (Bomb bomb : bombManager.getBombs()) {
             bomb.update();
         }
 
@@ -144,13 +134,13 @@ public class LevelManager implements StateMethods {
     public void render(Graphics g) {
         camera.render(g);
         player.render(g, camera);
-        for (Bomb bomb : bombs) {
+        for (Bomb bomb : bombManager.getBombs()) {
             bomb.render(g, camera);
         }
         enemyManager.render(g, camera);
         heartManager.render(g, camera);
-        Draw.drawString(g, "x" + Integer.toString(maxBomb - numberOfBombsExploded), 50, 32);
-        Draw.drawImage(g, bombItem, 15, -8);
+        Draw.drawString(g, "x" + Integer.toString(bombManager.getMaxBomb() - bombManager.getNumberOfBombsExploded()), 50, 32);
+        Draw.drawImage(g,bombManager.getBombItem() , 15, -8);
     }
 
     // Event
@@ -197,11 +187,11 @@ public class LevelManager implements StateMethods {
     }
 
     private void addBomb() {
-        if (numberOfBombsExploded < maxBomb) {
+        if (bombManager.getNumberOfBombsExploded() < bombManager.getMaxBomb()) {
             int indexX = (int) (player.getPosition().getX()) / Tile.TILE_SIZE;
             int indexY = (int) (player.getPosition().getY()) / Tile.TILE_SIZE;
-            bombs.add(new Bomb(indexX, indexY, levels[currentLevel].getMap()));
-            numberOfBombsExploded++;
+            bombManager.getBombs().add(new Bomb(indexX, indexY, levels[currentLevel].getMap()));
+            bombManager.setNumberOfBombsExploded(bombManager.getNumberOfBombsExploded()+1);
         }
     }
 
