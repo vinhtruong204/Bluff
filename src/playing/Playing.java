@@ -13,12 +13,12 @@ public class Playing implements StateMethods {
     private PauseButton pauseButton;
 
     public Playing() {
-        levelManager = new LevelManager();
+        levelManager = new LevelManager(this);
         pauseButton = new PauseButton(3);
     }
 
     public void resetAll() {
-        levelManager = new LevelManager();
+        levelManager = new LevelManager(this);
         pauseButton = new PauseButton(3);
 
     }
