@@ -11,7 +11,7 @@ public class CheckCollision {
     }
 
     private static boolean isSolid(int[][] map, float x, float y) {
-
+        // Get current row and column index of entity
         int colIndex = (int) (x / Tile.TILE_SIZE);
         int rowIndex = (int) (y / Tile.TILE_SIZE);
 
@@ -47,19 +47,15 @@ public class CheckCollision {
     }
 
     public static boolean isEntityOnground(int[][] map, Rectangle newHitbox) {
-        // Get current row and column index of entity
-        int rowIndex = (newHitbox.y + newHitbox.height) / Tile.TILE_SIZE;
-        int colIndexLeft = newHitbox.x / Tile.TILE_SIZE;
-        int colIndexRight = (newHitbox.x + newHitbox.width) / Tile.TILE_SIZE;
-
+        
         // Check if collided with not solid tile
-        if (!isTileSolid(map[rowIndex][colIndexLeft]) && !isTileSolid(map[rowIndex][colIndexRight])) {
+        if (isSolid(map, newHitbox.x, newHitbox.y + newHitbox.height) || isSolid(map, newHitbox.x + newHitbox.width, newHitbox.y + newHitbox.height)) {
             // Return not on ground
-            return false;
+            return true;
         }
 
-        // Return not on ground
-        return true;
+        // Return on ground
+        return false;
     }
 
     public static boolean isTileSolid(int tileType) {
