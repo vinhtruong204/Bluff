@@ -1,4 +1,4 @@
-package playing.entity;
+package playing.entity.enemy;
 
 import java.awt.Graphics;
 import java.awt.Color;

@@ -5,6 +5,19 @@ import java.awt.Rectangle;
 import playing.tile.Tile;
 
 public class CheckCollision {
+
+    public static boolean isCollisionWithFloor(int[][] map, Rectangle newHitbox) {
+        return isSolid(map, newHitbox.x, newHitbox.y) || isSolid(map, newHitbox.x + newHitbox.width, newHitbox.y);
+    }
+
+    private static boolean isSolid(int[][] map, float x, float y) {
+
+        int colIndex = (int) (x / Tile.TILE_SIZE);
+        int rowIndex = (int) (y / Tile.TILE_SIZE);
+
+        return isTileSolid(map[rowIndex][colIndex]);
+    }
+
     public static boolean isCollision(Rectangle a, Rectangle b) {
         // Hit box of tile
         int topA, topB;
@@ -38,21 +51,6 @@ public class CheckCollision {
         int rowIndex = (newHitbox.y + newHitbox.height) / Tile.TILE_SIZE;
         int colIndexLeft = newHitbox.x / Tile.TILE_SIZE;
         int colIndexRight = (newHitbox.x + newHitbox.width) / Tile.TILE_SIZE;
-
-        if (rowIndex < 0)
-            rowIndex = 0;
-        else if (rowIndex >= map.length)
-            rowIndex = map.length - 1;
-
-        if (colIndexLeft < 0)
-            colIndexLeft = 0;
-        else if (colIndexLeft >= map[0].length)
-            colIndexLeft = map[0].length - 1;
-
-        if(colIndexRight < 0)
-            colIndexRight = 0;
-        else if(colIndexRight >= map[0].length)
-            colIndexRight = map[0].length - 1;
 
         // Check if collided with not solid tile
         if (!isTileSolid(map[rowIndex][colIndexLeft]) && !isTileSolid(map[rowIndex][colIndexRight])) {

@@ -8,11 +8,11 @@ import java.util.Iterator;
 import gamestate.StateMethods;
 import helpmethods.CheckCollision;
 import playing.camera.Camera;
-import playing.entity.Cucumber;
-import playing.entity.EnemyManager;
 import playing.entity.Player;
 import playing.entity.bomb.Bomb;
 import playing.entity.bomb.BombManager;
+import playing.entity.enemy.Cucumber;
+import playing.entity.enemy.EnemyManager;
 import playing.entity.heart.HeartManager;
 
 public class LevelManager implements StateMethods {
@@ -164,7 +164,6 @@ public class LevelManager implements StateMethods {
                 player.setRight(true);
                 break;
             case KeyEvent.VK_S:
-                player.setDown(true);
                 break;
             case KeyEvent.VK_W:
                 player.setUp(true);
@@ -199,7 +198,6 @@ public class LevelManager implements StateMethods {
                 player.setRight(false);
                 break;
             case KeyEvent.VK_S:
-                player.setDown(false);
                 break;
             case KeyEvent.VK_W:
                 player.setUp(false);
