@@ -3,8 +3,6 @@ package playing.tile;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 import java.util.Iterator;
 
 import gamestate.StateMethods;
@@ -16,7 +14,6 @@ import playing.entity.Player;
 import playing.entity.bomb.Bomb;
 import playing.entity.bomb.BombManager;
 import playing.entity.heart.HeartManager;
-import helpmethods.Draw;
 
 public class LevelManager implements StateMethods {
 

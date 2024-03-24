@@ -18,6 +18,8 @@ import playing.tile.Level;
 import playing.tile.Tile;
 
 public class Player extends GameObject {
+    public static final int MAX_HEART = 5;
+
     // Player dimension
     private static final int PLAYER_WIDTH = 58;
     private static final int PLAYER_HEIGHT = 58;
@@ -26,6 +28,7 @@ public class Player extends GameObject {
 
     // velecity
     private Vector2D velocity;
+    
     // speed
     private float speedX, speedY;
 
@@ -45,10 +48,8 @@ public class Player extends GameObject {
     // Box of player
     private Rectangle hitBox;
 
-    // max heart;
-    private int maxHeart;
     // heart Player
-    private int heartPlayer;
+    private static int heartPlayer;
     // danger
     private Boolean dangerTouch;
 
@@ -66,7 +67,7 @@ public class Player extends GameObject {
         this.level = level;
         // box of player
         hitBox = new Rectangle((int) position.getX(), (int) position.getY(), size.getWidth(), size.getHeight());
-        this.maxHeart = maxHeart;
+        //this.maxHeart = maxHeart;
         this.heartPlayer = maxHeart;
         dangerTouch = false;
         aniType = PlayerAnimationType.IDLE;
@@ -258,36 +259,13 @@ public class Player extends GameObject {
     }
 
     // Getter and Setter
-    public void setAniType(int aniType) {
-        this.aniType = aniType;
-    }
-
-    public boolean isDown() {
-        return Down;
+    
+    public void setUp(boolean up) {
+        this.Up = up;
     }
 
     public void setDown(boolean down) {
         Down = down;
-    }
-
-    public BufferedImage[][] getAnimations() {
-        return animations;
-    }
-
-    public boolean isUp() {
-        return Up;
-    }
-
-    public boolean isLeft() {
-        return Left;
-    }
-
-    public boolean isRight() {
-        return Right;
-    }
-
-    public void setUp(boolean up) {
-        this.Up = up;
     }
 
     public void setLeft(boolean left) {
@@ -302,96 +280,8 @@ public class Player extends GameObject {
         return hitBox;
     }
 
-    public int getMaxHeart() {
-        return maxHeart;
-    }
-
-    public Vector2D getVelocity() {
-        return velocity;
-    }
-
-    public void setVelocity(Vector2D velocity) {
-        this.velocity = velocity;
-    }
-
-    public float getSpeedX() {
-        return speedX;
-    }
-
-    public void setSpeedX(float speedX) {
-        this.speedX = speedX;
-    }
-
-    public float getSpeedY() {
-        return speedY;
-    }
-
-    public void setSpeedY(float speedY) {
-        this.speedY = speedY;
-    }
-
-    public Level getLevel() {
-        return level;
-    }
-
-    public void setLevel(Level level) {
-        this.level = level;
-    }
-
-    public int getAniType() {
-        return aniType;
-    }
-
-    public int getAniTick() {
-        return aniTick;
-    }
-
-    public void setAniTick(int aniTick) {
-        this.aniTick = aniTick;
-    }
-
-    public int getAniIndex() {
-        return aniIndex;
-    }
-
-    public void setAniIndex(int aniIndex) {
-        this.aniIndex = aniIndex;
-    }
-
-    public int getAniSpeed() {
-        return aniSpeed;
-    }
-
-    public void setAniSpeed(int aniSpeed) {
-        this.aniSpeed = aniSpeed;
-    }
-
-    public boolean isMoving() {
-        return moving;
-    }
-
-    public void setMoving(boolean moving) {
-        this.moving = moving;
-    }
-
-    public void setHitBox(Rectangle hitBox) {
-        this.hitBox = hitBox;
-    }
-
-    public Boolean getDangerTouch() {
-        return dangerTouch;
-    }
-
     public void setDangerTouch(Boolean dangerTouch) {
         this.dangerTouch = dangerTouch;
-    }
-
-    public WalkDirection getCurrentDirection() {
-        return currentDirection;
-    }
-
-    public void setCurrentDirection(WalkDirection currentDirection) {
-        this.currentDirection = currentDirection;
     }
 
     public int getHeartPlayer() {
@@ -399,7 +289,10 @@ public class Player extends GameObject {
     }
 
     public void setHeartPlayer(int heartPlayer) {
-        this.heartPlayer = heartPlayer;
+        Player.heartPlayer = heartPlayer;
     }
 
+    
+
+    
 }

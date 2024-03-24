@@ -36,7 +36,7 @@ public class HeartManager {
     }
 
     private void setHeartPlayer() {
-        for (int i = 0; i < player.getMaxHeart(); i++) {
+        for (int i = 0; i < Player.MAX_HEART; i++) {
             heartPlayer.add(new Heart(HeartConstants.redHeart, 0, (1 * i)));
         }
     }
@@ -48,7 +48,7 @@ public class HeartManager {
             Heart heart = (Heart) itr.next();
             if (CheckCollision.isCollision(heart.getHitBox(), player.getHitBox())) {
                 itr.remove();
-                if (player.getHeartPlayer() < player.getMaxHeart()) {
+                if (player.getHeartPlayer() < Player.MAX_HEART) {
                     player.setHeartPlayer(player.getHeartPlayer() + 1);
                 }
             }

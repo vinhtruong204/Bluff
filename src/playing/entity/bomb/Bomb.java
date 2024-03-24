@@ -40,7 +40,7 @@ public class Bomb extends GameObject {
     private Vector2D velocity;
     private int[][] map;
     private boolean onGround;
-    private Rectangle moveBox;
+    //private Rectangle moveBox;
 
     // Contructor
     public Bomb(int i, int j, int[][] map) {
@@ -51,7 +51,7 @@ public class Bomb extends GameObject {
         size = new Size(BOMB_WIDTH * 2, BOMB_HEIGHT * 2);
         position = new Position(i * Tile.TILE_SIZE - 30.0f, j * Tile.TILE_SIZE);
         hitBox = new Rectangle((int) position.getX(), (int) position.getY(), size.getWidth(), size.getHeight());
-        moveBox = new Rectangle((int) position.getX() + 64, (int) position.getY() + 64, 32, 32);
+        //moveBox = new Rectangle((int) position.getX() + 64, (int) position.getY() + 64, 32, 32);
 
         // Speed of animation
         aniSpeed = 3;
@@ -133,7 +133,6 @@ public class Bomb extends GameObject {
         if (!CheckCollision.isEntityOnground(map, newMoveBox)) {
             // Set new position and hit box of bomb
             position = newPos;
-            moveBox = newMoveBox;
             hitBox = new Rectangle((int) position.getX(), (int) position.getY(), size.getWidth(), size.getHeight());
         } else
             onGround = true;
