@@ -217,8 +217,8 @@ public class Player extends GameObject {
                     onGround = false;
 
             } else {
-                // hitBox.x = CheckCollision.getHorizontalOffset(newHitbox, currentDirection);
-                // position = new Position(hitBox.x, hitBox.y);
+                //hitBox.x = CheckCollision.getHorizontalOffset(newHitbox, currentDirection);
+                position = new Position(hitBox.x, hitBox.y);
             }
         }
 

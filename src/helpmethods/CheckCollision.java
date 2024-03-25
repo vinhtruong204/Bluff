@@ -88,7 +88,7 @@ public class CheckCollision {
 
         // Check if collided with not solid tile
         if (isSolid(map, newHitbox.x, newHitbox.y + newHitbox.height)
-                || isSolid(map, newHitbox.x + newHitbox.width, newHitbox.y + newHitbox.height)) {
+                || isSolid(map, newHitbox.x + newHitbox.width - 15, newHitbox.y + newHitbox.height)) {
             // Return not on ground
             return true;
         }

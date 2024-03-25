@@ -109,7 +109,9 @@ public class LevelManager implements StateMethods {
         while (itr.hasNext()) {
             Cucumber cucumber = (Cucumber) itr.next();
             if (cucumber.isDead())
+            {
                 itr.remove();
+            }
         }
     }
 
@@ -136,6 +138,7 @@ public class LevelManager implements StateMethods {
 
         enemyManager.update();
         heartManager.update();
+        
         checkGameOver();
     }
 
