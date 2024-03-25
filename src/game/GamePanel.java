@@ -20,18 +20,14 @@ public class GamePanel extends JPanel implements Runnable {
     private int fps, ups;
 
     private Game game;
-    private KeyboardInputs keyboardInputs;
-    private MouseInputs mouseInputs;
 
     public GamePanel() {
         // Create new game
         game = new Game();
 
         // Create and add keyboard and mouse input
-        keyboardInputs = new KeyboardInputs(game);
-        mouseInputs = new MouseInputs(game);
-        this.addKeyListener(keyboardInputs);
-        this.addMouseListener(mouseInputs);
+        this.addKeyListener(new KeyboardInputs(game));
+        this.addMouseListener(new MouseInputs(game));
 
         // Set size of panel, focus and background color
         this.setPreferredSize(new Dimension(Game.SCREEN_WIDTH, Game.SCREEN_HEIGHT));

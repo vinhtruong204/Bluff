@@ -34,7 +34,7 @@ public class LevelManager implements StateMethods {
         initPathMap();
         initMap();
         this.playing = playing;
-        player = new Player(levels[currentLevel], 5);
+        player = new Player(levels[currentLevel].getMap());
         camera = new Camera(levels[currentLevel], player);
         enemyManager = new EnemyManager(levels[currentLevel].getMap(), player);
         heartManager = new HeartManager(levels[currentLevel].getMap(), player);
@@ -59,9 +59,8 @@ public class LevelManager implements StateMethods {
 
     private void setNewMap() {
         if (enemyManager.getCucumbers().size() == 0) {
-            currentLevel = currentLevel + 1;
-            int oldHeart = player.getHeartPlayer();
-            player = new Player(levels[currentLevel], oldHeart);
+            currentLevel++;
+            player = new Player(levels[currentLevel].getMap());
             camera = new Camera(levels[currentLevel], player);
             enemyManager = new EnemyManager(levels[currentLevel].getMap(), player);
             heartManager = new HeartManager(levels[currentLevel].getMap(), player);
