@@ -14,17 +14,19 @@ import helpmethods.LoadSave;
 import helpmethods.PlayerAnimationType;
 import helpmethods.WalkDirection;
 import playing.camera.Camera;
-import playing.tile.Level;
 import playing.tile.Tile;
 
 public class Player extends GameObject {
+
+    // Constants for jump and fall
     private final float MAX_GRAVITY = 9.0f;
     private final float MIN_JUMP_SPEED = 1.0f;
-
     private final float MIN_GRAVITY = 0.5f;
     private final float MAX_JUMP_SPEED = 9.0f;
+    private final float OFFSET_VERTICAL_MOVE = 0.2f; // Minus or add offset when player fall or jump
     private final float MAX_JUMP_HEIGHT = 200.0f;
 
+    // Constant max heart for every level
     public static final int MAX_HEART = 10;
 
     // Player dimension
@@ -37,54 +39,88 @@ public class Player extends GameObject {
     private boolean up, left, right;
     private boolean moving;
     private boolean jumping;
-    private float maxHeightJump;
+    private float maxHeightJump; // Calculate max height when player jumping
 
-    // animations of Player
+    // Animations of Player
     private BufferedImage[][] animations;
-    private Level level;
     private int aniType;
     private int aniTick, aniIndex, aniSpeed;
+
+    // Current maxtrix map
+    private int[][] map;
 
     // Box of player
     private Rectangle hitBox;
 
-    // heart Player
+    // Heart hlayer
     private static int heartPlayer;
 
-    // danger
+    // Boolean danger
     private Boolean dangerTouch;
 
+    // Player direction
     private WalkDirection currentDirection;
 
     // Jump and gravity
-    private float offsetVertical = 0.2f;
-    private float gravity = MIN_GRAVITY; // Init begin gravity
-    private float jumpSpeed = MAX_JUMP_SPEED; // Init begin jumpspeed
-    private boolean onGround = false;
+    private float gravity;
+    private float jumpSpeed;
+    private boolean onGround;
 
     // Contructor
-
-    public Player(Level level, int maxHeart) {
-        position = new Position(2 * Tile.TILE_SIZE, 1 * Tile.TILE_SIZE + 6.0f);
+    public Player(int[][] map) {
+        // Set first position, size
+        position = new Position(2 * Tile.TILE_SIZE, 1 * Tile.TILE_SIZE); // Column 2, row 1 TileSize = 48
         size = new Size(PLAYER_WIDTH, PLAYER_HEIGHT);
-        velocity = new Vector2D(0f, 0f);
-        aniSpeed = 3;
-        animations = new BufferedImage[8][26];
-        this.level = level;
-        // box of player
+
+        // Init hitbox depend on position and size
         hitBox = new Rectangle((int) position.getX(), (int) position.getY(), size.getWidth(), size.getHeight());
-        // this.maxHeart = maxHeart;
-        Player.heartPlayer = maxHeart;
+
+        // Init velocity
+        velocity = new Vector2D(0.0f, 0.0f);
+
+        // Set current matrix map
+        this.map = map;
+
+        // Place a heart on the player if this is the first level
+        Player.heartPlayer = Player.heartPlayer > 0 ? Player.heartPlayer : 5;
+
+        // Init danger hurt
         dangerTouch = false;
+
+        // Initialize variable for vertical move
+        initMoveVertical();
+
+        // Initialize variable for horizontal move
+        initMoveHorizontal();
+
+        // Load image animation
+        loadAnimations();
+
+        // Initialize animation and direction
         aniType = PlayerAnimationType.IDLE;
+        aniSpeed = 3; // 20 animation frames per second
+    }
+
+    private void initMoveHorizontal() {
         currentDirection = WalkDirection.RIGHT;
         moving = false;
-        loadAnimations();
+    }
+
+    private void initMoveVertical() {
+        gravity = MIN_GRAVITY; // Init begin gravity
+        jumpSpeed = MAX_JUMP_SPEED; // Init begin jumpspeed
+        onGround = false; // Init on ground false for first frame
     }
 
     // Load animations
     private void loadAnimations() {
+        // Allocate memory
+        animations = new BufferedImage[8][26];
+
+        // Load image from file
         BufferedImage image = LoadSave.loadImage("img/Player/Player-Bomb Guy.png");
+
+        // Put animation into matrix
         for (int i = 0; i < animations.length; i++)
             for (int j = 0; j < animations[i].length; j++)
                 animations[i][j] = image.getSubimage(j * PLAYER_WIDTH, i * PLAYER_HEIGHT, PLAYER_WIDTH, PLAYER_HEIGHT);
@@ -171,13 +207,18 @@ public class Player extends GameObject {
                     size.getWidth(),
                     size.getHeight());
 
-            // Move the character
-            if (canMove(newHitbox)) {
+            // If can move the character
+            if (CheckCollision.canMoveLeftOrRight(map, newHitbox, currentDirection)) {
                 hitBox = newHitbox;
                 position = new Position(hitBox.x, hitBox.y);
-                if (!CheckCollision.isEntityOnground(level.getMap(), newHitbox)) {
+
+                // Check on ground when move left or right
+                if (!CheckCollision.isEntityOnground(map, newHitbox))
                     onGround = false;
-                }
+
+            } else {
+                // hitBox.x = CheckCollision.getHorizontalOffset(newHitbox, currentDirection);
+                // position = new Position(hitBox.x, hitBox.y);
             }
         }
 
@@ -187,7 +228,7 @@ public class Player extends GameObject {
 
     private void updateVerticalPos() {
 
-        // If player in the air
+        // If player is falling and not on ground
         if (!jumping && !onGround) {
             // Move down
             fall(); // Reset onground in here
@@ -216,29 +257,43 @@ public class Player extends GameObject {
         // Set velocity jump
         velocity.setY(-jumpSpeed);
 
+        // If the jump speed does not reach the minimum jump speed
         if (jumpSpeed >= MIN_JUMP_SPEED)
-            jumpSpeed -= offsetVertical;
+            // Decrease jump speed
+            jumpSpeed -= OFFSET_VERTICAL_MOVE;
+
+        // Calculate new hibox
+        Rectangle newHitBox = new Rectangle(
+                (int) position.getX(),
+                (int) (position.getY() + velocity.getY()),
+                size.getWidth(),
+                size.getHeight());
 
         // If player is not reach max jump height
-        if (!CheckCollision.isCollisionWithFloor(level.getMap(), hitBox) && position.getY() >= maxHeightJump) {
-            position = new Position(position.getX(), position.getY() + velocity.getY());
-            hitBox = new Rectangle((int) position.getX(), (int) position.getY(), size.getWidth(), size.getHeight());
+        if (!CheckCollision.isCollisionWithFloor(map, newHitBox)
+                && newHitBox.y >= maxHeightJump) {
+            hitBox = newHitBox;
+            position = new Position(hitBox.x, hitBox.y);
         } else {
             // falling = true;
             jumping = false;
 
-            jumpSpeed = 9.0f;
+            // Reset the maximum value for jump speed
+            jumpSpeed = MAX_JUMP_SPEED;
         }
 
+        // Reset coordinate X of velocity
+        velocity.setY(0.0f);
     }
 
     private void fall() {
         // Set vector gravity
         velocity.setY(gravity);
 
-        if (gravity <= MAX_GRAVITY) {
-            gravity += offsetVertical;
-        }
+        // Gravity is not reach to max gravity
+        if (gravity <= MAX_GRAVITY)
+            // Increase gravity
+            gravity += OFFSET_VERTICAL_MOVE;
 
         // Calculate hitbox
         Rectangle newHitbox = new Rectangle(
@@ -248,45 +303,17 @@ public class Player extends GameObject {
                 size.getHeight());
 
         // Move down player if player in the air
-        if (!CheckCollision.isEntityOnground(level.getMap(), newHitbox)) {
+        if (!CheckCollision.isEntityOnground(map, newHitbox)) {
             hitBox = newHitbox;
             position = new Position(hitBox.x, hitBox.y);
         } else {
             onGround = true;
             // Reset gravity if player on ground
-            gravity = 0.5f;
+            gravity = MIN_GRAVITY;
         }
 
-    }
-
-    // check collition with Map
-    private boolean canMove(Rectangle newHitbox) {
-        // Get matrix map from current level
-        int[][] map = level.getMap();
-
-        // Check collision
-        for (int i = 0; i < map.length; i++) {
-            for (int j = 0; j < map[i].length; j++) {
-                // If tile is a brick
-                if (map[i][j] == 1) {
-                    // Create new rectangle for brick
-                    Rectangle tileRect = new Rectangle(
-                            j * Tile.TILE_SIZE,
-                            i * Tile.TILE_SIZE,
-                            Tile.TILE_SIZE,
-                            Tile.TILE_SIZE);
-                    // Colliding with a brick
-                    if (CheckCollision.isCollision(newHitbox, tileRect)) {
-                        // If brick is ground set onground to true
-                        // if ((newHitbox.y + newHitbox.height > tileRect.y)) {
-                        // onGround = true;
-                        // }
-                        return false;
-                    }
-                }
-            }
-        }
-        return true;
+        // Reset coordinate X of velocity
+        velocity.setY(0.0f);
     }
 
     // set type animations

@@ -6,6 +6,44 @@ import playing.tile.Tile;
 
 public class CheckCollision {
 
+    public static boolean canMoveLeftOrRight(int[][] map, Rectangle newHitbox, WalkDirection playDirection) {
+
+        switch (playDirection) {
+            case LEFT:
+                if (isSolid(map, newHitbox.x, newHitbox.y)
+                        || isSolid(map, newHitbox.x, newHitbox.y + newHitbox.height))
+                    return false;
+                break;
+            case RIGHT:
+                if (isSolid(map, newHitbox.x + newHitbox.width, newHitbox.y + newHitbox.height)
+                        || isSolid(map, newHitbox.x + newHitbox.width, newHitbox.y))
+                    return false;
+                break;
+
+            default:
+                break;
+        }
+
+        // Return can move
+        return true;
+    }
+
+    public static int getHorizontalOffset(Rectangle hitbox, WalkDirection playDirection) {
+
+        // Get current column index
+        int colIndex = hitbox.x / Tile.TILE_SIZE;
+
+        switch (playDirection) {
+            case LEFT:
+                return colIndex * Tile.TILE_SIZE;
+            case RIGHT:
+                return (colIndex + 1) * Tile.TILE_SIZE - hitbox.width - 1;
+
+            default:
+                return 0;
+        }
+    }
+
     public static boolean isCollisionWithFloor(int[][] map, Rectangle newHitbox) {
         return isSolid(map, newHitbox.x, newHitbox.y) || isSolid(map, newHitbox.x + newHitbox.width, newHitbox.y);
     }
@@ -47,9 +85,10 @@ public class CheckCollision {
     }
 
     public static boolean isEntityOnground(int[][] map, Rectangle newHitbox) {
-        
+
         // Check if collided with not solid tile
-        if (isSolid(map, newHitbox.x, newHitbox.y + newHitbox.height) || isSolid(map, newHitbox.x + newHitbox.width, newHitbox.y + newHitbox.height)) {
+        if (isSolid(map, newHitbox.x, newHitbox.y + newHitbox.height)
+                || isSolid(map, newHitbox.x + newHitbox.width, newHitbox.y + newHitbox.height)) {
             // Return not on ground
             return true;
         }
