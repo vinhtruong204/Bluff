@@ -6,22 +6,29 @@ import playing.tile.Tile;
 
 public class CheckCollision {
 
-    public static boolean canMoveLeftOrRight(int[][] map, Rectangle newHitbox, WalkDirection playDirection) {
+    public static boolean canMove(int[][] map, Rectangle newHitbox) {
+        int offset = (newHitbox.y / Tile.TILE_SIZE + 1) * 48 - 10;
 
-        switch (playDirection) {
-            case LEFT:
-                if (isSolid(map, newHitbox.x, newHitbox.y)
-                        || isSolid(map, newHitbox.x, newHitbox.y + newHitbox.height))
-                    return false;
-                break;
-            case RIGHT:
-                if (isSolid(map, newHitbox.x + newHitbox.width, newHitbox.y + newHitbox.height)
-                        || isSolid(map, newHitbox.x + newHitbox.width, newHitbox.y))
-                    return false;
-                break;
+        // Special case
+        if (newHitbox.y > offset && newHitbox.y < offset + 10) {
+            // left
+            if (isSolid(map, newHitbox.x, newHitbox.y + 15))
+                return false;
+            // right
+            if (isSolid(map, newHitbox.x + newHitbox.width, newHitbox.y + 15))
+                return false;
+        }
 
-            default:
-                break;
+        // Left
+        if (isSolid(map, newHitbox.x, newHitbox.y)
+                || isSolid(map, newHitbox.x, newHitbox.y + newHitbox.height)) {
+            return false;
+        }
+
+        // right
+        if (isSolid(map, newHitbox.x + newHitbox.width, newHitbox.y)
+                || isSolid(map, newHitbox.x + newHitbox.width, newHitbox.y + newHitbox.height)) {
+            return false;
         }
 
         // Return can move
@@ -37,15 +44,28 @@ public class CheckCollision {
             case LEFT:
                 return colIndex * Tile.TILE_SIZE;
             case RIGHT:
-                return (colIndex + 1) * Tile.TILE_SIZE - hitbox.width - 1;
+                return (colIndex + 2) * Tile.TILE_SIZE - hitbox.width - 1;
 
             default:
                 return 0;
         }
     }
 
-    public static boolean isCollisionWithFloor(int[][] map, Rectangle newHitbox) {
-        return isSolid(map, newHitbox.x, newHitbox.y) || isSolid(map, newHitbox.x + newHitbox.width, newHitbox.y);
+    public static int getVerticalOffset(Rectangle hitbox, boolean jumping) {
+        int rowIndex = hitbox.y / Tile.TILE_SIZE;
+
+        if (jumping)
+            // jumping
+            return rowIndex * Tile.TILE_SIZE;
+        else
+            // falling
+            return (rowIndex + 2) * Tile.TILE_SIZE - hitbox.height - 1;
+
+    }
+
+    public static boolean isCollisionWithRoof(int[][] map, Rectangle newHitbox) {
+        return isSolid(map, newHitbox.x, newHitbox.y - 1)
+                || isSolid(map, newHitbox.x + newHitbox.width, newHitbox.y - 1);
     }
 
     private static boolean isSolid(int[][] map, float x, float y) {
@@ -84,11 +104,11 @@ public class CheckCollision {
         return true;
     }
 
-    public static boolean isEntityOnground(int[][] map, Rectangle newHitbox) {
+    public static boolean isEntityOnground(int[][] map, Rectangle hitbox) {
 
         // Check if collided with not solid tile
-        if (isSolid(map, newHitbox.x, newHitbox.y + newHitbox.height)
-                || isSolid(map, newHitbox.x + newHitbox.width - 15, newHitbox.y + newHitbox.height)) {
+        if (isSolid(map, hitbox.x, hitbox.y + hitbox.height + 1)
+                || isSolid(map, hitbox.x + hitbox.width, hitbox.y + hitbox.height + 1)) {
             // Return not on ground
             return true;
         }

@@ -34,7 +34,7 @@ public class Player extends GameObject {
     private final int PLAYER_HEIGHT = 58;
 
     // Move
-    private float horizontalSpeed = 5.0f;
+    private float horizontalSpeed;
     private Vector2D velocity;
     private boolean up, left, right;
     private boolean moving;
@@ -102,6 +102,7 @@ public class Player extends GameObject {
     }
 
     private void initMoveHorizontal() {
+        horizontalSpeed = 5.0f;
         currentDirection = WalkDirection.RIGHT;
         moving = false;
     }
@@ -185,6 +186,9 @@ public class Player extends GameObject {
         // Reset vetor velocity and gravity
         moving = false;
 
+        if (!left && !right)
+            return;
+
         // Move right
         if (right && !left) {
             moving = true;
@@ -199,31 +203,29 @@ public class Player extends GameObject {
             currentDirection = WalkDirection.LEFT;
         }
 
-        {
-            // Caculate new hit box
-            Rectangle newHitbox = new Rectangle(
-                    (int) (position.getX() + velocity.getX()),
-                    (int) position.getY(),
-                    size.getWidth(),
-                    size.getHeight());
+        // Caculate new hit box
+        Rectangle newHitbox = new Rectangle(
+                (int) (position.getX() + velocity.getX()),
+                (int) position.getY(),
+                size.getWidth(),
+                size.getHeight());
 
-            // If can move the character
-            if (CheckCollision.canMoveLeftOrRight(map, newHitbox, currentDirection)) {
-                hitBox = newHitbox;
-                position = new Position(hitBox.x, hitBox.y);
+        // If can move the character
+        if (CheckCollision.canMove(map, newHitbox)) {
+            hitBox = newHitbox;
 
-                // Check on ground when move left or right
-                if (!CheckCollision.isEntityOnground(map, newHitbox))
-                    onGround = false;
+            // Check on ground when move left or right
+            onGround = CheckCollision.isEntityOnground(map, hitBox) ? true : false;
 
-            } else {
-                //hitBox.x = CheckCollision.getHorizontalOffset(newHitbox, currentDirection);
-                position = new Position(hitBox.x, hitBox.y);
-            }
+        } else {
+            hitBox.x = CheckCollision.getHorizontalOffset(hitBox, currentDirection);
         }
+
+        position = new Position(hitBox.x, hitBox.y);
 
         // Reset velocity
         velocity.setX(0.0f);
+        // System.out.println(onGround);
     }
 
     private void updateVerticalPos() {
@@ -270,17 +272,21 @@ public class Player extends GameObject {
                 size.getHeight());
 
         // If player is not reach max jump height
-        if (!CheckCollision.isCollisionWithFloor(map, newHitBox)
+        if (!CheckCollision.isCollisionWithRoof(map, newHitBox)
                 && newHitBox.y >= maxHeightJump) {
             hitBox = newHitBox;
-            position = new Position(hitBox.x, hitBox.y);
         } else {
+            if (CheckCollision.isCollisionWithRoof(map, newHitBox))
+                hitBox.y = CheckCollision.getVerticalOffset(hitBox, true);
+
             // falling = true;
             jumping = false;
 
             // Reset the maximum value for jump speed
             jumpSpeed = MAX_JUMP_SPEED;
         }
+
+        position = new Position(hitBox.x, hitBox.y);
 
         // Reset coordinate X of velocity
         velocity.setY(0.0f);
@@ -305,12 +311,14 @@ public class Player extends GameObject {
         // Move down player if player in the air
         if (!CheckCollision.isEntityOnground(map, newHitbox)) {
             hitBox = newHitbox;
-            position = new Position(hitBox.x, hitBox.y);
         } else {
+            hitBox.y = CheckCollision.getVerticalOffset(hitBox, false);
             onGround = true;
             // Reset gravity if player on ground
             gravity = MIN_GRAVITY;
         }
+
+        position = new Position(hitBox.x, hitBox.y);
 
         // Reset coordinate X of velocity
         velocity.setY(0.0f);
@@ -352,7 +360,6 @@ public class Player extends GameObject {
 
         // update tick to render animation
         updateAnimationTick();
-
     }
 
     // Render
