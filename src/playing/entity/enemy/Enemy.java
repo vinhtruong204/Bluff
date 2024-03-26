@@ -110,11 +110,14 @@ public abstract class Enemy extends GameObject {
         this.hitBox = hitBox;
     }
 
+
     protected abstract void loadAni();
 
-    // protected abstract void setAniType();
+    public abstract void update(Rectangle playerHitBox);
 
-    // protected abstract void updateAnimationTick();
+    protected abstract void setAniType();
 
-    // protected abstract void upDatePosition();
+    protected abstract void updateAnimationTick(Rectangle playerHitBox);
+
+   // protected abstract void upDatePosition();
 }

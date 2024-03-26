@@ -23,6 +23,14 @@ public class Level {
 
         tiles[5] = new Tile("img/Tile/Blue.png");
 
+        tiles[6] = new Tile("img/Tile/Blue.png");
+
+        tiles[7] = new Tile("img/Tile/Blue.png");
+
+        tiles[8] = new Tile("img/Tile/Blue.png");
+
+        tiles[9] = new Tile("img/Tile/Blue.png");
+
         tiles[4] = new Tile("img/Tile/Blue.png");
 
         tiles[1] = new Tile("img/Tile/wood01.png");

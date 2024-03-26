@@ -13,6 +13,10 @@ public class EnemyConstants {
         public static final int CUCUMBER_WIDTH = 64;
         public static final int CUCUMBER_HEIGHT = 68;
 
+        //
+        public static final int TOTAL_TYPE = 10;
+        public static final int TOTAL_MAX_FRAME = 36;
+
         // All types animation of the Cucumber enemy
         public static final int IDLE = 0;
         public static final int RUN = 1;
@@ -55,6 +59,13 @@ public class EnemyConstants {
     }
 
     public class WhaleConstants {
+        public static final int WHALE_WIDTH = 68;
+        public static final int WHALE_HEIGHT = 46;
+
+         //
+         public static final int TOTAL_TYPE = 10;
+         public static final int TOTAL_MAX_FRAME = 44;
+        
         // All types animation of the Whale enemy
         public static final int IDLE = 0;
         public static final int RUN = 1;
@@ -97,6 +108,14 @@ public class EnemyConstants {
     }
 
     public class CaptainConstants {
+        public static final int CAPTAIN_WIDTH = 80;
+        public static final int CAPTAIN_HEIGHT = 72;
+
+         //
+         public static final int TOTAL_TYPE = 10;
+         public static final int TOTAL_MAX_FRAME = 32;
+
+
         // All types animation of the Captain enemy
         public static final int IDLE = 0;
         public static final int RUN = 1;
@@ -139,6 +158,14 @@ public class EnemyConstants {
     }
 
     public class BoldPirateConstants {
+        public static final int BOLD_PIRATE_WIDTH = 63;
+        public static final int BOLD_PIRATE_HEIGHT = 67;
+
+        //
+        public static final int TOTAL_TYPE = 9;
+        public static final int TOTAL_MAX_FRAME = 34;
+
+
         // All types animation of the Bold Pirate enemy
         public static final int IDLE = 0;
         public static final int RUN = 1;
@@ -154,7 +181,7 @@ public class EnemyConstants {
         public static int getSpriteAmount(int aniType) {
             switch (aniType) {
                 case IDLE:
-                    return 44;
+                    return 34;
                 case RUN:
                     return 14;
                 case JUMP:
@@ -178,6 +205,13 @@ public class EnemyConstants {
     }
 
     public class BigGuyConstants {
+        public static final int BIG_GUY_WIDTH = 77;
+        public static final int BIG_GUY_HEIGHT = 74;
+
+        //
+        public static final int TOTAL_TYPE = 11;
+        public static final int TOTAL_MAX_FRAME = 38;
+
         // All types animation of the Big Guy enemy
         public static final int IDLE = 0;
         public static final int RUN = 1;

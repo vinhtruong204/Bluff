@@ -26,8 +26,8 @@ public class CheckCollision {
         }
 
         // right
-        if (isSolid(map, newHitbox.x + newHitbox.width, newHitbox.y)
-                || isSolid(map, newHitbox.x + newHitbox.width, newHitbox.y + newHitbox.height)) {
+        if (isSolid(map, newHitbox.x + newHitbox.width + 1, newHitbox.y)
+                || isSolid(map, newHitbox.x + newHitbox.width + 1, newHitbox.y + newHitbox.height)) {
             return false;
         }
 

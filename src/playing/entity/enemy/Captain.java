@@ -1,7 +1,7 @@
 package playing.entity.enemy;
 
-import java.awt.Graphics;
 import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
@@ -9,22 +9,26 @@ import core.Position;
 import core.Size;
 import core.Vector2D;
 import game.Game;
-import helpmethods.*;
-import helpmethods.EnemyConstants.CucumberConstants;
+import helpmethods.CheckCollision;
+import helpmethods.EnemyConstants.CaptainConstants;
+import helpmethods.FlipImage;
+import helpmethods.LoadSave;
+import helpmethods.WalkDirection;
 import playing.camera.Camera;
 import playing.tile.Tile;
 
-public class Cucumber extends Enemy {
-    private int offsetX = 16;
+public class Captain extends Enemy {
+
+    private int offsetX = 11;
     private int offsetY = 5;
     private boolean onGround = false;
 
-    public Cucumber(int enemyType, int i, int j, int[][] map) {
+    public Captain(int enemyType, int i, int j, int[][] map) {
         super(enemyType, map);
 
         // Init position
         position = new Position(Tile.TILE_SIZE * j + offsetX, Tile.TILE_SIZE * i + offsetY);
-        size = new Size(CucumberConstants.CUCUMBER_WIDTH, CucumberConstants.CUCUMBER_HEIGHT);
+        size = new Size(CaptainConstants.CAPTAIN_WIDTH, CaptainConstants.CAPTAIN_HEIGHT);
         hitBox = new Rectangle(
                 (int) position.getX(),
                 (int) position.getY(),
@@ -38,7 +42,7 @@ public class Cucumber extends Enemy {
         initBounds();
 
         // Init animation and direction
-        aniType = CucumberConstants.RUN;
+        aniType = CaptainConstants.RUN;
         direction = WalkDirection.LEFT;
 
         // Load all animation of the enemy
@@ -54,18 +58,18 @@ public class Cucumber extends Enemy {
     @Override
     protected void loadAni() {
         // Max frame of all animation (10 type of animation and 36 frames max)
-        animations = new BufferedImage[CucumberConstants.TOTAL_TYPE][CucumberConstants.TOTAL_MAX_FRAME];
+        animations = new BufferedImage[CaptainConstants.TOTAL_TYPE][CaptainConstants.TOTAL_MAX_FRAME];
 
-        BufferedImage temp = LoadSave.loadImage("img/Enemy/Enemy-Cucumber.png");
+        BufferedImage temp = LoadSave.loadImage("img/Enemy/Enemy-Captain.png");
 
         // Get all animation frames of enemy
         for (int i = 0; i < animations.length; i++) {
             for (int j = 0; j < animations[i].length; j++) {
                 animations[i][j] = temp.getSubimage(
-                        j * CucumberConstants.CUCUMBER_WIDTH,
-                        i * CucumberConstants.CUCUMBER_HEIGHT,
-                        CucumberConstants.CUCUMBER_WIDTH,
-                        CucumberConstants.CUCUMBER_HEIGHT);
+                        j * CaptainConstants.CAPTAIN_WIDTH,
+                        i * CaptainConstants.CAPTAIN_HEIGHT,
+                        CaptainConstants.CAPTAIN_WIDTH,
+                        CaptainConstants.CAPTAIN_HEIGHT);
             }
         }
 
@@ -77,23 +81,22 @@ public class Cucumber extends Enemy {
         if (aniTick > aniSpeed) {
             aniTick = 0;
             aniIndex++;
-            if (aniIndex >= CucumberConstants.getSpriteAmount(aniType)) {
+            if (aniIndex >= CaptainConstants.getSpriteAmount(aniType)) {
 
                 // Set animation type and dead
                 switch (aniType) {
-                    case CucumberConstants.DEAD_GROUND:
+                    case CaptainConstants.DEAD_GROUND:
                         // Set dead to true when play all animation dead
                         dead = true;
                         break;
-                    case CucumberConstants.ATTACK:
+                    case CaptainConstants.ATTACK:
                         // Check if the attack hits the player
                         hitPlayer = CheckCollision.isCollision(hitBox, playerHitbox) ? true : false;
-                        aniType = CucumberConstants.RUN;
-                        aniSpeed = 3;
+                        aniType = CaptainConstants.RUN;
                         break;
-                    case CucumberConstants.DEAD_HIT:
+                    case CaptainConstants.DEAD_HIT:
                         // Set next animation is dead ground
-                        aniType = CucumberConstants.DEAD_GROUND;
+                        aniType = CaptainConstants.DEAD_GROUND;
                         break;
 
                     default:
@@ -112,14 +115,12 @@ public class Cucumber extends Enemy {
         int startAni = aniType;
 
         // Set type of animation depend on current state
-        if (hitting){
-            aniType = CucumberConstants.ATTACK;
-            aniSpeed = 1;
-        }
+        if (hitting)
+            aniType = CaptainConstants.ATTACK;
         else if (health == 0)
-            aniType = CucumberConstants.DEAD_HIT;
+            aniType = CaptainConstants.DEAD_HIT;
         else
-            aniType = CucumberConstants.RUN;
+            aniType = CaptainConstants.RUN;
 
         // If start anitype is not equal to startAni reset aniTick and aniIndex
         if (aniType != startAni) {
@@ -166,7 +167,7 @@ public class Cucumber extends Enemy {
         }
 
         // If enemy colliding with player
-        if (aniType == CucumberConstants.ATTACK) {
+        if (aniType == CaptainConstants.ATTACK) {
             // Change direction from position of player
             direction = playerHitbox.x <= hitBox.x ? WalkDirection.LEFT : WalkDirection.RIGHT;
             return;
@@ -299,7 +300,7 @@ public class Cucumber extends Enemy {
         updateHitting(playerHitbox);
         hitPlayer = false;
 
-        if (aniType != CucumberConstants.DEAD_HIT && aniType != CucumberConstants.DEAD_GROUND) {
+        if (aniType != CaptainConstants.DEAD_HIT && aniType != CaptainConstants.DEAD_GROUND) {
 
             // Update current position and hitBox
             upDatePosition(playerHitbox);
@@ -320,7 +321,7 @@ public class Cucumber extends Enemy {
         BufferedImage temp = animations[aniType][aniIndex];
 
         // If enemy change move direction flip horizontal image
-        if (direction == WalkDirection.RIGHT)
+        if (direction == WalkDirection.LEFT)
             temp = FlipImage.flipImage(temp);
 
         // Check cucumber if screen contain it and render
@@ -346,4 +347,5 @@ public class Cucumber extends Enemy {
     @Override
     public void update() {
     }
+
 }

@@ -13,7 +13,7 @@ import playing.camera.Camera;
 import playing.entity.Player;
 import playing.entity.bomb.Bomb;
 import playing.entity.bomb.BombManager;
-import playing.entity.enemy.Cucumber;
+import playing.entity.enemy.Enemy;
 import playing.entity.enemy.EnemyManager;
 import playing.entity.heart.HeartManager;
 
@@ -58,7 +58,7 @@ public class LevelManager implements StateMethods {
     }
 
     private void setNewMap() {
-        if (enemyManager.getCucumbers().size() == 0) {
+        if (enemyManager.getEnemies().size() == 0) {
             currentLevel++;
             player = new Player(levels[currentLevel].getMap());
             camera = new Camera(levels[currentLevel], player);
@@ -68,20 +68,20 @@ public class LevelManager implements StateMethods {
         }
     }
 
-    // collision bomb with cucumber
+    // collision bomb with enemy
     private void handleBombCollision() {
         Iterator<Bomb> itrBomb = bombManager.getBombs().iterator();
         while (itrBomb.hasNext()) {
             Bomb bomb = (Bomb) itrBomb.next();
             if (bomb.isExploded()) {
 
-                // Collision with cucumber
-                Iterator<Cucumber> itr = enemyManager.getCucumbers().iterator();
+                // Collision with enemy
+                Iterator<Enemy> itr = enemyManager.getEnemies().iterator();
 
                 while (itr.hasNext()) {
-                    Cucumber cucumber = (Cucumber) itr.next();
-                    if (CheckCollision.isCollision(bomb.getHitBox(), cucumber.getHitBox())) {
-                        cucumber.setHealth(cucumber.getHealth() - 1);
+                    Enemy enemy = (Enemy) itr.next();
+                    if (CheckCollision.isCollision(bomb.getHitBox(), enemy.getHitBox())) {
+                        enemy.setHealth(enemy.getHealth() - 1);
                     }
                 }
 
@@ -102,14 +102,13 @@ public class LevelManager implements StateMethods {
         }
     }
 
-    // Delete cucumber dead
-    private void deleteCucumber() {
-        Iterator<Cucumber> itr = enemyManager.getCucumbers().iterator();
+    // Delete enemy dead
+    private void deleteenemy() {
+        Iterator<Enemy> itr = enemyManager.getEnemies().iterator();
 
         while (itr.hasNext()) {
-            Cucumber cucumber = (Cucumber) itr.next();
-            if (cucumber.isDead())
-            {
+            Enemy enemy = (Enemy) itr.next();
+            if (enemy.isDead()) {
                 itr.remove();
             }
         }
@@ -119,7 +118,7 @@ public class LevelManager implements StateMethods {
     private void checkGameOver() {
         if (CheckGameOver.checkGameOver(heartManager.getHeartPlayer().size(),
                 bombManager.getMaxBomb() - bombManager.getNumberOfBombsExploded(), bombManager.getBombs().size(),
-                enemyManager.getCucumbers().size())) {
+                enemyManager.getEnemies().size())) {
             playing.resetAll();
         }
     }
@@ -134,11 +133,11 @@ public class LevelManager implements StateMethods {
         }
 
         handleBombCollision();
-        deleteCucumber();
+        deleteenemy();
 
         enemyManager.update();
         heartManager.update();
-        
+
         checkGameOver();
     }
 

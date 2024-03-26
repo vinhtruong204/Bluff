@@ -8,13 +8,13 @@ import playing.camera.Camera;
 import playing.entity.Player;
 
 public class EnemyManager {
-    private ArrayList<Cucumber> cucumbers;
+    private ArrayList<Enemy> enemies;
 
     private int[][] map;
     private Player player;
 
     public EnemyManager(int[][] map, Player player) {
-        cucumbers = new ArrayList<>();
+        enemies = new ArrayList<>();
         this.map = map;
         this.player = player;
         addCucumber();
@@ -24,15 +24,31 @@ public class EnemyManager {
         for (int i = 0; i < map.length; i++) {
             for (int j = 0; j < map[i].length; j++) {
                 if (map[i][j] == 5) {
-                    cucumbers.add(new Cucumber(EnemyConstants.CUCUMBER, i, j, map));
+                    enemies.add(new Cucumber(EnemyConstants.CUCUMBER, i, j, map));
+                }
+
+                if(map[i][j] == 6){
+                    enemies.add(new Captain(EnemyConstants.CAPTAIN, i, j, map));
+                }
+
+                if(map[i][j] == 7){
+                    enemies.add(new Whale(EnemyConstants.WHALE, i, j, map));
+                }
+
+                if(map[i][j] == 8){
+                    enemies.add(new BoldPirate(EnemyConstants.BOLD_PIRATE, i, j, map));
+                }
+
+                if(map[i][j] == 9)
+                {
+                    enemies.add(new BigGuy(EnemyConstants.BIG_GUY, i, j, map));
                 }
             }
         }
     }
 
-
     public void update() {
-        for (Cucumber cucumber : cucumbers) {
+        for (Enemy cucumber : enemies) {
             cucumber.update(player.getHitBox());
             if (cucumber.isHitPlayer()) {
                 player.setDangerTouch(true);
@@ -41,16 +57,12 @@ public class EnemyManager {
     }
 
     public void render(Graphics g, Camera camera) {
-        for (Cucumber cucumber : cucumbers) {
+        for (Enemy cucumber : enemies) {
             cucumber.render(g, camera);
         }
     }
 
-    public ArrayList<Cucumber> getCucumbers() {
-        return cucumbers;
-    }
-
-    public void setCucumbers(ArrayList<Cucumber> cucumbers) {
-        this.cucumbers = cucumbers;
+    public ArrayList<Enemy> getEnemies() {
+        return enemies;
     }
 }
