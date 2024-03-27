@@ -9,7 +9,7 @@ import helpmethods.WalkDirection;
 import playing.entity.GameObject;
 
 public abstract class Enemy extends GameObject {
-    protected final double MAX_DISTANCE_TRAVEL = 400.0d;;
+    protected final double MAX_DISTANCE_TRAVEL = 800.0d;;
 
     protected int enemyType;
     protected BufferedImage[][] animations;
