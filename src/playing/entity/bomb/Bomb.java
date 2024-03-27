@@ -16,7 +16,11 @@ import playing.entity.GameObject;
 import playing.tile.Tile;
 
 public class Bomb extends GameObject {
-    private final float GRAVITY = 3.0f;
+    // Gravity for bomb
+    private final float MAX_GRAVITY = 6.0f;
+    private final float MIN_GRAVITY = 1.0f;
+    private final float OFFSET_VERTICAL_MOVE = 0.5f;
+
     // Size of bomb
     private final int BOMB_WIDTH = 80;
     private final int BOMB_HEIGHT = 80;
@@ -29,18 +33,20 @@ public class Bomb extends GameObject {
 
     // Align the speed and position of the bomb
     private int aniTick, aniIndex, aniSpeed;
+
     // Align the time
     private long currentTime, afterTime;
 
     // Check exploded
     private boolean exploded;
+
     // Box of Bomb
     private Rectangle hitBox;
 
+    // Move
     private Vector2D velocity;
-    private int[][] map;
     private boolean onGround;
-    //private Rectangle moveBox;
+    private int[][] map;
 
     // Contructor
     public Bomb(int i, int j, int[][] map) {
@@ -51,7 +57,6 @@ public class Bomb extends GameObject {
         size = new Size(BOMB_WIDTH * 2, BOMB_HEIGHT * 2);
         position = new Position(i * Tile.TILE_SIZE - 30.0f, j * Tile.TILE_SIZE);
         hitBox = new Rectangle((int) position.getX(), (int) position.getY(), size.getWidth(), size.getHeight());
-        //moveBox = new Rectangle((int) position.getX() + 64, (int) position.getY() + 64, 32, 32);
 
         // Speed of animation
         aniSpeed = 3;
@@ -67,15 +72,16 @@ public class Bomb extends GameObject {
 
         onGround = false;
 
-        velocity = new Vector2D(0.0f, GRAVITY);
+        // Set velocity gravity for bomb
+        velocity = new Vector2D(0.0f, MIN_GRAVITY);
 
         // Load Animations
         loadAnimations();
     }
 
     private void loadAnimations() {
-        // Allocate
-        animations = new BufferedImage[3][6];
+        // Allocate memory
+        animations = new BufferedImage[3][6]; // 3 bomb states, max 6 frames for each type
 
         // Load all image
         BufferedImage image = LoadSave.loadImage("img/Player/Bomb.png");
@@ -121,14 +127,19 @@ public class Bomb extends GameObject {
         }
     }
 
-    private void upDatePosition() {
+    private void fall() {
+        // Increase gravity if it isn't reach max gravity
+        if (velocity.getY() <= MAX_GRAVITY) {
+            velocity.setY(velocity.getY() + OFFSET_VERTICAL_MOVE);
+        }
+
         // Calculate new pos
         Position newPos = new Position(position.getX() + velocity.getX(), position.getY() + velocity.getY());
         Rectangle newMoveBox = new Rectangle(
                 (int) newPos.getX() + 64,
                 (int) newPos.getY() + 64,
                 32,
-                32);
+                32); // Offset x, y: 64. Image bomb dimension: 32x32
 
         if (!CheckCollision.isEntityOnground(map, newMoveBox)) {
             // Set new position and hit box of bomb
@@ -142,7 +153,7 @@ public class Bomb extends GameObject {
     @Override
     public void update() {
         if (!onGround)
-            upDatePosition();
+            fall();
         setAniType();
         updateAnimationTick();
 
@@ -165,32 +176,8 @@ public class Bomb extends GameObject {
         return aniType;
     }
 
-    public void setAniType(int aniType) {
-        this.aniType = aniType;
-    }
-
-    public long getAfterTime() {
-        return afterTime;
-    }
-
-    public void setAfterTime(long afterTime) {
-        this.afterTime = afterTime;
-    }
-
-    public long getCurrentTime() {
-        return currentTime;
-    }
-
-    public void setCurrentTime(long currentTime) {
-        this.currentTime = currentTime;
-    }
-
     public boolean isExploded() {
         return exploded;
-    }
-
-    public void setExploded(boolean exploded) {
-        this.exploded = exploded;
     }
 
     public Rectangle getHitBox() {
