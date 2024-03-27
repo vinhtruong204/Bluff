@@ -15,7 +15,7 @@ public class EnemyConstants {
 
         //
         public static final int TOTAL_TYPE = 10;
-        public static final int TOTAL_MAX_FRAME = 36;
+        public static final int TOTAL_FRAME = 36;
 
         // All types animation of the Cucumber enemy
         public static final int IDLE = 0;
@@ -64,7 +64,7 @@ public class EnemyConstants {
 
          //
          public static final int TOTAL_TYPE = 10;
-         public static final int TOTAL_MAX_FRAME = 44;
+         public static final int TOTAL_FRAME = 44;
         
         // All types animation of the Whale enemy
         public static final int IDLE = 0;
@@ -113,7 +113,7 @@ public class EnemyConstants {
 
          //
          public static final int TOTAL_TYPE = 10;
-         public static final int TOTAL_MAX_FRAME = 32;
+         public static final int TOTAL_FRAME = 32;
 
 
         // All types animation of the Captain enemy
@@ -163,7 +163,7 @@ public class EnemyConstants {
 
         //
         public static final int TOTAL_TYPE = 9;
-        public static final int TOTAL_MAX_FRAME = 34;
+        public static final int TOTAL_FRAME = 34;
 
 
         // All types animation of the Bold Pirate enemy
@@ -210,7 +210,7 @@ public class EnemyConstants {
 
         //
         public static final int TOTAL_TYPE = 11;
-        public static final int TOTAL_MAX_FRAME = 38;
+        public static final int TOTAL_FRAME = 38;
 
         // All types animation of the Big Guy enemy
         public static final int IDLE = 0;

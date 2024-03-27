@@ -7,7 +7,6 @@ import java.awt.image.BufferedImage;
 
 import core.Position;
 import core.Size;
-import core.Vector2D;
 import game.Game;
 import helpmethods.CheckCollision;
 import helpmethods.EnemyConstants.BigGuyConstants;
@@ -18,12 +17,13 @@ import playing.camera.Camera;
 import playing.tile.Tile;
 
 public class BigGuy extends Enemy {
-    private int offsetX = 5;
-    private int offsetY = 7;
-    private boolean onGround = false;
 
     public BigGuy(int enemyType, int i, int j, int[][] map) {
         super(enemyType, map);
+
+        // Init offset
+        offsetX = 5;
+        offsetY = 7;
 
         // Init position
         position = new Position(Tile.TILE_SIZE * j + offsetX, Tile.TILE_SIZE * i + offsetY);
@@ -48,16 +48,10 @@ public class BigGuy extends Enemy {
         loadAni();
     }
 
-    private void initBounds() {
-        // Expected bound
-        leftBoundX = position.getX() - MAX_DISTANCE_TRAVEL;
-        rightBoundX = position.getX() + MAX_DISTANCE_TRAVEL;
-    }
-
     @Override
     protected void loadAni() {
         // Max frame of all animation (10 type of animation and 36 frames max)
-        animations = new BufferedImage[BigGuyConstants.TOTAL_TYPE][BigGuyConstants.TOTAL_MAX_FRAME];
+        animations = new BufferedImage[BigGuyConstants.TOTAL_TYPE][BigGuyConstants.TOTAL_FRAME];
 
         BufferedImage temp = LoadSave.loadImage("img/Enemy/Enemy-Big Guy.png");
 
@@ -113,13 +107,17 @@ public class BigGuy extends Enemy {
         // Initialize start animation type
         int startAni = aniType;
 
-        // Set type of animation depend on current state
-        if (hitting)
+        // Set type of animation and speed ani depend on current state
+        if (hitting) {
             aniType = BigGuyConstants.ATTACK;
-        else if (health == 0)
+            aniSpeed = 1;
+        } else if (health == 0) {
             aniType = BigGuyConstants.DEAD_HIT;
-        else
+            aniSpeed = 3;
+        } else {
             aniType = BigGuyConstants.RUN;
+            aniSpeed = 3;
+        }
 
         // If start anitype is not equal to startAni reset aniTick and aniIndex
         if (aniType != startAni) {
@@ -127,170 +125,6 @@ public class BigGuy extends Enemy {
             aniTick = 0;
             aniIndex = 0;
         }
-    }
-
-    private void fall() {
-        // Set gravity
-        velocity = new Vector2D(0.0f, enemySpeed);
-
-        // Calculate new position and hibox
-        Position newPosition = new Position(position.getX() + velocity.getX(), position.getY() + velocity.getY());
-        Rectangle newHibox = new Rectangle(
-                (int) newPosition.getX(),
-                (int) newPosition.getY(),
-                size.getWidth() - offsetX * 2,
-                size.getHeight() - offsetY);
-
-        // If enemy is onground
-        if (CheckCollision.isEntityOnground(map, newHibox)) {
-
-            // Set onground is true
-            onGround = true;
-
-            // Reset velocity
-            velocity = new Vector2D(enemySpeed, 0.0f);
-
-        } else {
-            // Update position and hit box if enemy continue in air
-            position = newPosition;
-            hitBox = newHibox;
-        }
-    }
-
-    private void upDatePosition(Rectangle playerHitbox) {
-        // If the enemy in air
-        if (!onGround) {
-            // Move down
-            fall();
-            return;
-        }
-
-        // If enemy colliding with player
-        if (aniType == BigGuyConstants.ATTACK) {
-            // Change direction from position of player
-            direction = playerHitbox.x <= hitBox.x ? WalkDirection.LEFT : WalkDirection.RIGHT;
-            return;
-        }
-
-        // Set velocity depend on current direction
-        setDirection(playerHitbox);
-
-        // Calculate new position and hitbox of enemy
-        Position newPosition = new Position(position.getX() + velocity.getX(),
-                position.getY() + velocity.getY());
-        Rectangle newHibox = new Rectangle(
-                (int) newPosition.getX(),
-                (int) newPosition.getY(),
-                size.getWidth() - offsetX * 2,
-                size.getHeight() - offsetY);
-
-        // Update postion depend on direction and in bounds
-        switch (direction) {
-            case LEFT:
-                if (canMoveLeft(newHibox) && newPosition.getX() >= leftBoundX) {
-                    position = newPosition;
-                    hitBox = newHibox;
-                }
-
-                // Change direction of enemy if can't move left
-                else {
-                    // Get actual max left bound
-                    leftBoundX = position.getX();
-                    direction = WalkDirection.RIGHT;
-                }
-
-                break;
-            case RIGHT:
-                if (canMoveRight(newHibox) && newPosition.getX() <= rightBoundX) {
-                    position = newPosition;
-                    hitBox = newHibox;
-                }
-                // Change direction of enemy if can't move right
-                else {
-                    // Get actual max right bound
-                    rightBoundX = position.getX();
-                    direction = WalkDirection.LEFT;
-                }
-
-                break;
-            default:
-                break;
-        }
-    }
-
-    private void setDirection(Rectangle playerHitbox) {
-        // If enemy saw the player
-        if (seePlayer(playerHitbox)) {
-            // Change direction depend on position of the player
-            direction = playerHitbox.x <= hitBox.x ? WalkDirection.LEFT : WalkDirection.RIGHT;
-        }
-
-        // Set velocity depend on direction of enemy
-        switch (direction) {
-            case LEFT:
-                velocity.setX(-enemySpeed);
-                break;
-            case RIGHT:
-                velocity.setX(enemySpeed);
-                break;
-            default:
-                break;
-        }
-    }
-
-    private boolean seePlayer(Rectangle playerHitbox) {
-        // If within the enemy's line of sight and the distance is less than 1 tile
-        if (Math.abs((playerHitbox.y + playerHitbox.height) - (hitBox.y + hitBox.height)) <= Tile.TILE_SIZE) {
-            if (playerHitbox.x >= leftBoundX && playerHitbox.x <= rightBoundX) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private boolean canMoveLeft(Rectangle newHitbox) {
-        // Get current index
-        int colIndex = newHitbox.x / Tile.TILE_SIZE;
-        int rowIndex = (newHitbox.y + newHitbox.height) / Tile.TILE_SIZE;
-
-        /*
-         * 1: solid tile; 5: enemy; 0: background;
-         * 1 1 1
-         * 0 5 0
-         * 0 1 1
-         */
-
-        // Ahead is a wall or abyss
-        if (CheckCollision.isTileSolid(map[rowIndex][colIndex])
-                || !CheckCollision.isTileSolid(map[rowIndex + 1][colIndex])) {
-            return false;
-        }
-
-        return true;
-    }
-
-    private boolean canMoveRight(Rectangle newHitbox) {
-        int colIndex = (newHitbox.x + newHitbox.width) / Tile.TILE_SIZE;
-        int rowIndex = (newHitbox.y + newHitbox.height) / Tile.TILE_SIZE;
-
-        /*
-         * 1: solid tile; 5: enemy; 0: background;
-         * 1 1 1
-         * 0 5 0
-         * 0 1 1
-         */
-
-        // Ahead is a wall or abyss
-        if (CheckCollision.isTileSolid(map[rowIndex][colIndex])
-                || !CheckCollision.isTileSolid(map[rowIndex + 1][colIndex])) {
-            return false;
-        }
-
-        return true;
-    }
-
-    private void updateHitting(Rectangle playerHitbox) {
-        hitting = CheckCollision.isCollision(hitBox, playerHitbox) ? true : false;
     }
 
     @Override
