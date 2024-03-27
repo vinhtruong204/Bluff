@@ -52,7 +52,7 @@ public class Player extends GameObject {
     // Box of player
     private Rectangle hitBox;
 
-    // Heart hlayer
+    // Heart player
     private static int heartPlayer;
 
     // Boolean danger
@@ -143,8 +143,19 @@ public class Player extends GameObject {
                     }
                     dangerTouch = false;
                 }
-                // System.out.println(aniIndex);
-                aniIndex = 0;
+
+                // Reset ani index depend on type of animation
+                switch (aniType) {
+                    case PlayerAnimationType.JUMP:
+                        aniIndex = PlayerAnimationType.getSpriteAmount(aniType) - 1;
+                        break;
+                    case PlayerAnimationType.FALL:
+                        aniIndex = PlayerAnimationType.getSpriteAmount(aniType) - 1;
+                        break;
+                    default:
+                        aniIndex = 0;
+                        break;
+                }
             }
         }
     }
@@ -162,13 +173,53 @@ public class Player extends GameObject {
             // Reset animation index and animation tick
             aniTick = 0;
             aniIndex = 0;
+
+            // If player is dying
             if (aniType == PlayerAnimationType.DEAD_HIT || aniType == PlayerAnimationType.HIT
                     || aniType == PlayerAnimationType.DEAD_GROUND) {
+                // Reset position to the last checkpoint
                 position.setX(2 * Tile.TILE_SIZE - 20f);
                 position.setY(2 * Tile.TILE_SIZE);
                 hitBox = new Rectangle((int) position.getX(), (int) position.getY(), size.getWidth(), size.getHeight());
             }
         }
+    }
+
+    // set type animations
+    public void setAniType() {
+
+        // Moving
+        if (moving) {
+            aniType = PlayerAnimationType.RUN;
+        }
+
+        // If on ground and not move
+        else if (onGround) {
+            aniType = PlayerAnimationType.IDLE;
+        }
+
+        // If jumping
+        else if (jumping) {
+            aniType = PlayerAnimationType.JUMP;
+        }
+
+        // If falling
+        else if (!onGround && !jumping) {
+            aniType = PlayerAnimationType.FALL;
+        }
+
+        if (dangerTouch && heartPlayer > 1) {
+            aniType = PlayerAnimationType.HIT;
+        }
+
+        if (dangerTouch && heartPlayer == 1) {
+            aniType = PlayerAnimationType.DEAD_HIT;
+        }
+
+        if (dangerTouch && heartPlayer == 0) {
+            aniType = PlayerAnimationType.DEAD_GROUND;
+        }
+
     }
 
     // update possition
@@ -186,19 +237,16 @@ public class Player extends GameObject {
         // Reset vetor velocity and gravity
         moving = false;
 
-        if (!left && !right)
-            return;
-
         // Move right
         if (right && !left) {
-            moving = true;
+            moving = onGround ? true : false;
             velocity.setX(horizontalSpeed);
             currentDirection = WalkDirection.RIGHT;
         }
 
         // Move left
         if (left && !right) {
-            moving = true;
+            moving = onGround ? true : false;
             velocity.setX(-horizontalSpeed);
             currentDirection = WalkDirection.LEFT;
         }
@@ -322,31 +370,6 @@ public class Player extends GameObject {
 
         // Reset coordinate X of velocity
         velocity.setY(0.0f);
-    }
-
-    // set type animations
-    public void setAniType() {
-
-        if (moving && !up) {
-            aniType = PlayerAnimationType.RUN;
-        }
-
-        if (!moving) {
-            aniType = PlayerAnimationType.IDLE;
-        }
-
-        if (dangerTouch && heartPlayer > 1) {
-            aniType = PlayerAnimationType.HIT;
-        }
-
-        if (dangerTouch && heartPlayer == 1) {
-            aniType = PlayerAnimationType.DEAD_HIT;
-        }
-
-        if (dangerTouch && heartPlayer == 0) {
-            aniType = PlayerAnimationType.DEAD_GROUND;
-        }
-
     }
 
     // update
