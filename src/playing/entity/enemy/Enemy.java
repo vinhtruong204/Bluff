@@ -81,16 +81,16 @@ public abstract class Enemy extends GameObject {
                 health = 1;
                 break;
             case EnemyConstants.CAPTAIN:
-                health = 2;
+                health = 1;
                 break;
             case EnemyConstants.BOLD_PIRATE:
-                health = 3;
+                health = 1;
                 break;
             case EnemyConstants.BIG_GUY:
-                health = 4;
+                health = 1;
                 break;
             case EnemyConstants.WHALE:
-                health = 10;
+                health = 1;
                 break;
 
             default:

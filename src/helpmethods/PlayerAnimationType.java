@@ -9,6 +9,8 @@ public class PlayerAnimationType {
     public static final int HIT = 5;
     public static final int DEAD_HIT = 6;
     public static final int DEAD_GROUND = 7;
+    public static final int DOOR_IN = 8;
+    public static final int DOOR_OUT = 9;
 
     public static int getSpriteAmount(int aniType) {
         switch (aniType) {
@@ -28,6 +30,10 @@ public class PlayerAnimationType {
                 return 6;
             case DEAD_GROUND:
                 return 4;
+            case DOOR_IN:
+                return 16;
+            case DOOR_OUT:
+                return 16;
             default:
                 return 0;
         }

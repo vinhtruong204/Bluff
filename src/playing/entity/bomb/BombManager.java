@@ -33,7 +33,7 @@ public class BombManager {
     public void render(Graphics g)
     {
         Draw.drawString(g, "x" + Integer.toString(maxBomb - numberOfBombsExploded), 50, 32);
-        Draw.drawImage(g,bombItem , 15, -8);
+        Draw.drawImage(g,bombItem , -8, 15,48,48);
     }
 
     //getter and setter

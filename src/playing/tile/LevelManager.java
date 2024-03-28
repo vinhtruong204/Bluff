@@ -7,12 +7,13 @@ import java.util.Iterator;
 
 import gamestate.StateMethods;
 import helpmethods.CheckCollision;
-import helpmethods.CheckGameOver;
+import helpmethods.CheckGame;
 import playing.Playing;
 import playing.camera.Camera;
 import playing.entity.Player;
 import playing.entity.bomb.Bomb;
 import playing.entity.bomb.BombManager;
+import playing.entity.door.DoorManager;
 import playing.entity.enemy.Enemy;
 import playing.entity.enemy.EnemyManager;
 import playing.entity.heart.HeartManager;
@@ -27,6 +28,7 @@ public class LevelManager implements StateMethods {
     private EnemyManager enemyManager;
     private HeartManager heartManager;
     private BombManager bombManager;
+    private DoorManager doorManager;
     private Playing playing;
 
     // Constructor
@@ -38,7 +40,8 @@ public class LevelManager implements StateMethods {
         camera = new Camera(levels[currentLevel], player);
         enemyManager = new EnemyManager(levels[currentLevel].getMap(), player);
         heartManager = new HeartManager(levels[currentLevel].getMap(), player);
-        bombManager = new BombManager(20, 0);
+        bombManager = new BombManager(40, 0);
+        doorManager = new DoorManager(levels[currentLevel].getMap(), player);
     }
 
     private void initPathMap() {
@@ -58,13 +61,14 @@ public class LevelManager implements StateMethods {
     }
 
     private void setNewMap() {
-        if (enemyManager.getEnemies().size() == 0) {
+        if (enemyManager.getEnemies().size() == 0 && doorManager.getDoor().isClosed() && player.isWentOut()) {
             currentLevel++;
             player = new Player(levels[currentLevel].getMap());
             camera = new Camera(levels[currentLevel], player);
             enemyManager = new EnemyManager(levels[currentLevel].getMap(), player);
             heartManager = new HeartManager(levels[currentLevel].getMap(), player);
-            bombManager = new BombManager(20, 0);
+            bombManager = new BombManager(40, 0);
+            doorManager = new DoorManager(levels[currentLevel].getMap(), player);
         }
     }
 
@@ -116,10 +120,16 @@ public class LevelManager implements StateMethods {
 
     // Check Game over
     private void checkGameOver() {
-        if (CheckGameOver.checkGameOver(heartManager.getHeartPlayer().size(),
+        if (CheckGame.checkGameOver(heartManager.getHeartPlayer().size(),
                 bombManager.getMaxBomb() - bombManager.getNumberOfBombsExploded(), bombManager.getBombs().size(),
                 enemyManager.getEnemies().size())) {
             playing.resetAll();
+        }
+    }
+
+    private void checkNewScreen() {
+        if (CheckGame.checkGameWin(heartManager.getHeartPlayer().size(), enemyManager.getEnemies().size())) {
+            doorManager.setOpen(true);
         }
     }
 
@@ -137,13 +147,16 @@ public class LevelManager implements StateMethods {
 
         enemyManager.update();
         heartManager.update();
+        doorManager.update();
 
         checkGameOver();
+        checkNewScreen();
     }
 
     // Render Map
     public void render(Graphics g) {
         camera.render(g);
+        doorManager.render(g, camera);
         player.render(g, camera);
         for (Bomb bomb : bombManager.getBombs()) {
             bomb.render(g, camera);

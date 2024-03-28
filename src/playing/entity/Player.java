@@ -66,6 +66,18 @@ public class Player extends GameObject {
     private float jumpSpeed;
     private boolean onGround;
 
+    //
+    private boolean doorIn;
+    private boolean enteredDoor;
+
+    //
+    private boolean doorOut;
+    private boolean wentOut;
+
+    //
+
+    private boolean locked;
+
     // Contructor
     public Player(int[][] map) {
         // Set first position, size
@@ -99,6 +111,15 @@ public class Player extends GameObject {
         // Initialize animation and direction
         aniType = PlayerAnimationType.IDLE;
         aniSpeed = 3; // 20 animation frames per second
+
+        //
+
+        doorIn = false;
+        doorOut = false;
+        enteredDoor = false;
+        wentOut = false;
+
+        locked = false;
     }
 
     private void initMoveHorizontal() {
@@ -116,7 +137,7 @@ public class Player extends GameObject {
     // Load animations
     private void loadAnimations() {
         // Allocate memory
-        animations = new BufferedImage[8][26];
+        animations = new BufferedImage[10][26];
 
         // Load image from file
         BufferedImage image = LoadSave.loadImage("img/Player/Player-Bomb Guy.png");
@@ -151,6 +172,14 @@ public class Player extends GameObject {
                         break;
                     case PlayerAnimationType.FALL:
                         aniIndex = PlayerAnimationType.getSpriteAmount(aniType) - 1;
+                        break;
+                    case PlayerAnimationType.DOOR_IN:
+                        aniIndex = PlayerAnimationType.getSpriteAmount(aniType) - 1;
+                        enteredDoor = true;
+                        break;
+                    case PlayerAnimationType.DOOR_OUT:
+                        aniIndex = PlayerAnimationType.getSpriteAmount(aniType) - 1;
+                        wentOut =  true;
                         break;
                     default:
                         aniIndex = 0;
@@ -188,24 +217,23 @@ public class Player extends GameObject {
     // set type animations
     public void setAniType() {
 
+         // If jumping
+        if (jumping) {
+            aniType = PlayerAnimationType.JUMP;
+        }
+
+        // If falling
+        else if (!onGround) {
+            aniType = PlayerAnimationType.FALL;
+        }
         // Moving
-        if (moving) {
+        else if (moving) {
             aniType = PlayerAnimationType.RUN;
         }
 
         // If on ground and not move
         else if (onGround) {
             aniType = PlayerAnimationType.IDLE;
-        }
-
-        // If jumping
-        else if (jumping) {
-            aniType = PlayerAnimationType.JUMP;
-        }
-
-        // If falling
-        else if (!onGround && !jumping) {
-            aniType = PlayerAnimationType.FALL;
         }
 
         if (dangerTouch && heartPlayer > 1) {
@@ -218,6 +246,14 @@ public class Player extends GameObject {
 
         if (dangerTouch && heartPlayer == 0) {
             aniType = PlayerAnimationType.DEAD_GROUND;
+        }
+
+        if(doorIn == true && !doorOut){
+            aniType = PlayerAnimationType.DOOR_IN;
+        }
+
+        if(doorOut == true){
+            aniType = PlayerAnimationType.DOOR_OUT;
         }
 
     }
@@ -322,7 +358,7 @@ public class Player extends GameObject {
         // If player is not reach max jump height
         if (!CheckCollision.isCollisionWithRoof(map, newHitBox)
                 && newHitBox.y >= maxHeightJump) {
-            hitBox = newHitBox;
+                hitBox = newHitBox;
         } else {
             if (CheckCollision.isCollisionWithRoof(map, newHitBox))
                 hitBox.y = CheckCollision.getVerticalOffset(hitBox, true);
@@ -376,7 +412,9 @@ public class Player extends GameObject {
     @Override
     public void update() {
         // Change position if player is moving
-        updatePosition();
+        if(!locked){
+            updatePosition();
+        }
 
         // Set current type of animation
         setAnimationType();
@@ -429,6 +467,44 @@ public class Player extends GameObject {
 
     public void setHeartPlayer(int heartPlayer) {
         Player.heartPlayer = heartPlayer;
+    }
+
+
+    public boolean isDoorIn() {
+        return doorIn;
+    }
+
+    public void setDoorIn(boolean doorIn) {
+        this.doorIn = doorIn;
+    }
+
+    public boolean isDoorOut() {
+        return doorOut;
+    }
+
+    public void setDoorOut(boolean doorOut) {
+        this.doorOut = doorOut;
+    }
+
+
+    public boolean isEnteredDoor() {
+        return enteredDoor;
+    }
+
+    public void setEnteredDoor(boolean enteredDoor) {
+        this.enteredDoor = enteredDoor;
+    }
+
+    public boolean isWentOut() {
+        return wentOut;
+    }
+
+    public void setWentOut(boolean wentOut) {
+        this.wentOut = wentOut;
+    }
+
+    public void setLocked(boolean locked) {
+        this.locked = locked;
     }
 
 }

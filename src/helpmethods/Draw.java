@@ -29,8 +29,8 @@ public class Draw {
         g.drawString(text,j,i);
     }
 
-    public static void drawImage(Graphics g,BufferedImage image,int i,int j)
+    public static void drawImage(Graphics g,BufferedImage image,int i,int j,int width,int height)
     {
-        g.drawImage(image, j, i,48,48, null);
+        g.drawImage(image, i, j,width,height, null);
     }
 }
