@@ -16,30 +16,30 @@ import playing.tile.Tile;
 
 public class Door extends GameObject {
 
+    // offset of Door
     private int offsetX = 48;
     private int offsetY = 32;
 
-    //
+    // animation of Door
     private BufferedImage[][] animations;
-
-    //
-    private Rectangle hitBox;
-
-    //
     private int aniTick, aniIndex, aniSpeed;
     private int aniType;
+    // box of Door
+    private Rectangle hitBox;
 
-    //
+    // Close Door
     private boolean close;
     private boolean closed;
 
+    // Open Door
     private boolean open;
     private boolean opend;
 
+    //Constructor
     public Door(int i, int j) {
         position = new Position(j * Tile.TILE_SIZE + offsetX , i * Tile.TILE_SIZE - offsetY);
         size = new Size(DoorConstants.DOOR_WIDTH, DoorConstants.DOOR_HEIGHT);
-        hitBox = new Rectangle((int) position.getX() + offsetX * 2 , (int) position.getY() + offsetY * 2 , DoorConstants.DOOR_WIDTH - offsetX * 9 / 3,
+        hitBox = new Rectangle((int) position.getX() + offsetX * 2 , (int) position.getY() + offsetY * 2 , DoorConstants.DOOR_WIDTH - offsetX * 3,
                 DoorConstants.DOOR_HEIGHT - offsetY * 3);
         animations = new BufferedImage[DoorConstants.TOTAL_TYPE][DoorConstants.TOTAL_MAX_FRAME];
         aniTick = 0;
@@ -54,6 +54,7 @@ public class Door extends GameObject {
         loadAnimations();
     }
 
+    //Load animations of Door
     private void loadAnimations() {
         BufferedImage image = LoadSave.loadImage("img/Door/Door.png");
         for (int i = 0; i < animations.length; i++)
@@ -63,6 +64,7 @@ public class Door extends GameObject {
             }
     }
 
+    // Align Time
     private void updateAnimationTick() {
         // 60fps => 20 animation frames rendered
         aniTick++;
@@ -70,6 +72,7 @@ public class Door extends GameObject {
         if (aniTick > aniSpeed) {
             aniTick = 0;
             aniIndex++;
+            //reset indexType
             if (aniIndex >= DoorConstants.getSpriteAmount(aniType)) {
                 if (aniType == DoorConstants.OPEN) {
                     opend = true;
@@ -96,10 +99,10 @@ public class Door extends GameObject {
         if (aniType != startAni) {
             // Reset animation index and animation tick
             if(aniType == DoorConstants.CLOSE){
-                aniTick = 1;
+                aniIndex = 1;
             }
             else aniIndex = 0;
-            aniIndex = 0;
+            aniTick = 0;
         }
     }
 
@@ -108,13 +111,13 @@ public class Door extends GameObject {
         if(open && ! close){
             aniType = DoorConstants.OPEN;
         }
-
         if(close){
             aniType = DoorConstants.CLOSE;
         }
     }
 
 
+    //Update
     @Override
     public void update() {
         if (aniType != DoorConstants.DEFAULT && !closed) {
@@ -123,6 +126,8 @@ public class Door extends GameObject {
         setAnimationType();
     }
 
+
+    //render
     @Override
     public void render(Graphics g, Camera camera) {
         if ((int) position.getX() - camera.getMapStartX() >= 0
@@ -142,7 +147,6 @@ public class Door extends GameObject {
     }
 
     // getter and setter;
-
     public int getAnitype() {
         return aniType;
     }

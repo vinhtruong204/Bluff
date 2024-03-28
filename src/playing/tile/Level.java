@@ -3,19 +3,19 @@ package playing.tile;
 import helpmethods.LoadSave;
 
 public class Level {
-    //Map
+    // Map
     private int map[][];
     private int maxCol, maxRow;
     private Tile[] tiles;
 
-    //Contructor
+    // Contructor
     public Level(String filePath) {
         initTile();
         setIndexMap(filePath);
         map = LoadSave.loadMap(filePath, maxCol, maxRow);
     }
 
-    //init Tile
+    // init Tile
     private void initTile() {
         tiles = new Tile[10];
 
@@ -40,7 +40,7 @@ public class Level {
         tiles[2] = new Tile("img/Tile/wood02.png");
     }
 
-    // set Index of Map 
+    // set Index of Map
     private void setIndexMap(String filePath) {
         switch (filePath) {
             case "Map/Map01.txt":
@@ -65,7 +65,7 @@ public class Level {
         }
     }
 
-    //Getter And Setter
+    // Getter And Setter
     public int[][] getMap() {
         return map;
     }
