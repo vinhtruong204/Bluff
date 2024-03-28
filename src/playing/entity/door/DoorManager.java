@@ -35,7 +35,9 @@ public class DoorManager {
         if (CheckCollision.isCollision(door.getHitBox(), player.getHitBox()) && open) {
             if (!door.isClose()) {
                 door.setOpen(true);
-                player.setDoorIn(true);
+                if(door.isOpend()){
+                    player.setDoorIn(true);
+                }
                 player.setLocked(true);
             }
 
