@@ -2,12 +2,12 @@ package helpmethods;
 
 public class DoorConstants {
     //Width and height of door
-    public static final int DOOR_WIDTH = 176;
-    public static final int DOOR_HEIGHT = 160;
+    public static final int DOOR_WIDTH = 96;
+    public static final int DOOR_HEIGHT = 96;
 
     //numberType and ToTalFrame 
     public static final int TOTAL_TYPE = 3;
-    public static final int TOTAL_MAX_FRAME = 11;
+    public static final int TOTAL_MAX_FRAME = 5;
 
     //status
     public static final int DEFAULT = 0;
@@ -22,9 +22,9 @@ public class DoorConstants {
             case DEFAULT:
                 return 1;
             case OPEN:
-                return 7;
+                return 5;
             case CLOSE:
-                return 8;
+                return 3;
             default:
                 return 0;
         }

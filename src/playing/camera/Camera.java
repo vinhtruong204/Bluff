@@ -92,11 +92,9 @@ public class Camera {
         map_x = 0;
         map_y = 0;
 
-        map_x = mapStartX / Tile.TILE_SIZE;
         x1 = (mapStartX % Tile.TILE_SIZE) * -1;
         x2 = x1 + Game.SCREEN_WIDTH + (x1 == 0 ? 0 : Tile.TILE_SIZE);
 
-        map_y = mapStartY / Tile.TILE_SIZE;
         y1 = (mapStartY % Tile.TILE_SIZE) * -1;
         y2 = y1 + Game.SCREEN_HEIGHT + (y1 == 0 ? 0 : Tile.TILE_SIZE);
     }
@@ -109,6 +107,8 @@ public class Camera {
 
     //Render
     public void render(Graphics g) {
+        map_x = mapStartX / Tile.TILE_SIZE;
+        map_y = mapStartY / Tile.TILE_SIZE;
         for (int i = y1; i < y2; i += Tile.TILE_SIZE) {
             map_x = (mapStartX / Tile.TILE_SIZE);
             for (int j = x1; j < x2; j += Tile.TILE_SIZE) {
