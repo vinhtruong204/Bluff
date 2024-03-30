@@ -123,7 +123,7 @@ public class LevelManager implements StateMethods {
         if (CheckGame.checkGameOver(heartManager.getHeartPlayer().size(),
                 bombManager.getMaxBomb() - bombManager.getNumberOfBombsExploded(), bombManager.getBombs().size(),
                 enemyManager.getEnemies().size())) {
-                playing.resetAll();
+            playing.resetAll();
         }
     }
 
@@ -154,6 +154,7 @@ public class LevelManager implements StateMethods {
     }
 
     // Render Map
+    @Override
     public void render(Graphics g) {
         camera.render(g);
         doorManager.render(g, camera);

@@ -1,6 +1,6 @@
 package core;
 
-public class Position {
+public class Position implements Comparable<Position> {
     private float x;
     private float y;
 
@@ -23,5 +23,15 @@ public class Position {
 
     public float getY() {
         return y;
+    }
+
+    @Override
+    public int compareTo(Position that) {
+        if (this.x == that.x && this.y == that.y)
+            return 0;
+        else if (this.x > that.x)
+            return 1;
+        else
+            return -1;
     }
 }
