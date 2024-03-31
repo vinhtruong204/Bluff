@@ -1,6 +1,7 @@
 package playing.entity.door;
 
 import java.awt.Graphics;
+import java.util.Vector;
 
 import helpmethods.CheckCollision;
 import playing.camera.Camera;
@@ -25,7 +26,7 @@ public class DoorManager {
         for (int i = 0; i < map.length; i++) {
             for (int j = 0; j < map[i].length; j++) {
                 if (map[i][j] == 3) {
-                    door = new Door(i, j);
+                    door = (new Door(i, j));
                 }
             }
         }
@@ -45,9 +46,9 @@ public class DoorManager {
                 door.setClose(true);
             }
 
-            if (door.isClosed()) {
-                player.setDoorOut(true);
-            }
+            // if (door.isClosed()) {
+            //     player.setDoorOut(true);
+            // }
         }
     }
 

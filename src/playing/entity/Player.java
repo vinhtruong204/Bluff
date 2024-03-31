@@ -72,14 +72,13 @@ public class Player extends GameObject {
 
     //
     private boolean doorOut;
-    private boolean wentOut;
 
     //
 
     private boolean locked;
 
     // Contructor
-    public Player(int[][] map) {
+    public Player(int[][] map, boolean doorOut) {
         // Set first position, size
         position = new Position(2 * Tile.TILE_SIZE, 1 * Tile.TILE_SIZE); // Column 2, row 1 TileSize = 48
         size = new Size(PLAYER_WIDTH, PLAYER_HEIGHT);
@@ -115,11 +114,9 @@ public class Player extends GameObject {
         //
 
         doorIn = false;
-        doorOut = false;
+        this.doorOut = doorOut;
         enteredDoor = false;
-        wentOut = false;
-
-        locked = false;
+        locked = doorOut == true ? true : false;
     }
 
     private void initMoveHorizontal() {
@@ -178,8 +175,8 @@ public class Player extends GameObject {
                         enteredDoor = true;
                         break;
                     case PlayerAnimationType.DOOR_OUT:
-                        aniIndex = PlayerAnimationType.getSpriteAmount(aniType) - 1;
-                        wentOut =  true;
+                        doorOut = false;
+                        locked = false;
                         break;
                     default:
                         aniIndex = 0;
@@ -217,7 +214,7 @@ public class Player extends GameObject {
     // set type animations
     public void setAniType() {
 
-         // If jumping
+        // If jumping
         if (jumping) {
             aniType = PlayerAnimationType.JUMP;
         }
@@ -248,11 +245,11 @@ public class Player extends GameObject {
             aniType = PlayerAnimationType.DEAD_GROUND;
         }
 
-        if(doorIn == true && !doorOut){
+        if (doorIn && !doorOut) {
             aniType = PlayerAnimationType.DOOR_IN;
         }
 
-        if(doorOut == true){
+        if (doorOut) {
             aniType = PlayerAnimationType.DOOR_OUT;
         }
 
@@ -358,7 +355,7 @@ public class Player extends GameObject {
         // If player is not reach max jump height
         if (!CheckCollision.isCollisionWithRoof(map, newHitBox)
                 && newHitBox.y >= maxHeightJump) {
-                hitBox = newHitBox;
+            hitBox = newHitBox;
         } else {
             if (CheckCollision.isCollisionWithRoof(map, newHitBox))
                 hitBox.y = CheckCollision.getVerticalOffset(hitBox, true);
@@ -412,7 +409,7 @@ public class Player extends GameObject {
     @Override
     public void update() {
         // Change position if player is moving
-        if(!locked){
+        if (!locked) {
             updatePosition();
         }
 
@@ -469,7 +466,6 @@ public class Player extends GameObject {
         Player.heartPlayer = heartPlayer;
     }
 
-
     public boolean isDoorIn() {
         return doorIn;
     }
@@ -486,21 +482,12 @@ public class Player extends GameObject {
         this.doorOut = doorOut;
     }
 
-
     public boolean isEnteredDoor() {
         return enteredDoor;
     }
 
     public void setEnteredDoor(boolean enteredDoor) {
         this.enteredDoor = enteredDoor;
-    }
-
-    public boolean isWentOut() {
-        return wentOut;
-    }
-
-    public void setWentOut(boolean wentOut) {
-        this.wentOut = wentOut;
     }
 
     public void setLocked(boolean locked) {
