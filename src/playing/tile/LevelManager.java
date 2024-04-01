@@ -18,6 +18,7 @@ import playing.entity.door.DoorManager;
 import playing.entity.enemy.Enemy;
 import playing.entity.enemy.EnemyManager;
 import playing.entity.heart.HeartManager;
+import sound.SoundManager;
 
 public class LevelManager implements StateMethods {
 
@@ -30,6 +31,7 @@ public class LevelManager implements StateMethods {
     private HeartManager heartManager;
     private BombManager bombManager;
     private DoorManager doorManager;
+    private SoundManager soundManager;
     private Playing playing;
 
     // Constructor
@@ -37,12 +39,13 @@ public class LevelManager implements StateMethods {
         initPathMap();
         initMap();
         this.playing = playing;
-        player = new Player(levels[currentLevel].getMap(),false);
+        player = new Player(levels[currentLevel].getMap(), false);
         camera = new Camera(levels[currentLevel], player);
         enemyManager = new EnemyManager(levels[currentLevel].getMap(), player);
         heartManager = new HeartManager(levels[currentLevel].getMap(), player);
         bombManager = new BombManager(40, 0);
         doorManager = new DoorManager(levels[currentLevel].getMap(), player);
+        soundManager = new SoundManager(bombManager);
     }
 
     private void initPathMap() {
@@ -64,12 +67,13 @@ public class LevelManager implements StateMethods {
     private void setNewMap() {
         if (enemyManager.getEnemies().size() == 0 && doorManager.getDoor().isClosed()) {
             currentLevel++;
-            player = new Player(levels[currentLevel].getMap(),true);
+            player = new Player(levels[currentLevel].getMap(), true);
             camera = new Camera(levels[currentLevel], player);
             enemyManager = new EnemyManager(levels[currentLevel].getMap(), player);
             heartManager = new HeartManager(levels[currentLevel].getMap(), player);
             bombManager = new BombManager(40, 0);
             doorManager = new DoorManager(levels[currentLevel].getMap(), player);
+            soundManager = new SoundManager(bombManager);
         }
     }
 
@@ -124,7 +128,7 @@ public class LevelManager implements StateMethods {
         if (CheckGame.checkGameOver(heartManager.getHeartPlayer().size(),
                 bombManager.getMaxBomb() - bombManager.getNumberOfBombsExploded(), bombManager.getBombs().size(),
                 enemyManager.getEnemies().size())) {
-                playing.resetAll();
+            playing.resetAll();
         }
     }
 
@@ -142,6 +146,10 @@ public class LevelManager implements StateMethods {
         for (Bomb bomb : bombManager.getBombs()) {
             bomb.update();
         }
+
+        //
+        soundManager.update();
+        //
 
         handleBombCollision();
         deleteenemy();
