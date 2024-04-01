@@ -45,7 +45,7 @@ public class LevelManager implements StateMethods {
         heartManager = new HeartManager(levels[currentLevel].getMap(), player);
         bombManager = new BombManager(40, 0);
         doorManager = new DoorManager(levels[currentLevel].getMap(), player);
-        soundManager = new SoundManager(bombManager);
+        soundManager = new SoundManager(bombManager,heartManager);
     }
 
     private void initPathMap() {
@@ -73,7 +73,7 @@ public class LevelManager implements StateMethods {
             heartManager = new HeartManager(levels[currentLevel].getMap(), player);
             bombManager = new BombManager(40, 0);
             doorManager = new DoorManager(levels[currentLevel].getMap(), player);
-            soundManager = new SoundManager(bombManager);
+            soundManager = new SoundManager(bombManager,heartManager);
         }
     }
 
