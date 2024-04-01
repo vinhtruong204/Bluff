@@ -9,7 +9,7 @@ import javax.sound.sampled.LineUnavailableException;
 
 import helpmethods.LoadSave;
 
-public class SoundBackground {
+public class SoundBackground implements Sound {
     Clip clip;
 
     public SoundBackground(String filePath) {
@@ -22,14 +22,17 @@ public class SoundBackground {
         }
     }
 
+    @Override
     public void start(){
         clip.start();
     }
 
+    @Override
     public void loop(){
         clip.loop(Clip.LOOP_CONTINUOUSLY);
     }
 
+    @Override
     public void stop(){
         clip.stop();
     }

@@ -9,7 +9,7 @@ import javax.sound.sampled.LineUnavailableException;
 
 import helpmethods.LoadSave;
 
-public class SoundItem {
+public class SoundItem implements Sound {
     Clip clip;
 
     public SoundItem(String filePath) {
@@ -22,14 +22,17 @@ public class SoundItem {
         }
     }
 
+    @Override
     public void start(){
         clip.start();
     }
 
+    @Override
     public void loop(){
         clip.loop(1);
     }
 
+    @Override
     public void stop(){
         clip.stop();
     }
