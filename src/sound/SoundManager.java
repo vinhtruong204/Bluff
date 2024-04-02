@@ -4,8 +4,11 @@ import java.util.Iterator;
 
 import javax.sound.sampled.Clip;
 
+import helpmethods.CheckCollision;
 import playing.entity.bomb.Bomb;
 import playing.entity.bomb.BombManager;
+import playing.entity.heart.Heart;
+import playing.entity.heart.HeartManager;
 
 public class SoundManager {
     // background music
@@ -17,10 +20,13 @@ public class SoundManager {
 
     // Bombmanager
     BombManager bombManager;
+    // HeartManager
+    HeartManager heartManager;
 
     // constructor
-    public SoundManager(BombManager bombManager) {
+    public SoundManager(BombManager bombManager, HeartManager heartManager) {
         this.bombManager = bombManager;
+        this.heartManager = heartManager;
         sBackground = new SoundObject("sound/SoundBackground.wav");
     }
 
@@ -28,6 +34,7 @@ public class SoundManager {
     public void update() {
         SoundBackgroundMusic();
         SoundBomb();
+        SoundHeart();
     }
 
     //
@@ -38,6 +45,19 @@ public class SoundManager {
             if (bomb.isExploded()) {
                 sBomb = new SoundObject("sound/SoundBomb.wav");
                 sBomb.start();
+            }
+        }
+    }
+
+    //
+    public void SoundHeart() {
+        Iterator<Heart> itr = heartManager.getHearts().iterator();
+
+        while (itr.hasNext()) {
+            Heart heart = (Heart) itr.next();
+            if (CheckCollision.isCollision(heart.getHitBox(), heartManager.getPlayer().getHitBox())) {
+                sHeart = new SoundObject("sound/collect.wav");
+                sHeart.start();
             }
         }
     }

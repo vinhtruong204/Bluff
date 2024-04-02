@@ -10,10 +10,12 @@ import playing.camera.Camera;
 import playing.entity.Player;
 
 public class HeartManager {
+
     private ArrayList<Heart> hearts;
     private ArrayList<Heart> heartPlayer;
 
     private int[][] map;
+
     private Player player;
 
     public HeartManager(int[][] map, Player player) {
@@ -63,14 +65,6 @@ public class HeartManager {
         }
     }
 
-    // Getter and Setter
-    public ArrayList<Heart> getHeartPlayer() {
-        return heartPlayer;
-    }
-
-    public void setHeartPlayer(ArrayList<Heart> heartPlayer) {
-        this.heartPlayer = heartPlayer;
-    }
 
     public void update() {
         for (Heart heart : hearts) {
@@ -90,6 +84,23 @@ public class HeartManager {
         for (Heart heart : heartPlayer) {
             heart.render(g);
         }
+    }
+
+     // Getter and Setter
+     public ArrayList<Heart> getHeartPlayer() {
+        return heartPlayer;
+    }
+
+    public void setHeartPlayer(ArrayList<Heart> heartPlayer) {
+        this.heartPlayer = heartPlayer;
+    }
+
+    public ArrayList<Heart> getHearts() {
+        return hearts;
+    }
+
+    public Player getPlayer() {
+        return player;
     }
 
 }
