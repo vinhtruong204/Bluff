@@ -56,7 +56,7 @@ public class SoundObject implements SoundStatus {
     public void resume(){
         // Reposition the clip
         clip.setMicrosecondPosition(clipPosition); 
-        // Start playback from the saved position
+        // playback from the saved position
         clip.start(); 
     }
 }

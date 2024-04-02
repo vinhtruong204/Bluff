@@ -5,7 +5,6 @@ import java.util.Iterator;
 import javax.sound.sampled.Clip;
 
 import helpmethods.CheckCollision;
-import playing.entity.Player;
 import playing.entity.bomb.Bomb;
 import playing.entity.bomb.BombManager;
 import playing.entity.heart.Heart;
@@ -21,11 +20,11 @@ public class SoundManager {
 
     // Bombmanager
     BombManager bombManager;
-    //HeartManager
+    // HeartManager
     HeartManager heartManager;
 
     // constructor
-    public SoundManager(BombManager bombManager,HeartManager heartManager) {
+    public SoundManager(BombManager bombManager, HeartManager heartManager) {
         this.bombManager = bombManager;
         this.heartManager = heartManager;
         sBackground = new SoundObject("sound/SoundBackground.wav");
@@ -51,8 +50,8 @@ public class SoundManager {
     }
 
     //
-    public void SoundHeart(){
-         Iterator<Heart> itr = heartManager.getHearts().iterator();
+    public void SoundHeart() {
+        Iterator<Heart> itr = heartManager.getHearts().iterator();
 
         while (itr.hasNext()) {
             Heart heart = (Heart) itr.next();
