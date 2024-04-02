@@ -73,7 +73,6 @@ public class Player extends GameObject {
 
     //
     private boolean doorOut;
-    private boolean wentOut;
 
     //
 
@@ -83,7 +82,7 @@ public class Player extends GameObject {
     private Position oldPos;
 
     // Contructor
-    public Player(int[][] map) {
+    public Player(int[][] map, boolean doorOut) {
         // Set first position, size
         position = new Position(2 * Tile.TILE_SIZE, 1 * Tile.TILE_SIZE); // Column 2, row 1 TileSize = 48
         oldPos = position;
@@ -120,11 +119,9 @@ public class Player extends GameObject {
         //
 
         doorIn = false;
-        doorOut = false;
+        this.doorOut = doorOut;
         enteredDoor = false;
-        wentOut = false;
-
-        locked = false;
+        locked = doorOut == true ? true : false;
     }
 
     private void initMoveHorizontal() {
@@ -183,8 +180,8 @@ public class Player extends GameObject {
                         enteredDoor = true;
                         break;
                     case PlayerAnimationType.DOOR_OUT:
-                        aniIndex = PlayerAnimationType.getSpriteAmount(aniType) - 1;
-                        wentOut = true;
+                        doorOut = false;
+                        locked =false;
                         break;
                     default:
                         aniIndex = 0;
@@ -253,11 +250,11 @@ public class Player extends GameObject {
             aniType = PlayerAnimationType.DEAD_GROUND;
         }
 
-        if (doorIn == true && !doorOut) {
+        if (doorIn && !doorOut) {
             aniType = PlayerAnimationType.DOOR_IN;
         }
 
-        if (doorOut == true) {
+        if (doorOut) {
             aniType = PlayerAnimationType.DOOR_OUT;
         }
 
@@ -363,7 +360,7 @@ public class Player extends GameObject {
         // If player is not reach max jump height
         if (!CheckCollision.isCollisionWithRoof(map, newHitBox)
                 && newHitBox.y >= maxHeightJump) {
-            hitBox = newHitBox;
+                hitBox = newHitBox;
         } else {
             if (CheckCollision.isCollisionWithRoof(map, newHitBox))
                 hitBox.y = CheckCollision.getVerticalOffset(hitBox, true);
@@ -417,7 +414,7 @@ public class Player extends GameObject {
     @Override
     public void update() {
         // Change position if player is moving
-        if (!locked) {
+        if  (!locked)  {
             oldPos = position;
             updatePosition();
         }
@@ -505,14 +502,6 @@ public class Player extends GameObject {
 
     public void setEnteredDoor(boolean enteredDoor) {
         this.enteredDoor = enteredDoor;
-    }
-
-    public boolean isWentOut() {
-        return wentOut;
-    }
-
-    public void setWentOut(boolean wentOut) {
-        this.wentOut = wentOut;
     }
 
     public void setLocked(boolean locked) {

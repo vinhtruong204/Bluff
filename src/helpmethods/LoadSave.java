@@ -6,6 +6,10 @@ import java.io.File;
 import java.io.FileReader;
 
 import javax.imageio.ImageIO;
+import javax.sound.midi.SoundbankResource;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.spi.AudioFileReader;
 
 public class LoadSave {
     public static BufferedImage loadImage(String filePath) {
@@ -13,6 +17,18 @@ public class LoadSave {
         try {
             return ImageIO.read(new File(filePath));
         } catch (Exception e) {
+            System.err.println("Could not load file from: " + filePath);
+            System.err.println(e.getMessage());
+        }
+        return null;
+    }
+
+
+    public static AudioInputStream loadSound(String filePath)
+    {
+        try{
+            return AudioSystem.getAudioInputStream(new File(filePath));
+        } catch(Exception e){
             System.err.println("Could not load file from: " + filePath);
             System.err.println(e.getMessage());
         }
