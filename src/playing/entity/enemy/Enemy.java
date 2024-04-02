@@ -1,14 +1,19 @@
 package playing.entity.enemy;
 
+import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import core.Position;
 import core.Vector2D;
+import game.Game;
 import helpmethods.CheckCollision;
 import helpmethods.EnemyConstants;
 import helpmethods.EnemyConstants.CucumberConstants;
+import helpmethods.FlipImage;
 import helpmethods.WalkDirection;
+import playing.camera.Camera;
 import playing.entity.GameObject;
 import playing.tile.Tile;
 
@@ -170,7 +175,7 @@ public abstract class Enemy extends GameObject {
                 // Change direction of enemy if can't move left
                 else {
                     // Get actual max left bound
-                    leftBoundX = position.getX();
+                    leftBoundX = hitBox.x;
                     direction = WalkDirection.RIGHT;
                 }
 
@@ -183,7 +188,7 @@ public abstract class Enemy extends GameObject {
                 // Change direction of enemy if can't move right
                 else {
                     // Get actual max right bound
-                    rightBoundX = position.getX();
+                    rightBoundX = hitBox.x + hitBox.width;
                     direction = WalkDirection.LEFT;
                 }
 
@@ -222,7 +227,9 @@ public abstract class Enemy extends GameObject {
     private boolean seePlayer(Rectangle playerHitbox) {
         // If within the enemy's line of sight and the distance is less than 1 tile
         if (Math.abs((playerHitbox.y + playerHitbox.height) - (hitBox.y + hitBox.height)) <= Tile.TILE_SIZE) {
-            if (playerHitbox.x >= leftBoundX && playerHitbox.x <= rightBoundX) {
+            if ((playerHitbox.x >= leftBoundX && playerHitbox.x <= rightBoundX)
+                    || (playerHitbox.x + playerHitbox.width >= leftBoundX
+                            && playerHitbox.x + playerHitbox.width <= rightBoundX)) {
                 return true;
             }
         }
@@ -272,6 +279,36 @@ public abstract class Enemy extends GameObject {
 
     protected void updateHitting(Rectangle playerHitbox) {
         hitting = CheckCollision.isCollision(hitBox, playerHitbox) ? true : false;
+    }
+
+    @Override
+    public void render(Graphics g, Camera camera) {
+
+        // Get current image rendrer
+        BufferedImage temp = animations[aniType][aniIndex];
+
+        // If enemy change move direction flip horizontal image
+        if (direction == WalkDirection.LEFT)
+            temp = FlipImage.flipImage(temp);
+
+        // Check cucumber if screen contain it and render
+        if ((int) position.getX() - camera.getMapStartX() >= 0
+                && (int) position.getX() - camera.getMapStartX() <= Game.SCREEN_WIDTH
+                && (int) position.getY() - camera.getMapStartY() >= 0
+                && (int) position.getY() - camera.getMapStartY() <= Game.SCREEN_HEIGHT) {
+            // Draw hitbox
+            g.setColor(Color.red);
+            g.drawRect(hitBox.x - camera.getMapStartX(), hitBox.y - camera.getMapStartY(), hitBox.width, hitBox.height);
+
+            // Draw cucumber minus offset
+            g.drawImage(
+                    temp,
+                    (int) position.getX() - offsetX - camera.getMapStartX(),
+                    (int) position.getY() - offsetY - camera.getMapStartY(),
+                    size.getWidth(),
+                    size.getHeight(),
+                    null);
+        }
     }
 
     // Getter and Setter
