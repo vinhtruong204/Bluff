@@ -83,15 +83,7 @@ public class Camera {
 
     //Start and end location for image loading
     private void UpdatePositionRenderToMap() {
-        x1 = 0;
-        x2 = 0;
-
-        y1 = 0;
-        y2 = 0;
-
-        map_x = 0;
-        map_y = 0;
-
+        
         x1 = (mapStartX % Tile.TILE_SIZE) * -1;
         x2 = x1 + Game.SCREEN_WIDTH + (x1 == 0 ? 0 : Tile.TILE_SIZE);
 

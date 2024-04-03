@@ -1,6 +1,5 @@
 package playing.entity;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.awt.Rectangle;
@@ -320,8 +319,12 @@ public class Player extends GameObject {
             fall(); // Reset onground in here
         }
 
-        // Move up
-        if (up && !jumping && onGround) {
+        // If player is jumping
+        if (jumping)
+            jump();
+
+        // Jump up
+        else if (up && onGround) {
             // Set onground to false
             onGround = false;
 
@@ -331,11 +334,6 @@ public class Player extends GameObject {
             // Calculate max height jump
             maxHeightJump = position.getY() - MAX_JUMP_HEIGHT;
         }
-
-        // If player is jumping
-        if (jumping)
-            jump();
-
     }
 
     private void jump() {
@@ -429,8 +427,6 @@ public class Player extends GameObject {
     // Render
     @Override
     public void render(Graphics g, Camera camera) {
-        g.setColor(Color.pink);
-        g.drawRect(hitBox.x - camera.getMapStartX(), hitBox.y - camera.getMapStartY(), hitBox.width, hitBox.height);
         BufferedImage temp = animations[aniType][aniIndex];
         if (currentDirection == WalkDirection.LEFT)
             temp = FlipImage.flipImage(temp);

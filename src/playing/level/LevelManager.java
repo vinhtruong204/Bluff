@@ -17,7 +17,6 @@ import playing.entity.door.DoorManager;
 import playing.entity.enemy.Enemy;
 import playing.entity.enemy.EnemyManager;
 import playing.entity.heart.HeartManager;
-import sound.SoundManager;
 
 public class LevelManager implements StateMethods {
 
@@ -30,7 +29,7 @@ public class LevelManager implements StateMethods {
     private HeartManager heartManager;
     private BombManager bombManager;
     private DoorManager doorManager;
-    private SoundManager soundManager;
+    //private SoundManager soundManager;
     private Playing playing;
 
     // Constructor
@@ -44,7 +43,7 @@ public class LevelManager implements StateMethods {
         heartManager = new HeartManager(levels[currentLevel].getMap(), player);
         bombManager = new BombManager(40, 0);
         doorManager = new DoorManager(levels[currentLevel].getMap(), player);
-        soundManager = new SoundManager(bombManager, heartManager);
+        //soundManager = new SoundManager(bombManager, heartManager);
     }
 
     private void initPathMap() {
@@ -79,7 +78,7 @@ public class LevelManager implements StateMethods {
             heartManager = new HeartManager(levels[currentLevel].getMap(), player);
             bombManager = new BombManager(40, 0);
             doorManager = new DoorManager(levels[currentLevel].getMap(), player);
-            soundManager = new SoundManager(bombManager, heartManager);
+            //soundManager = new SoundManager(bombManager, heartManager);
         }
     }
 
@@ -154,7 +153,7 @@ public class LevelManager implements StateMethods {
         }
 
         //
-        soundManager.update();
+        //soundManager.update();
         //
 
         handleBombCollision();

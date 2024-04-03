@@ -47,7 +47,7 @@ public class GamePanel extends JPanel implements Runnable {
     @Override
     public void run() {
         boolean running = true;
-        long next_game_tick = System.nanoTime();
+        long next_game_tick = System.nanoTime(); // current update tick
         int loops = 0;
         next_start_time = System.nanoTime() + 1000000000;
 
