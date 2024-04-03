@@ -2,14 +2,14 @@ package helpmethods;
 
 import java.awt.Rectangle;
 
-import playing.tile.Tile;
+import playing.level.Tile;
 
 public class CheckCollision {
 
     public static boolean canMove(int[][] map, Rectangle newHitbox) {
         int offset = (newHitbox.y / Tile.TILE_SIZE + 1) * 48 - 10;
 
-        // Special case
+        // Special case if player is in the middle of the tile
         if (newHitbox.y > offset && newHitbox.y < offset + 10) {
             // left
             if (isSolid(map, newHitbox.x, newHitbox.y + 15))
@@ -64,7 +64,9 @@ public class CheckCollision {
     }
 
     public static boolean isCollisionWithRoof(int[][] map, Rectangle newHitbox) {
-        return isSolid(map, newHitbox.x, newHitbox.y - 1)
+        // Special case if player is in the middle of the tile
+        return isSolid(map, newHitbox.x + 15, newHitbox.y - 1)
+                || isSolid(map, newHitbox.x, newHitbox.y - 1)
                 || isSolid(map, newHitbox.x + newHitbox.width, newHitbox.y - 1);
     }
 

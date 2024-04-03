@@ -1,4 +1,4 @@
-package playing.tile;
+package playing.level;
 
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
@@ -8,7 +8,6 @@ import java.util.Iterator;
 import gamestate.StateMethods;
 import helpmethods.CheckCollision;
 import helpmethods.CheckGame;
-import helpmethods.PlayerAnimationType;
 import playing.Playing;
 import playing.camera.Camera;
 import playing.entity.Player;
@@ -39,13 +38,13 @@ public class LevelManager implements StateMethods {
         initPathMap();
         initMap();
         this.playing = playing;
-        player = new Player(levels[currentLevel].getMap(), false);
+        player = new Player(levels[currentLevel].getMap(), false, true);
         camera = new Camera(levels[currentLevel], player);
         enemyManager = new EnemyManager(levels[currentLevel].getMap(), player);
         heartManager = new HeartManager(levels[currentLevel].getMap(), player);
         bombManager = new BombManager(40, 0);
         doorManager = new DoorManager(levels[currentLevel].getMap(), player);
-        soundManager = new SoundManager(bombManager);
+        soundManager = new SoundManager(bombManager, heartManager);
     }
 
     private void initPathMap() {
@@ -59,21 +58,28 @@ public class LevelManager implements StateMethods {
 
     private void initMap() {
         levels = new Level[5];
-        for (int i = 0; i < levels.length; i++) {
-            levels[i] = new Level(nameFile[i]);
-        }
+
+        // Initialize first map
+        levels[currentLevel] = new Level(nameFile[currentLevel]);
+
     }
 
     private void setNewMap() {
         if (enemyManager.getEnemies().size() == 0 && doorManager.getDoor().isClosed()) {
+
             currentLevel++;
-            player = new Player(levels[currentLevel].getMap(), true);
+
+            // Load new map
+            levels[currentLevel] = new Level(nameFile[currentLevel]);
+
+            // Set new player, camera, enemy, heart
+            player = new Player(levels[currentLevel].getMap(), true, false);
             camera = new Camera(levels[currentLevel], player);
             enemyManager = new EnemyManager(levels[currentLevel].getMap(), player);
             heartManager = new HeartManager(levels[currentLevel].getMap(), player);
             bombManager = new BombManager(40, 0);
             doorManager = new DoorManager(levels[currentLevel].getMap(), player);
-            soundManager = new SoundManager(bombManager);
+            soundManager = new SoundManager(bombManager, heartManager);
         }
     }
 

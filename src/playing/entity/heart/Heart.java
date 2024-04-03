@@ -11,7 +11,7 @@ import helpmethods.HeartConstants;
 import helpmethods.LoadSave;
 import playing.camera.Camera;
 import playing.entity.GameObject;
-import playing.tile.Tile;
+import playing.level.Tile;
 
 public class Heart extends GameObject {
     private final int HEART_WIDTH = 32;

@@ -7,13 +7,13 @@ import java.awt.image.BufferedImage;
 import core.Position;
 import core.Size;
 import core.Vector2D;
-import game.Game;
+import gamestate.GameState;
 import helpmethods.BombConstants;
 import helpmethods.CheckCollision;
 import helpmethods.LoadSave;
 import playing.camera.Camera;
 import playing.entity.GameObject;
-import playing.tile.Tile;
+import playing.level.Tile;
 
 public class Bomb extends GameObject {
     // Gravity for bomb
@@ -35,7 +35,7 @@ public class Bomb extends GameObject {
     private int aniTick, aniIndex, aniSpeed;
 
     // Align the time
-    private long currentTime, afterTime;
+    private long timePassed, lastTime;
 
     // Check exploded
     private boolean exploded;
@@ -62,11 +62,11 @@ public class Bomb extends GameObject {
         aniSpeed = 3;
 
         // Start timer
-        currentTime = System.currentTimeMillis();
+        timePassed = 0;
+        lastTime = System.currentTimeMillis();
 
         // Init
         aniType = BombConstants.PLACINGBOMB;
-        afterTime = 0;
 
         exploded = false;
 
@@ -92,16 +92,16 @@ public class Bomb extends GameObject {
 
     // set Type Bomb
     private void setAniType() {
+        // Init begin animation type
         int startAni = aniType;
 
-        afterTime = System.currentTimeMillis();
-        if (afterTime - currentTime <= 500) {
+        // Set new type of animation depend on time has passed
+        if (timePassed <= 500) {
             aniType = BombConstants.PLACINGBOMB;
-        } else if (afterTime - currentTime > 500 && afterTime - currentTime <= 3000) {
+        } else if (timePassed > 500 && timePassed <= 3000) {
             aniType = BombConstants.ACTIVATINGBOMB;
-        } else if (afterTime - currentTime > 3000) {
+        } else if (timePassed > 3000) {
             aniType = BombConstants.EXPLODINGBOMB;
-
         }
 
         if (startAni != aniType) {
@@ -152,23 +152,34 @@ public class Bomb extends GameObject {
     // Update
     @Override
     public void update() {
+        // If the bomb not on ground
         if (!onGround)
+            // Falling
             fall();
-        setAniType();
-        updateAnimationTick();
 
+        // Set animation type depend on time passed
+        setAniType();
+
+        // Update ani tick
+        updateAnimationTick();
     }
 
     // Render
     @Override
     public void render(Graphics g, Camera camera) {
+        // If game state is not pause
+        if (GameState.gameState == GameState.PLAYING)
+            timePassed += System.currentTimeMillis() - lastTime;
+
+        // Render the bomb
         if ((int) position.getX() - camera.getMapStartX() >= 0
-                && (int) position.getX() - camera.getMapStartX() <= Game.SCREEN_WIDTH
-                && (int) position.getY() - camera.getMapStartY() >= 0
-                && (int) position.getY() - camera.getMapStartY() <= Game.SCREEN_HEIGHT) {
+                && (int) position.getY() - camera.getMapStartY() >= 0) {
             g.drawImage(animations[aniType][aniIndex], (int) position.getX() - camera.getMapStartX(),
                     (int) position.getY() - camera.getMapStartY(), size.getWidth(), size.getHeight(), null);
         }
+
+        // Update last time
+        lastTime = System.currentTimeMillis();
     }
 
     // Getter and setter

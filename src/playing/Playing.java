@@ -4,8 +4,8 @@ import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
+import playing.level.LevelManager;
 import playing.pause.PauseButton;
-import playing.tile.LevelManager;
 import gamestate.StateMethods;
 
 public class Playing implements StateMethods {
