@@ -168,7 +168,7 @@ public class Bomb extends GameObject {
     @Override
     public void render(Graphics g, Camera camera) {
         // If game state is not pause
-        if (GameState.gameState != GameState.PAUSE)
+        if (GameState.gameState == GameState.PLAYING)
             timePassed += System.currentTimeMillis() - lastTime;
 
         // Render the bomb
