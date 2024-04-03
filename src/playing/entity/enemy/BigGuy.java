@@ -1,19 +1,14 @@
 package playing.entity.enemy;
 
-import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import core.Position;
 import core.Size;
-import game.Game;
 import helpmethods.CheckCollision;
 import helpmethods.EnemyConstants.BigGuyConstants;
-import helpmethods.FlipImage;
 import helpmethods.LoadSave;
 import helpmethods.WalkDirection;
-import playing.camera.Camera;
 import playing.tile.Tile;
 
 public class BigGuy extends Enemy {
@@ -145,36 +140,6 @@ public class BigGuy extends Enemy {
         // Set and update animation
         updateAnimationTick(playerHitbox);
 
-    }
-
-    @Override
-    public void render(Graphics g, Camera camera) {
-
-        // Get current image rendrer
-        BufferedImage temp = animations[aniType][aniIndex];
-
-        // If enemy change move direction flip horizontal image
-        if (direction == WalkDirection.LEFT)
-            temp = FlipImage.flipImage(temp);
-
-        // Check cucumber if screen contain it and render
-        if ((int) position.getX() - camera.getMapStartX() >= 0
-                && (int) position.getX() - camera.getMapStartX() <= Game.SCREEN_WIDTH
-                && (int) position.getY() - camera.getMapStartY() >= 0
-                && (int) position.getY() - camera.getMapStartY() <= Game.SCREEN_HEIGHT) {
-            // Draw hitbox
-            g.setColor(Color.red);
-            g.drawRect(hitBox.x - camera.getMapStartX(), hitBox.y - camera.getMapStartY(), hitBox.width, hitBox.height);
-
-            // Draw cucumber minus offset
-            g.drawImage(
-                    temp,
-                    (int) position.getX() - offsetX - camera.getMapStartX(),
-                    (int) position.getY() - offsetY - camera.getMapStartY(),
-                    size.getWidth(),
-                    size.getHeight(),
-                    null);
-        }
     }
 
     @Override

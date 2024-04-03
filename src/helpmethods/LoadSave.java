@@ -6,10 +6,8 @@ import java.io.File;
 import java.io.FileReader;
 
 import javax.imageio.ImageIO;
-import javax.sound.midi.SoundbankResource;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.spi.AudioFileReader;
 
 public class LoadSave {
     public static BufferedImage loadImage(String filePath) {

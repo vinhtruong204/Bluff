@@ -1,7 +1,6 @@
 package playing.entity.door;
 
 import java.awt.Graphics;
-import java.util.Vector;
 
 import helpmethods.CheckCollision;
 import playing.camera.Camera;

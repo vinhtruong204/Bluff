@@ -8,7 +8,6 @@ import java.util.Iterator;
 import gamestate.StateMethods;
 import helpmethods.CheckCollision;
 import helpmethods.CheckGame;
-import helpmethods.PlayerAnimationType;
 import playing.Playing;
 import playing.camera.Camera;
 import playing.entity.Player;
