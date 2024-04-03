@@ -9,4 +9,6 @@ public interface SoundStatus {
     public void stop();
     //resume
     public void resume();
+    //close
+    public void close();
 }

@@ -30,6 +30,24 @@ public class SoundManager {
         sBackground = new SoundObject("sound/SoundBackground.wav");
     }
 
+    public void stopSound() {
+        if (sBackground != null)
+            sBackground.stop();
+        if (sBomb != null)
+            sBomb.stop();
+        if (sHeart != null)
+            sHeart.stop();
+    }
+
+    public void closeSound() {
+        if (sBackground != null)
+            sBackground.close();
+        if (sBomb != null)
+            sBomb.close();
+        if (sHeart != null)
+            sHeart.close();
+    }
+
     // update
     public void update() {
         SoundBackgroundMusic();
