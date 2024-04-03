@@ -12,7 +12,7 @@ import helpmethods.Draw;
 import helpmethods.LoadSave;
 import playing.camera.Camera;
 import playing.entity.GameObject;
-import playing.tile.Tile;
+import playing.level.Tile;
 
 public class Door extends GameObject {
 

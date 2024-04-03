@@ -7,7 +7,7 @@ import core.Position;
 import core.Size;
 import helpmethods.*;
 import helpmethods.EnemyConstants.CucumberConstants;
-import playing.tile.Tile;
+import playing.level.Tile;
 
 public class Cucumber extends Enemy {
 

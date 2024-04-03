@@ -15,7 +15,7 @@ import helpmethods.FlipImage;
 import helpmethods.WalkDirection;
 import playing.camera.Camera;
 import playing.entity.GameObject;
-import playing.tile.Tile;
+import playing.level.Tile;
 
 public abstract class Enemy extends GameObject {
     protected final double MAX_DISTANCE_TRAVEL = 800.0d;

@@ -2,7 +2,7 @@ package helpmethods;
 
 import java.awt.Rectangle;
 
-import playing.tile.Tile;
+import playing.level.Tile;
 
 public class CheckCollision {
 

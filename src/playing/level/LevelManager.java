@@ -1,4 +1,4 @@
-package playing.tile;
+package playing.level;
 
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
@@ -38,7 +38,7 @@ public class LevelManager implements StateMethods {
         initPathMap();
         initMap();
         this.playing = playing;
-        player = new Player(levels[currentLevel].getMap(), false);
+        player = new Player(levels[currentLevel].getMap(), false, true);
         camera = new Camera(levels[currentLevel], player);
         enemyManager = new EnemyManager(levels[currentLevel].getMap(), player);
         heartManager = new HeartManager(levels[currentLevel].getMap(), player);
@@ -66,7 +66,7 @@ public class LevelManager implements StateMethods {
     private void setNewMap() {
         if (enemyManager.getEnemies().size() == 0 && doorManager.getDoor().isClosed()) {
             currentLevel++;
-            player = new Player(levels[currentLevel].getMap(), true);
+            player = new Player(levels[currentLevel].getMap(), true, false);
             camera = new Camera(levels[currentLevel], player);
             enemyManager = new EnemyManager(levels[currentLevel].getMap(), player);
             heartManager = new HeartManager(levels[currentLevel].getMap(), player);

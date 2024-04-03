@@ -1,4 +1,4 @@
-package playing.tile;
+package playing.level;
 
 import java.awt.image.BufferedImage;
 

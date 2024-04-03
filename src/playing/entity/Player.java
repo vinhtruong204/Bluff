@@ -14,7 +14,7 @@ import helpmethods.LoadSave;
 import helpmethods.PlayerAnimationType;
 import helpmethods.WalkDirection;
 import playing.camera.Camera;
-import playing.tile.Tile;
+import playing.level.Tile;
 
 public class Player extends GameObject {
 
@@ -78,7 +78,7 @@ public class Player extends GameObject {
     private boolean locked;
 
     // Contructor
-    public Player(int[][] map, boolean doorOut) {
+    public Player(int[][] map, boolean doorOut, boolean reset) {
         // Set first position, size
         position = new Position(2 * Tile.TILE_SIZE, 1 * Tile.TILE_SIZE); // Column 2, row 1 TileSize = 48
         size = new Size(PLAYER_WIDTH, PLAYER_HEIGHT);
@@ -93,7 +93,7 @@ public class Player extends GameObject {
         this.map = map;
 
         // Place a heart on the player if this is the first level
-        Player.heartPlayer = Player.heartPlayer > 0 ? Player.heartPlayer : 5;
+        Player.heartPlayer = reset ? 5 : Player.heartPlayer;
 
         // Init danger hurt
         dangerTouch = false;

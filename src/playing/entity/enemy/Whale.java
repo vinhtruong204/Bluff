@@ -7,9 +7,9 @@ import core.Position;
 import core.Size;
 import helpmethods.CheckCollision;
 import helpmethods.EnemyConstants.WhaleConstants;
+import playing.level.Tile;
 import helpmethods.LoadSave;
 import helpmethods.WalkDirection;
-import playing.tile.Tile;
 
 public class Whale extends Enemy {
 

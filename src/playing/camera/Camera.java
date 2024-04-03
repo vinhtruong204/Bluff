@@ -4,8 +4,8 @@ import java.awt.Graphics;
 
 import game.Game;
 import playing.entity.Player;
-import playing.tile.Level;
-import playing.tile.Tile;
+import playing.level.Level;
+import playing.level.Tile;
 
 public class Camera {
 

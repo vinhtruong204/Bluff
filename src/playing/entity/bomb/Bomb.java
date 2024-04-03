@@ -13,7 +13,7 @@ import helpmethods.CheckCollision;
 import helpmethods.LoadSave;
 import playing.camera.Camera;
 import playing.entity.GameObject;
-import playing.tile.Tile;
+import playing.level.Tile;
 
 public class Bomb extends GameObject {
     // Gravity for bomb
