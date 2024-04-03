@@ -5,6 +5,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.Iterator;
 
+import gamestate.GameState;
 import gamestate.StateMethods;
 import helpmethods.CheckCollision;
 import helpmethods.CheckGame;
@@ -135,6 +136,7 @@ public class LevelManager implements StateMethods {
                 bombManager.getMaxBomb() - bombManager.getNumberOfBombsExploded(), bombManager.getBombs().size(),
                 enemyManager.getEnemies().size())) {
             playing.resetAll();
+            soundManager.closeSound();
         }
     }
 
@@ -179,6 +181,9 @@ public class LevelManager implements StateMethods {
         enemyManager.render(g, camera);
         heartManager.render(g, camera);
         bombManager.render(g);
+        if(GameState.gameState == GameState.PAUSE){
+            soundManager.stopSound();
+        }
     }
 
     // Event
