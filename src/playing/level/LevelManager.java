@@ -58,14 +58,21 @@ public class LevelManager implements StateMethods {
 
     private void initMap() {
         levels = new Level[5];
-        for (int i = 0; i < levels.length; i++) {
-            levels[i] = new Level(nameFile[i]);
-        }
+
+        // Initialize first map
+        levels[currentLevel] = new Level(nameFile[currentLevel]);
+
     }
 
     private void setNewMap() {
         if (enemyManager.getEnemies().size() == 0 && doorManager.getDoor().isClosed()) {
+
             currentLevel++;
+
+            // Load new map
+            levels[currentLevel] = new Level(nameFile[currentLevel]);
+
+            // Set new player, camera, enemy, heart
             player = new Player(levels[currentLevel].getMap(), true, false);
             camera = new Camera(levels[currentLevel], player);
             enemyManager = new EnemyManager(levels[currentLevel].getMap(), player);

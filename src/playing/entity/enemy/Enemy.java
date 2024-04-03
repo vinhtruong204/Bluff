@@ -158,7 +158,7 @@ public abstract class Enemy extends GameObject {
         // Calculate new position and hitbox of enemy
         Position newPosition = new Position(position.getX() + velocity.getX(),
                 position.getY() + velocity.getY());
-        Rectangle newHibox = new Rectangle(
+        Rectangle newHitbox = new Rectangle(
                 (int) newPosition.getX(),
                 (int) newPosition.getY(),
                 size.getWidth() - offsetX * 2,
@@ -167,9 +167,10 @@ public abstract class Enemy extends GameObject {
         // Update postion depend on direction and in bounds
         switch (direction) {
             case LEFT:
-                if (canMoveLeft(newHibox) && newPosition.getX() >= leftBoundX) {
+                if (canMove(newHitbox.x, newHitbox.y + newHitbox.height)
+                        && newPosition.getX() >= leftBoundX) {
                     position = newPosition;
-                    hitBox = newHibox;
+                    hitBox = newHitbox;
                 }
 
                 // Change direction of enemy if can't move left
@@ -181,9 +182,10 @@ public abstract class Enemy extends GameObject {
 
                 break;
             case RIGHT:
-                if (canMoveRight(newHibox) && newPosition.getX() <= rightBoundX) {
+                if (canMove(newHitbox.x + newHitbox.width, newHitbox.y + newHitbox.height)
+                        && newPosition.getX() <= rightBoundX) {
                     position = newPosition;
-                    hitBox = newHibox;
+                    hitBox = newHitbox;
                 }
                 // Change direction of enemy if can't move right
                 else {
@@ -236,10 +238,9 @@ public abstract class Enemy extends GameObject {
         return false;
     }
 
-    private boolean canMoveLeft(Rectangle newHitbox) {
-        // Get current index
-        int colIndex = newHitbox.x / Tile.TILE_SIZE;
-        int rowIndex = (newHitbox.y + newHitbox.height) / Tile.TILE_SIZE;
+    private boolean canMove(int x, int y) {
+        int colIndex = x / Tile.TILE_SIZE;
+        int rowIndex = y / Tile.TILE_SIZE;
 
         /*
          * 1: solid tile; 5: enemy; 0: background;
@@ -250,26 +251,8 @@ public abstract class Enemy extends GameObject {
 
         // Ahead is a wall or abyss
         if (CheckCollision.isTileSolid(map[rowIndex][colIndex])
-                || !CheckCollision.isTileSolid(map[rowIndex + 1][colIndex])) {
-            return false;
-        }
-
-        return true;
-    }
-
-    private boolean canMoveRight(Rectangle newHitbox) {
-        int colIndex = (newHitbox.x + newHitbox.width) / Tile.TILE_SIZE;
-        int rowIndex = (newHitbox.y + newHitbox.height) / Tile.TILE_SIZE;
-
-        /*
-         * 1: solid tile; 5: enemy; 0: background;
-         * 1 1 1
-         * 0 5 0
-         * 0 1 1
-         */
-
-        // Ahead is a wall or abyss
-        if (CheckCollision.isTileSolid(map[rowIndex][colIndex])
+                || !CheckCollision.isTileSolid(map[rowIndex + 1][colIndex])
+                || CheckCollision.isTileSolid(map[rowIndex][colIndex])
                 || !CheckCollision.isTileSolid(map[rowIndex + 1][colIndex])) {
             return false;
         }
