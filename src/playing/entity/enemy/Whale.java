@@ -6,6 +6,7 @@ import java.awt.image.BufferedImage;
 import core.Position;
 import core.Size;
 import helpmethods.CheckCollision;
+import helpmethods.EnemyConstants.BoldPirateConstants;
 import helpmethods.EnemyConstants.WhaleConstants;
 import playing.level.Tile;
 import helpmethods.LoadSave;
@@ -31,6 +32,8 @@ public class Whale extends Enemy {
 
         // Initialize boolean dea
         dead = false;
+        // Initialize boolean injured
+        injured = false;
 
         // Init left and right bounds
         initBounds();
@@ -86,6 +89,10 @@ public class Whale extends Enemy {
                         // Set next animation is dead ground
                         aniType = WhaleConstants.DEAD_GROUND;
                         break;
+                    case WhaleConstants.HIT:
+                        aniType = WhaleConstants.RUN;
+                        injured = false;
+                        break;
 
                     default:
                         break;
@@ -106,7 +113,10 @@ public class Whale extends Enemy {
         if (hitting) {
             aniType = WhaleConstants.ATTACK;
             aniSpeed = 1;
-        } else if (health == 0) {
+        }else if(health > 0 && injured){
+            aniType = WhaleConstants.HIT;
+            aniSpeed = 3;
+        }else if (health == 0) {
             aniType = WhaleConstants.DEAD_HIT;
             aniSpeed = 3;
         } else {
@@ -128,7 +138,7 @@ public class Whale extends Enemy {
         updateHitting(playerHitbox);
         hitPlayer = false;
 
-        if (aniType != WhaleConstants.DEAD_HIT && aniType != WhaleConstants.DEAD_GROUND) {
+        if (aniType != WhaleConstants.DEAD_HIT && aniType != WhaleConstants.DEAD_GROUND && aniType != WhaleConstants.HIT) {
 
             // Update current position and hitBox
             upDatePosition(playerHitbox);

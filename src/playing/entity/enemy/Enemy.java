@@ -54,6 +54,9 @@ public abstract class Enemy extends GameObject {
     // dead
     protected boolean dead;
 
+    // Injured
+    protected boolean injured;
+
     //
     protected boolean hitting;
     protected boolean hitPlayer;
@@ -88,19 +91,19 @@ public abstract class Enemy extends GameObject {
     private void initHealth() {
         switch (enemyType) {
             case EnemyConstants.CUCUMBER:
-                health = 1;
+                health = 2;
                 break;
             case EnemyConstants.CAPTAIN:
-                health = 1;
+                health = 2;
                 break;
             case EnemyConstants.BOLD_PIRATE:
-                health = 1;
+                health = 2;
                 break;
             case EnemyConstants.BIG_GUY:
-                health = 1;
+                health = 2;
                 break;
             case EnemyConstants.WHALE:
-                health = 1;
+                health = 2;
                 break;
 
             default:
@@ -339,6 +342,14 @@ public abstract class Enemy extends GameObject {
 
     public void setDead(boolean dead) {
         this.dead = dead;
+    }
+
+    public boolean isInjured() {
+        return injured;
+    }
+
+    public void setInjured(boolean injured) {
+        this.injured = injured;
     }
 
     public Rectangle getHitBox() {

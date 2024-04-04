@@ -67,6 +67,7 @@ public class LevelManager implements StateMethods {
 
     private void setNewMap() {
         if (enemyManager.getEnemies().size() == 0 && doorManager.getDoor().isClosed()) {
+            soundManager.closeSound();
 
             currentLevel++;
 
@@ -80,7 +81,7 @@ public class LevelManager implements StateMethods {
             heartManager = new HeartManager(levels[currentLevel].getMap(), player);
             bombManager = new BombManager(40, 0);
             doorManager = new DoorManager(levels[currentLevel].getMap(), player);
-            // soundManager = new SoundManager(bombManager, heartManager);
+            soundManager = new SoundManager(bombManager, heartManager);
         }
     }
 
@@ -98,6 +99,7 @@ public class LevelManager implements StateMethods {
                     Enemy enemy = (Enemy) itr.next();
                     if (CheckCollision.isCollision(bomb.getHitBox(), enemy.getHitBox())) {
                         enemy.setHealth(enemy.getHealth() - 1);
+                        enemy.setInjured(true);
                     }
                 }
 
@@ -136,7 +138,7 @@ public class LevelManager implements StateMethods {
                 bombManager.getMaxBomb() - bombManager.getNumberOfBombsExploded(), bombManager.getBombs().size(),
                 enemyManager.getEnemies().size())) {
             playing.resetAll();
-            // soundManager.closeSound();
+            soundManager.closeSound();
         }
     }
 

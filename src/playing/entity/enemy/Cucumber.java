@@ -6,6 +6,7 @@ import java.awt.image.BufferedImage;
 import core.Position;
 import core.Size;
 import helpmethods.*;
+import helpmethods.EnemyConstants.BoldPirateConstants;
 import helpmethods.EnemyConstants.CucumberConstants;
 import playing.level.Tile;
 
@@ -29,6 +30,8 @@ public class Cucumber extends Enemy {
 
         // Initialize boolean dea
         dead = false;
+        // Initialize boolean injured
+        injured = false;
 
         // Init left and right bounds
         super.initBounds();
@@ -85,7 +88,10 @@ public class Cucumber extends Enemy {
                         // Set next animation is dead ground
                         aniType = CucumberConstants.DEAD_GROUND;
                         break;
-
+                    case CucumberConstants.HIT:
+                        aniType = CucumberConstants.RUN;
+                        injured = false;
+                        break;
                     default:
                         break;
                 }
@@ -105,7 +111,11 @@ public class Cucumber extends Enemy {
         if (hitting) {
             aniType = CucumberConstants.ATTACK;
             aniSpeed = 1;
-        } else if (health == 0) {
+        }else if(health > 0 && injured){
+            aniType = CucumberConstants.HIT;
+            aniSpeed = 3;
+        }
+        else if (health == 0) {
             aniType = CucumberConstants.DEAD_HIT;
             aniSpeed = 3;
         } else {
@@ -127,7 +137,7 @@ public class Cucumber extends Enemy {
         updateHitting(playerHitbox);
         hitPlayer = false;
 
-        if (aniType != CucumberConstants.DEAD_HIT && aniType != CucumberConstants.DEAD_GROUND) {
+        if (aniType != CucumberConstants.DEAD_HIT && aniType != CucumberConstants.DEAD_GROUND && aniType != CucumberConstants.HIT) {
 
             // Update current position and hitBox
             upDatePosition(playerHitbox);

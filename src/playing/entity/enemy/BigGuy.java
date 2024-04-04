@@ -29,8 +29,10 @@ public class BigGuy extends Enemy {
                 size.getWidth() - offsetX * 2,
                 size.getHeight() - offsetY);
 
-        // Initialize boolean dea
+        // Initialize boolean dead
         dead = false;
+        // Initialize boolean injured
+        injured = false;
 
         // Init left and right bounds
         initBounds();
@@ -86,6 +88,10 @@ public class BigGuy extends Enemy {
                         // Set next animation is dead ground
                         aniType = BigGuyConstants.DEAD_GROUND;
                         break;
+                    case BigGuyConstants.HIT:
+                        injured = false;
+                        aniType = BigGuyConstants.RUN;
+                        break;
 
                     default:
                         break;
@@ -106,7 +112,11 @@ public class BigGuy extends Enemy {
         if (hitting) {
             aniType = BigGuyConstants.ATTACK;
             aniSpeed = 1;
-        } else if (health == 0) {
+        }else if(health > 0 && injured){
+            aniType = BigGuyConstants.HIT;
+            aniSpeed = 3;
+        }
+        else if (health == 0) {
             aniType = BigGuyConstants.DEAD_HIT;
             aniSpeed = 3;
         } else {
@@ -128,7 +138,7 @@ public class BigGuy extends Enemy {
         updateHitting(playerHitbox);
         hitPlayer = false;
 
-        if (aniType != BigGuyConstants.DEAD_HIT && aniType != BigGuyConstants.DEAD_GROUND) {
+        if (aniType != BigGuyConstants.DEAD_HIT && aniType != BigGuyConstants.DEAD_GROUND && aniType != BigGuyConstants.HIT) {
 
             // Update current position and hitBox
             upDatePosition(playerHitbox);

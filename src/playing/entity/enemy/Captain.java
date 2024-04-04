@@ -31,6 +31,8 @@ public class Captain extends Enemy {
 
         // Initialize boolean dea
         dead = false;
+        // Initialize boolean injured
+        injured = false;
 
         // Init left and right bounds
         initBounds();
@@ -86,6 +88,10 @@ public class Captain extends Enemy {
                         // Set next animation is dead ground
                         aniType = CaptainConstants.DEAD_GROUND;
                         break;
+                    case CaptainConstants.HIT:
+                        aniType = CaptainConstants.RUN;
+                        injured = false;
+                        break;
 
                     default:
                         break;
@@ -106,7 +112,11 @@ public class Captain extends Enemy {
         if (hitting) {
             aniType = CaptainConstants.ATTACK;
             aniSpeed = 1;
-        } else if (health == 0) {
+        } else if(health > 0 && injured){
+            aniType = CaptainConstants.HIT;
+            aniSpeed = 3;
+        }
+        else if (health == 0) {
             aniType = CaptainConstants.DEAD_HIT;
             aniSpeed = 3;
         } else {
@@ -128,7 +138,7 @@ public class Captain extends Enemy {
         updateHitting(playerHitbox);
         hitPlayer = false;
 
-        if (aniType != CaptainConstants.DEAD_HIT && aniType != CaptainConstants.DEAD_GROUND) {
+        if (aniType != CaptainConstants.DEAD_HIT && aniType != CaptainConstants.DEAD_GROUND && aniType != CaptainConstants.HIT) {
 
             // Update current position and hitBox
             upDatePosition(playerHitbox);

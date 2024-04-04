@@ -24,6 +24,7 @@ public class LoadSave {
 
     public static AudioInputStream loadSound(String filePath)
     {
+        // Try load Sound from file path
         try{
             return AudioSystem.getAudioInputStream(new File(filePath));
         } catch(Exception e){

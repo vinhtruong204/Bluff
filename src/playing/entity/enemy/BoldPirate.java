@@ -6,6 +6,7 @@ import java.awt.image.BufferedImage;
 import core.Position;
 import core.Size;
 import helpmethods.CheckCollision;
+import helpmethods.EnemyConstants.BigGuyConstants;
 import helpmethods.EnemyConstants.BoldPirateConstants;
 import playing.level.Tile;
 import helpmethods.LoadSave;
@@ -31,6 +32,9 @@ public class BoldPirate extends Enemy {
 
         // Initialize boolean dea
         dead = false;
+        // Initialize boolean injured
+        injured = false;
+
 
         // Init left and right bounds
         initBounds();
@@ -86,6 +90,10 @@ public class BoldPirate extends Enemy {
                         // Set next animation is dead ground
                         aniType = BoldPirateConstants.DEAD_GROUND;
                         break;
+                    case BoldPirateConstants.HIT:
+                        aniType = BoldPirateConstants.RUN;
+                        injured = false;
+                        break;
 
                     default:
                         break;
@@ -106,7 +114,11 @@ public class BoldPirate extends Enemy {
         if (hitting) {
             aniType = BoldPirateConstants.ATTACK;
             aniSpeed = 1;
-        } else if (health == 0) {
+        } else if(health > 0 && injured){
+            aniType = BoldPirateConstants.HIT;
+            aniSpeed = 3;
+        }
+        else if (health == 0) {
             aniType = BoldPirateConstants.DEAD_HIT;
             aniSpeed = 3;
         } else {
@@ -128,7 +140,7 @@ public class BoldPirate extends Enemy {
         updateHitting(playerHitbox);
         hitPlayer = false;
 
-        if (aniType != BoldPirateConstants.DEAD_HIT && aniType != BoldPirateConstants.DEAD_GROUND) {
+        if (aniType != BoldPirateConstants.DEAD_HIT && aniType != BoldPirateConstants.DEAD_GROUND && aniType != BoldPirateConstants.HIT) {
 
             // Update current position and hitBox
             upDatePosition(playerHitbox);

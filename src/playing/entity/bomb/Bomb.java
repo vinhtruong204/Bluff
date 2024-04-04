@@ -81,7 +81,7 @@ public class Bomb extends GameObject {
 
     private void loadAnimations() {
         // Allocate memory
-        animations = new BufferedImage[3][6]; // 3 bomb states, max 6 frames for each type
+        animations = new BufferedImage[BombConstants.TOTAL_TYPE][BombConstants.TOTAL_FRAME]; // 3 bomb states, max 6 frames for each type
 
         // Load all image
         BufferedImage image = LoadSave.loadImage("img/Player/Bomb.png");

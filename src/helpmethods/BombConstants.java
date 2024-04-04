@@ -5,6 +5,10 @@ public class BombConstants {
     public static final int ACTIVATINGBOMB = 1;
     public static final int EXPLODINGBOMB = 2;
 
+    // Total frame and type
+    public static final int TOTAL_TYPE = 3;
+    public static final int TOTAL_FRAME = 6;
+
     public static int getSpriteAmount(int aniType) {
         switch (aniType) {
             case PLACINGBOMB:
