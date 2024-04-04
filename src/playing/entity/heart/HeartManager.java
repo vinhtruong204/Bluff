@@ -21,8 +21,8 @@ public class HeartManager {
     public HeartManager(int[][] map, Player player) {
         this.map = map;
         this.player = player;
-        hearts = new ArrayList<>();
-        heartPlayer = new ArrayList<>();
+        hearts = new ArrayList<Heart>();
+        heartPlayer = new ArrayList<Heart>();
 
         // Add hearts into map
         addHeart();

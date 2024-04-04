@@ -23,7 +23,7 @@ public class BombManager {
     //contructor
     public BombManager(int maxBomb,int numberOfBombsExploded)
     {
-        bombs = new ArrayList<>();
+        bombs = new ArrayList<Bomb>();
         this.maxBomb = maxBomb;
         this.numberOfBombsExploded = numberOfBombsExploded;
         initBombItem();
