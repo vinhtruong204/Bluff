@@ -6,6 +6,7 @@ import java.awt.image.BufferedImage;
 
 import core.Position;
 import core.Vector2D;
+import game.Game;
 import game.GamePanel;
 import helpmethods.CheckCollision;
 import helpmethods.EnemyConstants;
@@ -286,7 +287,9 @@ public abstract class Enemy extends GameObject {
 
         // Check cucumber if screen contain it and render
         if ((int) position.getX() - camera.getMapStartX() >= 0
-                && (int) position.getY() - camera.getMapStartY() >= 0) {
+                && (int) position.getX() - camera.getMapStartX() <= Game.SCREEN_WIDTH
+                && (int) position.getY() - camera.getMapStartY() >= 0
+                && (int) position.getY() - camera.getMapStartY() <= Game.SCREEN_HEIGHT) {
             // Draw hitbox
             // g.setColor(Color.red);
             // g.drawRect(hitBox.x - camera.getMapStartX(), hitBox.y -
