@@ -429,7 +429,7 @@ public class Player extends GameObject {
     public void render(Graphics g, Camera camera) {
         BufferedImage temp = animations[aniType][aniIndex];
         if (currentDirection == WalkDirection.LEFT)
-            temp = FlipImage.flipImage(temp);
+            temp = FlipImage.horizontalflip(temp);
         if (oldPos.compareTo(position) == 0) {
             g.drawImage(temp,
                     (int) position.getX() - camera.getMapStartX(),

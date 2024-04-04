@@ -283,7 +283,7 @@ public abstract class Enemy extends GameObject {
 
         // If enemy change move direction flip horizontal image
         if (direction == WalkDirection.LEFT)
-            temp = FlipImage.flipImage(temp);
+            temp = FlipImage.horizontalflip(temp);
 
         // Check cucumber if screen contain it and render
         if ((int) position.getX() - camera.getMapStartX() >= 0
