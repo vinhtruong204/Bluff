@@ -138,7 +138,7 @@ public class Player extends GameObject {
     // Load animations
     private void loadAnimations() {
         // Allocate memory
-        animations = new BufferedImage[10][26];
+        animations = new BufferedImage[PlayerAnimationType.TOTAL_TYPE][PlayerAnimationType.TOTAL_FRAME];
 
         // Load image from file
         BufferedImage image = LoadSave.loadImage("img/Player/Player-Bomb Guy.png");
@@ -180,7 +180,7 @@ public class Player extends GameObject {
                         break;
                     case PlayerAnimationType.DOOR_OUT:
                         doorOut = false;
-                        locked =false;
+                        locked = false;
                         break;
                     default:
                         aniIndex = 0;
@@ -358,7 +358,7 @@ public class Player extends GameObject {
         // If player is not reach max jump height
         if (!CheckCollision.isCollisionWithRoof(map, newHitBox)
                 && newHitBox.y >= maxHeightJump) {
-                hitBox = newHitBox;
+            hitBox = newHitBox;
         } else {
             if (CheckCollision.isCollisionWithRoof(map, newHitBox))
                 hitBox.y = CheckCollision.getVerticalOffset(hitBox, true);
@@ -412,7 +412,7 @@ public class Player extends GameObject {
     @Override
     public void update() {
         // Change position if player is moving
-        if  (!locked)  {
+        if (!locked) {
             oldPos = position;
             updatePosition();
         }

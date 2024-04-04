@@ -22,15 +22,16 @@ public class Heart extends GameObject {
 
     private int aniTick, aniIndex, aniSpeed;
     private int aniType;
-    public Heart(int anitype,int i, int j) {
+
+    public Heart(int anitype, int i, int j) {
         position = new Position(j * Tile.TILE_SIZE, i * Tile.TILE_SIZE);
         size = new Size(HEART_WIDTH, HEART_HEIGHT);
         hitBox = new Rectangle((int) position.getX(), (int) position.getY(), size.getWidth(), size.getHeight());
-        animations = new BufferedImage[2][22];
-        this.aniType=anitype;
+        animations = new BufferedImage[HeartConstants.TOTAL_TYPE][HeartConstants.TOTAL_FRAME];
+        this.aniType = anitype;
         aniSpeed = 3;
-        aniTick=0;
-        aniIndex=0;
+        aniTick = 0;
+        aniIndex = 0;
         loadAnimations();
     }
 
@@ -55,7 +56,7 @@ public class Heart extends GameObject {
         }
     }
 
-    //Getter and Setter
+    // Getter and Setter
     public Rectangle getHitBox() {
         return hitBox;
     }
@@ -64,13 +65,12 @@ public class Heart extends GameObject {
         this.hitBox = hitBox;
     }
 
-
     @Override
     public void update() {
         updateAnimationTick();
     }
 
-    //Render
+    // Render
     @Override
     public void render(Graphics g, Camera camera) {
         if ((int) position.getX() - camera.getMapStartX() >= 0
@@ -86,6 +86,5 @@ public class Heart extends GameObject {
         g.drawImage(animations[aniType][aniIndex], (int) position.getX(),
                 (int) position.getY(), size.getWidth(), size.getHeight(), null);
     }
-
 
 }

@@ -23,7 +23,10 @@ public class HeartManager {
         this.player = player;
         hearts = new ArrayList<>();
         heartPlayer = new ArrayList<>();
+
+        // Add hearts into map
         addHeart();
+    
         setHeartPlayer();
     }
 
@@ -31,7 +34,7 @@ public class HeartManager {
         for (int i = 0; i < map.length; i++) {
             for (int j = 0; j < map[i].length; j++) {
                 if (map[i][j] == 4) {
-                    hearts.add(new Heart(HeartConstants.redHeart, i, j));
+                    hearts.add(new Heart(HeartConstants.STAND_STILL, i, j));
                 }
             }
         }
@@ -39,7 +42,7 @@ public class HeartManager {
 
     private void setHeartPlayer() {
         for (int i = 0; i < Player.MAX_HEART; i++) {
-            heartPlayer.add(new Heart(HeartConstants.redHeart, 0, (1 * i)));
+            heartPlayer.add(new Heart(HeartConstants.STAND_STILL, 0, (1 * i)));
         }
     }
 
@@ -61,10 +64,9 @@ public class HeartManager {
         if (player.getHeartPlayer() < heartPlayer.size()) {
             heartPlayer.remove(heartPlayer.size() - 1);
         } else if (player.getHeartPlayer() > heartPlayer.size()) {
-            heartPlayer.add(new Heart(HeartConstants.redHeart, 0, 1 * (heartPlayer.size())));
+            heartPlayer.add(new Heart(HeartConstants.STAND_STILL, 0, 1 * (heartPlayer.size())));
         }
     }
-
 
     public void update() {
         for (Heart heart : hearts) {
@@ -86,8 +88,8 @@ public class HeartManager {
         }
     }
 
-     // Getter and Setter
-     public ArrayList<Heart> getHeartPlayer() {
+    // Getter and Setter
+    public ArrayList<Heart> getHeartPlayer() {
         return heartPlayer;
     }
 

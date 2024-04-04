@@ -1,6 +1,11 @@
 package helpmethods;
 
 public class PlayerAnimationType {
+     // Total frame and type
+     public static final int TOTAL_TYPE = 10;
+     public static final int TOTAL_FRAME = 26;
+
+    // All type of animation
     public static final int IDLE = 0;
     public static final int RUN = 1;
     public static final int JUMP = 2;
