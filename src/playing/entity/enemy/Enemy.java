@@ -1,13 +1,12 @@
 package playing.entity.enemy;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import core.Position;
 import core.Vector2D;
-import game.Game;
+import game.GamePanel;
 import helpmethods.CheckCollision;
 import helpmethods.EnemyConstants;
 import helpmethods.EnemyConstants.CucumberConstants;
@@ -50,6 +49,7 @@ public abstract class Enemy extends GameObject {
 
     // Health of enemy
     protected int health;
+
     // dead
     protected boolean dead;
 
@@ -59,6 +59,9 @@ public abstract class Enemy extends GameObject {
 
     // Map
     protected int[][] map;
+
+    // Old pos help render method
+    protected Position oldPos;
 
     public Enemy(int enemyType, int[][] map) {
         this.enemyType = enemyType;
@@ -71,6 +74,7 @@ public abstract class Enemy extends GameObject {
         enemySpeed = NORMAL_SPEED;
         velocity = new Vector2D(enemySpeed, 0);
         traveled = 0.0d;
+        oldPos = new Position(0.0f, 0.0f);
         onGround = false;
 
         // Default animation speed
@@ -111,10 +115,10 @@ public abstract class Enemy extends GameObject {
 
     private void fall() {
         // Set gravity
-        velocity = new Vector2D(0.0f, enemySpeed);
+        velocity.setY(enemySpeed);
 
         // Calculate new position and hibox
-        Position newPosition = new Position(position.getX() + velocity.getX(), position.getY() + velocity.getY());
+        Position newPosition = new Position(position.getX(), position.getY() + velocity.getY());
         Rectangle newHibox = new Rectangle(
                 (int) newPosition.getX(),
                 (int) newPosition.getY(),
@@ -138,12 +142,17 @@ public abstract class Enemy extends GameObject {
     }
 
     protected void upDatePosition(Rectangle playerHitbox) {
+        // Init old pos
+        oldPos = position;
+
         // If the enemy in air
         if (!onGround) {
             // Move down
             fall();
             return;
-        }
+        } else
+            // Reset y axis
+            velocity.setY(0.0f);
 
         // If enemy colliding with player
         if (aniType == CucumberConstants.ATTACK) {
@@ -157,7 +166,7 @@ public abstract class Enemy extends GameObject {
 
         // Calculate new position and hitbox of enemy
         Position newPosition = new Position(position.getX() + velocity.getX(),
-                position.getY() + velocity.getY());
+                position.getY());
         Rectangle newHitbox = new Rectangle(
                 (int) newPosition.getX(),
                 (int) newPosition.getY(),
@@ -187,6 +196,7 @@ public abstract class Enemy extends GameObject {
                     position = newPosition;
                     hitBox = newHitbox;
                 }
+
                 // Change direction of enemy if can't move right
                 else {
                     // Get actual max right bound
@@ -276,21 +286,34 @@ public abstract class Enemy extends GameObject {
 
         // Check cucumber if screen contain it and render
         if ((int) position.getX() - camera.getMapStartX() >= 0
-                && (int) position.getX() - camera.getMapStartX() <= Game.SCREEN_WIDTH
-                && (int) position.getY() - camera.getMapStartY() >= 0
-                && (int) position.getY() - camera.getMapStartY() <= Game.SCREEN_HEIGHT) {
+                && (int) position.getY() - camera.getMapStartY() >= 0) {
             // Draw hitbox
-            g.setColor(Color.red);
-            g.drawRect(hitBox.x - camera.getMapStartX(), hitBox.y - camera.getMapStartY(), hitBox.width, hitBox.height);
+            // g.setColor(Color.red);
+            // g.drawRect(hitBox.x - camera.getMapStartX(), hitBox.y -
+            // camera.getMapStartY(), hitBox.width, hitBox.height);
 
-            // Draw cucumber minus offset
-            g.drawImage(
-                    temp,
-                    (int) position.getX() - offsetX - camera.getMapStartX(),
-                    (int) position.getY() - offsetY - camera.getMapStartY(),
-                    size.getWidth(),
-                    size.getHeight(),
-                    null);
+            // Draw enemy minus offset
+            if (oldPos.compareTo(position) == 0) {
+                g.drawImage(
+                        temp,
+                        (int) position.getX() - offsetX - camera.getMapStartX(),
+                        (int) position.getY() - offsetY - camera.getMapStartY(),
+                        size.getWidth(),
+                        size.getHeight(),
+                        null);
+            } else {
+                g.drawImage(
+                        temp,
+                        (int) (oldPos.getX() + velocity.getX() * GamePanel.interpolation)
+                                - offsetX
+                                - camera.getMapStartX(),
+                        (int) (oldPos.getY() + velocity.getY() * GamePanel.interpolation)
+                                - offsetY
+                                - camera.getMapStartY(),
+                        size.getWidth(),
+                        size.getHeight(),
+                        null);
+            }
         }
     }
 

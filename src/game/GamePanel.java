@@ -11,12 +11,15 @@ import java.awt.Graphics;
 
 public class GamePanel extends JPanel implements Runnable {
     // Update interval for each frame
-    private final double UPDATE_INTERVAL = 1.0d / 60.0d;
+    private final int TICKS_PER_SECOND = 60;
+    private final int SKIP_TICKS = 1000000000 / TICKS_PER_SECOND;
+    private final int MAX_FRAMESKIP = 5;
 
-    private boolean running;
+    // Variable time to help render motion in game
+    public static float interpolation;
 
     // ups: update per second
-    private long nextStartTime;
+    private long next_start_time;
     private int fps, ups;
 
     private Game game;
@@ -43,42 +46,35 @@ public class GamePanel extends JPanel implements Runnable {
 
     @Override
     public void run() {
-        running = true;
-        double accumulator = 0;
-        long currentTime, lastUpdate = System.currentTimeMillis();
-        nextStartTime = System.currentTimeMillis() + 1000;
+        boolean running = true;
+        long next_game_tick = System.nanoTime(); // current update tick
+        int loops = 0;
+        next_start_time = System.nanoTime() + 1000000000;
 
-        // While game is running
         while (running) {
-            currentTime = System.currentTimeMillis();
-            double lastRenderTimeInSeconds = (currentTime - lastUpdate) / 1000.0d;
-            accumulator += lastRenderTimeInSeconds;
-            lastUpdate = currentTime;
-
-            if (accumulator >= UPDATE_INTERVAL) {
-                while (accumulator >= UPDATE_INTERVAL) {
-                    // Update game
-                    update();
-                    accumulator -= UPDATE_INTERVAL;
-                }
-
-                // Call paintComponent function render to screen
-                repaint();
+            loops = 0;
+            
+            while (System.nanoTime() > next_game_tick && loops < MAX_FRAMESKIP) {
+                update();
+                next_game_tick += SKIP_TICKS;
+                loops++;
             }
 
-            // Print fps and ups
+            interpolation = (float) (System.nanoTime() + (long) SKIP_TICKS - next_game_tick)
+                    / (float) (SKIP_TICKS);
+            repaint();
+
             printStats();
         }
-
     }
 
     private void printStats() {
         // Print stats every second
-        if (System.currentTimeMillis() > nextStartTime) {
+        if (System.nanoTime() > next_start_time) {
             System.out.printf("FPS: %d, UPS: %d\n", fps, ups);
             fps = 0;
             ups = 0;
-            nextStartTime = System.currentTimeMillis() + 1000;
+            next_start_time = System.nanoTime() + 1000000000;
         }
 
     }
@@ -95,7 +91,6 @@ public class GamePanel extends JPanel implements Runnable {
 
         // Render game
         game.render(g);
-        // game.inPos();
 
         // Free memory manual
         g.dispose();

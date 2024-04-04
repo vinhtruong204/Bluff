@@ -1,6 +1,5 @@
 package playing.entity;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.awt.Rectangle;
@@ -8,6 +7,7 @@ import java.awt.Rectangle;
 import core.Position;
 import core.Size;
 import core.Vector2D;
+import game.GamePanel;
 import helpmethods.CheckCollision;
 import helpmethods.FlipImage;
 import helpmethods.LoadSave;
@@ -77,10 +77,14 @@ public class Player extends GameObject {
 
     private boolean locked;
 
+    // Old posisition
+    private Position oldPos;
+
     // Contructor
     public Player(int[][] map, boolean doorOut, boolean reset) {
         // Set first position, size
         position = new Position(2 * Tile.TILE_SIZE, 1 * Tile.TILE_SIZE); // Column 2, row 1 TileSize = 48
+        oldPos = position;
         size = new Size(PLAYER_WIDTH, PLAYER_HEIGHT);
 
         // Init hitbox depend on position and size
@@ -176,7 +180,7 @@ public class Player extends GameObject {
                         break;
                     case PlayerAnimationType.DOOR_OUT:
                         doorOut = false;
-                        locked = false;
+                        locked =false;
                         break;
                     default:
                         aniIndex = 0;
@@ -268,6 +272,7 @@ public class Player extends GameObject {
 
     private void updateHorizontalPos() {
         // Reset vetor velocity and gravity
+        velocity.setX(0.0f);
         moving = false;
 
         // Move right
@@ -304,9 +309,6 @@ public class Player extends GameObject {
 
         position = new Position(hitBox.x, hitBox.y);
 
-        // Reset velocity
-        velocity.setX(0.0f);
-        // System.out.println(onGround);
     }
 
     private void updateVerticalPos() {
@@ -317,8 +319,12 @@ public class Player extends GameObject {
             fall(); // Reset onground in here
         }
 
-        // Move up
-        if (up && !jumping && onGround) {
+        // If player is jumping
+        if (jumping)
+            jump();
+
+        // Jump up
+        else if (up && onGround) {
             // Set onground to false
             onGround = false;
 
@@ -328,14 +334,11 @@ public class Player extends GameObject {
             // Calculate max height jump
             maxHeightJump = position.getY() - MAX_JUMP_HEIGHT;
         }
-
-        // If player is jumping
-        if (jumping)
-            jump();
-
     }
 
     private void jump() {
+        // Reset coordinate X of velocity
+        velocity.setY(0.0f);
 
         // Set velocity jump
         velocity.setY(-jumpSpeed);
@@ -355,7 +358,7 @@ public class Player extends GameObject {
         // If player is not reach max jump height
         if (!CheckCollision.isCollisionWithRoof(map, newHitBox)
                 && newHitBox.y >= maxHeightJump) {
-            hitBox = newHitBox;
+                hitBox = newHitBox;
         } else {
             if (CheckCollision.isCollisionWithRoof(map, newHitBox))
                 hitBox.y = CheckCollision.getVerticalOffset(hitBox, true);
@@ -369,11 +372,10 @@ public class Player extends GameObject {
 
         position = new Position(hitBox.x, hitBox.y);
 
-        // Reset coordinate X of velocity
-        velocity.setY(0.0f);
     }
 
     private void fall() {
+
         // Set vector gravity
         velocity.setY(gravity);
 
@@ -397,19 +399,21 @@ public class Player extends GameObject {
             onGround = true;
             // Reset gravity if player on ground
             gravity = MIN_GRAVITY;
+
+            // Reset coordinate X of velocity
+            velocity.setY(0.0f);
         }
 
         position = new Position(hitBox.x, hitBox.y);
 
-        // Reset coordinate X of velocity
-        velocity.setY(0.0f);
     }
 
     // update
     @Override
     public void update() {
         // Change position if player is moving
-        if (!locked) {
+        if  (!locked)  {
+            oldPos = position;
             updatePosition();
         }
 
@@ -423,17 +427,23 @@ public class Player extends GameObject {
     // Render
     @Override
     public void render(Graphics g, Camera camera) {
-        g.setColor(Color.pink);
-        g.drawRect(hitBox.x - camera.getMapStartX(), hitBox.y - camera.getMapStartY(), hitBox.width, hitBox.height);
         BufferedImage temp = animations[aniType][aniIndex];
         if (currentDirection == WalkDirection.LEFT)
             temp = FlipImage.flipImage(temp);
-        g.drawImage(temp,
-                (int) position.getX() - camera.getMapStartX(),
-                (int) position.getY() - camera.getMapStartY(),
-                size.getWidth(),
-                size.getHeight(),
-                null);
+        if (oldPos.compareTo(position) == 0) {
+            g.drawImage(temp,
+                    (int) position.getX() - camera.getMapStartX(),
+                    (int) position.getY() - camera.getMapStartY(),
+                    size.getWidth(),
+                    size.getHeight(),
+                    null);
+        } else
+            g.drawImage(temp,
+                    (int) (oldPos.getX() + velocity.getX() * GamePanel.interpolation) - camera.getMapStartX(),
+                    (int) (oldPos.getY() + velocity.getY() * GamePanel.interpolation) - camera.getMapStartY(),
+                    size.getWidth(),
+                    size.getHeight(),
+                    null);
     }
 
     // Getter and Setter
