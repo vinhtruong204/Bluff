@@ -6,7 +6,6 @@ import java.awt.image.BufferedImage;
 import core.Position;
 import core.Size;
 import helpmethods.CheckCollision;
-import helpmethods.EnemyConstants.BigGuyConstants;
 import helpmethods.EnemyConstants.BoldPirateConstants;
 import playing.level.Tile;
 import helpmethods.LoadSave;

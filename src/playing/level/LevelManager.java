@@ -98,8 +98,10 @@ public class LevelManager implements StateMethods {
                 while (itr.hasNext()) {
                     Enemy enemy = (Enemy) itr.next();
                     if (CheckCollision.isCollision(bomb.getHitBox(), enemy.getHitBox())) {
-                        enemy.setHealth(enemy.getHealth() - 1);
-                        enemy.setInjured(true);
+                        if (enemy.getHealth() > 0) {
+                            enemy.setHealth(enemy.getHealth() - 1);
+                            enemy.setInjured(true);
+                        }
                     }
                 }
 

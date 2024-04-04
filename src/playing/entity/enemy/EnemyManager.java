@@ -14,7 +14,7 @@ public class EnemyManager {
     private Player player;
 
     public EnemyManager(int[][] map, Player player) {
-        enemies = new ArrayList<>();
+        enemies = new ArrayList<Enemy>();
         this.map = map;
         this.player = player;
         addCucumber();
