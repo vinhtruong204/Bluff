@@ -59,4 +59,9 @@ public class SoundObject implements SoundStatus {
         // playback from the saved position
         clip.start(); 
     }
+
+    @Override
+    public void close() {
+        clip.close();
+    }
 }
