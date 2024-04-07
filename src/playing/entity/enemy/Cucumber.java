@@ -111,11 +111,10 @@ public class Cucumber extends Enemy {
         if (hitting) {
             aniType = CucumberConstants.ATTACK;
             aniSpeed = 1;
-        }else if(health > 0 && injured){
+        } else if (health > 0 && injured) {
             aniType = CucumberConstants.HIT;
             aniSpeed = 3;
-        }
-        else if (health == 0) {
+        } else if (health == 0) {
             aniType = CucumberConstants.DEAD_HIT;
             aniSpeed = 3;
         } else {
@@ -137,7 +136,8 @@ public class Cucumber extends Enemy {
         updateHitting(playerHitbox);
         hitPlayer = false;
 
-        if (aniType != CucumberConstants.DEAD_HIT && aniType != CucumberConstants.DEAD_GROUND && aniType != CucumberConstants.HIT) {
+        if (aniType != CucumberConstants.DEAD_HIT && aniType != CucumberConstants.DEAD_GROUND
+                && aniType != CucumberConstants.HIT) {
 
             // Update current position and hitBox
             upDatePosition(playerHitbox);

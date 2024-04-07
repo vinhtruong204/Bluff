@@ -68,9 +68,7 @@ public class LevelManager implements StateMethods {
     private void setNewMap() {
         if (enemyManager.getEnemies().size() == 0 && doorManager.getDoor().isClosed()) {
             soundManager.closeSound();
-
             currentLevel++;
-
             // Load new map
             levels[currentLevel] = new Level(nameFile[currentLevel]);
 
@@ -91,7 +89,6 @@ public class LevelManager implements StateMethods {
         while (itrBomb.hasNext()) {
             Bomb bomb = (Bomb) itrBomb.next();
             if (bomb.isExploded()) {
-
                 // Collision with enemy
                 Iterator<Enemy> itr = enemyManager.getEnemies().iterator();
 

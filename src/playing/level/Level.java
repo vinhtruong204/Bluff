@@ -48,11 +48,12 @@ public class Level {
                 maxRow = 14;
                 break;
             case "Map/Map02.txt":
-                maxCol = 21;
-                maxRow = 23;
+                maxCol = 42;
+                maxRow = 24;
                 break;
             case "Map/Map03.txt":
-
+                maxCol = 42;
+                maxRow = 24;
                 break;
             case "Map/Map04.txt":
 
