@@ -2,6 +2,7 @@ package playing.entity.enemy;
 
 import java.awt.Graphics;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import helpmethods.EnemyConstants;
 import playing.camera.Camera;
@@ -27,20 +28,19 @@ public class EnemyManager {
                     enemies.add(new Cucumber(EnemyConstants.CUCUMBER, i, j, map));
                 }
 
-                if(map[i][j] == 6){
+                if (map[i][j] == 6) {
                     enemies.add(new Captain(EnemyConstants.CAPTAIN, i, j, map));
                 }
 
-                if(map[i][j] == 7){
+                if (map[i][j] == 7) {
                     enemies.add(new Whale(EnemyConstants.WHALE, i, j, map));
                 }
 
-                if(map[i][j] == 8){
+                if (map[i][j] == 8) {
                     enemies.add(new BoldPirate(EnemyConstants.BOLD_PIRATE, i, j, map));
                 }
 
-                if(map[i][j] == 9)
-                {
+                if (map[i][j] == 9) {
                     enemies.add(new BigGuy(EnemyConstants.BIG_GUY, i, j, map));
                 }
             }
@@ -48,17 +48,21 @@ public class EnemyManager {
     }
 
     public void update() {
-        for (Enemy cucumber : enemies) {
-            cucumber.update(player.getHitBox());
-            if (cucumber.isHitPlayer()) {
+        Iterator<Enemy> itrEnemy = enemies.iterator();
+        while (itrEnemy.hasNext()) {
+            Enemy enemy = (Enemy)itrEnemy.next();
+            enemy.update(player.getHitBox());
+            if (enemy.isHitPlayer()) {
                 player.setDangerTouch(true);
             }
         }
     }
 
     public void render(Graphics g, Camera camera) {
-        for (Enemy cucumber : enemies) {
-            cucumber.render(g, camera);
+        Iterator<Enemy> itrEnemy = enemies.iterator();
+        while (itrEnemy.hasNext()) {
+            Enemy enemy = (Enemy)itrEnemy.next();
+            enemy.render(g, camera);
         }
     }
 

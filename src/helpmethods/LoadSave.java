@@ -21,22 +21,18 @@ public class LoadSave {
         return null;
     }
 
-
-    public static AudioInputStream loadSound(String filePath)
-    {
+    public static AudioInputStream loadSound(String filePath) {
         // Try load Sound from file path
-        try{
+        try {
             return AudioSystem.getAudioInputStream(new File(filePath));
-        } catch(Exception e){
+        } catch (Exception e) {
             System.err.println("Could not load file from: " + filePath);
             System.err.println(e.getMessage());
         }
         return null;
     }
 
-    
-
-    public static int[][] loadMap(String filePath,int maxWorldCol,int maxWorldRow) {
+    public static int[][] loadMap(String filePath, int maxWorldCol, int maxWorldRow) {
         int map[][] = new int[maxWorldRow][maxWorldCol];
         try {
             BufferedReader br = new BufferedReader(new FileReader(filePath));

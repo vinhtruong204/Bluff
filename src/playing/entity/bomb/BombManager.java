@@ -21,11 +21,11 @@ public class BombManager {
     private BufferedImage bombItem;
 
     //contructor
-    public BombManager(int maxBomb,int numberOfBombsExploded)
+    public BombManager(int maxBomb)
     {
         bombs = new ArrayList<Bomb>();
         this.maxBomb = maxBomb;
-        this.numberOfBombsExploded = numberOfBombsExploded;
+        this.numberOfBombsExploded = 0;
         initBombItem();
     }
 

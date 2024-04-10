@@ -43,7 +43,7 @@ public class LevelManager implements StateMethods {
         camera = new Camera(levels[currentLevel], player);
         enemyManager = new EnemyManager(levels[currentLevel].getMap(), player);
         heartManager = new HeartManager(levels[currentLevel].getMap(), player);
-        bombManager = new BombManager(40, 0);
+        bombManager = new BombManager(40);
         doorManager = new DoorManager(levels[currentLevel].getMap(), player);
         soundManager = new SoundManager(bombManager, heartManager);
     }
@@ -77,7 +77,7 @@ public class LevelManager implements StateMethods {
             camera = new Camera(levels[currentLevel], player);
             enemyManager = new EnemyManager(levels[currentLevel].getMap(), player);
             heartManager = new HeartManager(levels[currentLevel].getMap(), player);
-            bombManager = new BombManager(40, 0);
+            bombManager = new BombManager(40);
             doorManager = new DoorManager(levels[currentLevel].getMap(), player);
             soundManager = new SoundManager(bombManager, heartManager);
         }
@@ -152,10 +152,11 @@ public class LevelManager implements StateMethods {
         setNewMap();
         camera.update();
         player.update();
-        for (Bomb bomb : bombManager.getBombs()) {
+        Iterator<Bomb> itrBomb = bombManager.getBombs().iterator();
+        while (itrBomb.hasNext()) {
+            Bomb bomb = (Bomb) itrBomb.next();
             bomb.update();
         }
-
         //
         soundManager.update();
         //
@@ -177,7 +178,9 @@ public class LevelManager implements StateMethods {
         camera.render(g);
         doorManager.render(g, camera);
         player.render(g, camera);
-        for (Bomb bomb : bombManager.getBombs()) {
+        Iterator<Bomb> itrBomb = bombManager.getBombs().iterator();
+        while (itrBomb.hasNext()) {
+            Bomb bomb = (Bomb) itrBomb.next();
             bomb.render(g, camera);
         }
         enemyManager.render(g, camera);

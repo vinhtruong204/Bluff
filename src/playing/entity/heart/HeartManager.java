@@ -26,7 +26,7 @@ public class HeartManager {
 
         // Add hearts into map
         addHeart();
-    
+
         setHeartPlayer();
     }
 
@@ -69,22 +69,30 @@ public class HeartManager {
     }
 
     public void update() {
-        for (Heart heart : hearts) {
+        Iterator<Heart> itrHeart = hearts.iterator();
+        while (itrHeart.hasNext()) {
+            Heart heart = (Heart)itrHeart.next();
             heart.update();
         }
-        for (Heart heart : heartPlayer) {
-            heart.update();
+        Iterator<Heart> itrHeartPlayer = heartPlayer.iterator();
+        while (itrHeartPlayer.hasNext()) {
+            Heart heartPlayer = (Heart)itrHeartPlayer.next();
+            heartPlayer.update();
         }
         CheckCollisionPlayerWithHeart();
         removeHeartPlayer();
     }
 
     public void render(Graphics g, Camera camera) {
-        for (Heart heart : hearts) {
+        Iterator<Heart> itrHeart = hearts.iterator();
+        while (itrHeart.hasNext()) {
+            Heart heart = (Heart)itrHeart.next();
             heart.render(g, camera);
         }
-        for (Heart heart : heartPlayer) {
-            heart.render(g);
+        Iterator<Heart> itrHeartPlayer = heartPlayer.iterator();
+        while (itrHeartPlayer.hasNext()) {
+            Heart heartPlayer = (Heart)itrHeartPlayer.next();
+            heartPlayer.render(g);
         }
     }
 
