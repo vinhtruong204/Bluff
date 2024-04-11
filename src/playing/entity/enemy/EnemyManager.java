@@ -1,27 +1,28 @@
 package playing.entity.enemy;
 
 import java.awt.Graphics;
-import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import helpmethods.EnemyConstants;
 import playing.camera.Camera;
 import playing.entity.Player;
 
 public class EnemyManager {
-    private ArrayList<Enemy> enemies;
+    private List<Enemy> enemies;
 
     private int[][] map;
     private Player player;
 
     public EnemyManager(int[][] map, Player player) {
-        enemies = new ArrayList<Enemy>();
+        enemies = new CopyOnWriteArrayList<Enemy>();
         this.map = map;
         this.player = player;
-        addCucumber();
+        addEnemy();
     }
 
-    private void addCucumber() {
+    private void addEnemy() {
         for (int i = 0; i < map.length; i++) {
             for (int j = 0; j < map[i].length; j++) {
                 if (map[i][j] == 5) {
@@ -66,7 +67,7 @@ public class EnemyManager {
         }
     }
 
-    public ArrayList<Enemy> getEnemies() {
+    public List<Enemy> getEnemies() {
         return enemies;
     }
 }

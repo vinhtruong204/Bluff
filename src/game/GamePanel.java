@@ -8,6 +8,7 @@ import input.MouseInputs;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.util.Vector;
 
 public class GamePanel extends JPanel implements Runnable {
     // Update interval for each frame
@@ -46,26 +47,26 @@ public class GamePanel extends JPanel implements Runnable {
 
     @Override
     public void run() {
-        boolean running = true;
-        long next_game_tick = System.nanoTime(); // current update tick
-        int loops = 0;
-        next_start_time = System.nanoTime() + 1000000000;
+            boolean running = true;
+            long next_game_tick = System.nanoTime(); // current update tick
+            int loops = 0;
+            next_start_time = System.nanoTime() + 1000000000;
 
-        while (running) {
-            loops = 0;
-            
-            while (System.nanoTime() > next_game_tick && loops < MAX_FRAMESKIP) {
-                update();
-                next_game_tick += SKIP_TICKS;
-                loops++;
+            while (running) {
+                loops = 0;
+
+                while (System.nanoTime() > next_game_tick && loops < MAX_FRAMESKIP) {
+                    update();
+                    next_game_tick += SKIP_TICKS;
+                    loops++;
+                }
+
+                interpolation = (float) (System.nanoTime() + (long) SKIP_TICKS - next_game_tick)
+                        / (float) (SKIP_TICKS);
+                repaint();
+
+                printStats();
             }
-
-            interpolation = (float) (System.nanoTime() + (long) SKIP_TICKS - next_game_tick)
-                    / (float) (SKIP_TICKS);
-            repaint();
-
-            printStats();
-        }
     }
 
     private void printStats() {

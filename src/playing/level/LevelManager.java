@@ -15,7 +15,6 @@ import playing.entity.Player;
 import playing.entity.bomb.Bomb;
 import playing.entity.bomb.BombManager;
 import playing.entity.door.DoorManager;
-import playing.entity.enemy.Enemy;
 import playing.entity.enemy.EnemyManager;
 import playing.entity.heart.HeartManager;
 import sound.SoundManager;
@@ -85,25 +84,20 @@ public class LevelManager implements StateMethods {
 
     // collision bomb with enemy
     private void handleBombCollision() {
-        Iterator<Bomb> itrBomb = bombManager.getBombs().iterator();
-        while (itrBomb.hasNext()) {
-            Bomb bomb = (Bomb) itrBomb.next();
-            if (bomb.isExploded()) {
+        for(int i = 0 ; i < bombManager.getBombs().size() ; i++)
+        {
+            if (bombManager.getBombs().get(i).isExploded()) {
                 // Collision with enemy
-                Iterator<Enemy> itr = enemyManager.getEnemies().iterator();
-
-                while (itr.hasNext()) {
-                    Enemy enemy = (Enemy) itr.next();
-                    if (CheckCollision.isCollision(bomb.getHitBox(), enemy.getHitBox())) {
-                        if (enemy.getHealth() > 0) {
-                            enemy.setHealth(enemy.getHealth() - 1);
-                            enemy.setInjured(true);
+                for(int j = 0 ; j < enemyManager.getEnemies().size() ; j++){
+                    if (CheckCollision.isCollision(bombManager.getBombs().get(i).getHitBox(), enemyManager.getEnemies().get(j).getHitBox())) {
+                        if (enemyManager.getEnemies().get(j).getHealth() > 0) {
+                            enemyManager.getEnemies().get(j).setHealth(enemyManager.getEnemies().get(j).getHealth() - 1);
+                            enemyManager.getEnemies().get(j).setInjured(true);
                         }
                     }
                 }
-
                 // Collision with player
-                if (CheckCollision.isCollision(player.getHitBox(), bomb.getHitBox())) {
+                if (CheckCollision.isCollision(player.getHitBox(), bombManager.getBombs().get(i).getHitBox())) {
                     // If player's heart larger than 0
                     if (player.getHeartPlayer() > 0) {
                         player.setHeartPlayer(player.getHeartPlayer() - 1);
@@ -114,19 +108,16 @@ public class LevelManager implements StateMethods {
                 }
 
                 // Delete if bomb exploded
-                itrBomb.remove();
+                bombManager.getBombs().remove(i);
             }
         }
     }
 
     // Delete enemy dead
     private void deleteenemy() {
-        Iterator<Enemy> itr = enemyManager.getEnemies().iterator();
-
-        while (itr.hasNext()) {
-            Enemy enemy = (Enemy) itr.next();
-            if (enemy.isDead()) {
-                itr.remove();
+        for(int i = 0 ; i< enemyManager.getEnemies().size() ; i++){
+            if (enemyManager.getEnemies().get(i).isDead()) {
+                enemyManager.getEnemies().remove(i);
             }
         }
     }

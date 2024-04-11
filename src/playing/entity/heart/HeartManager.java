@@ -1,8 +1,9 @@
 package playing.entity.heart;
 
 import java.awt.Graphics;
-import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import helpmethods.CheckCollision;
 import helpmethods.HeartConstants;
@@ -11,8 +12,8 @@ import playing.entity.Player;
 
 public class HeartManager {
 
-    private ArrayList<Heart> hearts;
-    private ArrayList<Heart> heartPlayer;
+    private List<Heart> hearts;
+    private List<Heart> heartPlayer;
 
     private int[][] map;
 
@@ -21,8 +22,8 @@ public class HeartManager {
     public HeartManager(int[][] map, Player player) {
         this.map = map;
         this.player = player;
-        hearts = new ArrayList<Heart>();
-        heartPlayer = new ArrayList<Heart>();
+        hearts = new CopyOnWriteArrayList<Heart>();
+        heartPlayer = new CopyOnWriteArrayList<Heart>();
 
         // Add hearts into map
         addHeart();
@@ -47,12 +48,9 @@ public class HeartManager {
     }
 
     private void CheckCollisionPlayerWithHeart() {
-        Iterator<Heart> itr = hearts.iterator();
-
-        while (itr.hasNext()) {
-            Heart heart = (Heart) itr.next();
-            if (CheckCollision.isCollision(heart.getHitBox(), player.getHitBox())) {
-                itr.remove();
+        for(int i = 0 ; i < hearts.size() ; i++){
+            if (CheckCollision.isCollision(hearts.get(i).getHitBox(), player.getHitBox())) {
+                hearts.remove(i);
                 if (player.getHeartPlayer() < Player.MAX_HEART) {
                     player.setHeartPlayer(player.getHeartPlayer() + 1);
                 }
@@ -71,14 +69,16 @@ public class HeartManager {
     public void update() {
         Iterator<Heart> itrHeart = hearts.iterator();
         while (itrHeart.hasNext()) {
-            Heart heart = (Heart)itrHeart.next();
+            Heart heart = (Heart) itrHeart.next();
             heart.update();
         }
+
         Iterator<Heart> itrHeartPlayer = heartPlayer.iterator();
         while (itrHeartPlayer.hasNext()) {
-            Heart heartPlayer = (Heart)itrHeartPlayer.next();
+            Heart heartPlayer = (Heart) itrHeartPlayer.next();
             heartPlayer.update();
         }
+        
         CheckCollisionPlayerWithHeart();
         removeHeartPlayer();
     }
@@ -86,26 +86,26 @@ public class HeartManager {
     public void render(Graphics g, Camera camera) {
         Iterator<Heart> itrHeart = hearts.iterator();
         while (itrHeart.hasNext()) {
-            Heart heart = (Heart)itrHeart.next();
+            Heart heart = (Heart) itrHeart.next();
             heart.render(g, camera);
         }
         Iterator<Heart> itrHeartPlayer = heartPlayer.iterator();
         while (itrHeartPlayer.hasNext()) {
-            Heart heartPlayer = (Heart)itrHeartPlayer.next();
+            Heart heartPlayer = (Heart) itrHeartPlayer.next();
             heartPlayer.render(g);
         }
     }
 
     // Getter and Setter
-    public ArrayList<Heart> getHeartPlayer() {
+    public List<Heart> getHeartPlayer() {
         return heartPlayer;
     }
 
-    public void setHeartPlayer(ArrayList<Heart> heartPlayer) {
+    public void setHeartPlayer(List<Heart> heartPlayer) {
         this.heartPlayer = heartPlayer;
     }
 
-    public ArrayList<Heart> getHearts() {
+    public List<Heart> getHearts() {
         return hearts;
     }
 
