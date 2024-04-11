@@ -1,12 +1,12 @@
 package helpmethods;
 
 public class EnemyConstants {
-    // All types of enemies
-    public static final int CUCUMBER = 0;
-    public static final int CAPTAIN = 1;
-    public static final int BOLD_PIRATE = 2;
-    public static final int BIG_GUY = 3;
-    public static final int WHALE = 4;
+    // All types of enemies and corresponding enemy value on the map
+    public static final int CUCUMBER = 5;
+    public static final int CAPTAIN = 6;
+    public static final int WHALE = 7;
+    public static final int BOLD_PIRATE = 8;
+    public static final int BIG_GUY = 9;
 
     public class CucumberConstants {
         //
@@ -62,10 +62,10 @@ public class EnemyConstants {
         public static final int WHALE_WIDTH = 68;
         public static final int WHALE_HEIGHT = 46;
 
-         //
-         public static final int TOTAL_TYPE = 10;
-         public static final int TOTAL_FRAME = 44;
-        
+        //
+        public static final int TOTAL_TYPE = 10;
+        public static final int TOTAL_FRAME = 44;
+
         // All types animation of the Whale enemy
         public static final int IDLE = 0;
         public static final int RUN = 1;
@@ -111,10 +111,9 @@ public class EnemyConstants {
         public static final int CAPTAIN_WIDTH = 80;
         public static final int CAPTAIN_HEIGHT = 72;
 
-         //
-         public static final int TOTAL_TYPE = 10;
-         public static final int TOTAL_FRAME = 32;
-
+        //
+        public static final int TOTAL_TYPE = 10;
+        public static final int TOTAL_FRAME = 32;
 
         // All types animation of the Captain enemy
         public static final int IDLE = 0;
@@ -164,7 +163,6 @@ public class EnemyConstants {
         //
         public static final int TOTAL_TYPE = 9;
         public static final int TOTAL_FRAME = 34;
-
 
         // All types animation of the Bold Pirate enemy
         public static final int IDLE = 0;
