@@ -38,8 +38,8 @@ public class Level {
                 maxRow = 14;
                 break;
             case FilePath.Map.MAP_2:
-                maxCol = 42;
-                maxRow = 24;
+                maxCol = 20;
+                maxRow = 50;
                 break;
             case FilePath.Map.MAP_3:
                 maxCol = 42;
