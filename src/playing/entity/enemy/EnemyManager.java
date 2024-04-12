@@ -19,30 +19,32 @@ public class EnemyManager {
         enemies = new CopyOnWriteArrayList<Enemy>();
         this.map = map;
         this.player = player;
-        addEnemy();
+
+        addEnemies();
     }
 
-    private void addEnemy() {
+    private void addEnemies() {
         for (int i = 0; i < map.length; i++) {
             for (int j = 0; j < map[i].length; j++) {
-                if (map[i][j] == 5) {
-                    enemies.add(new Cucumber(EnemyConstants.CUCUMBER, i, j, map));
-                }
+                switch (map[i][j]) {
+                    case EnemyConstants.CUCUMBER:
+                        enemies.add(new Cucumber(EnemyConstants.CUCUMBER, i, j, map));
+                        break;
+                    case EnemyConstants.CAPTAIN:
+                        enemies.add(new Captain(EnemyConstants.CAPTAIN, i, j, map));
+                        break;
+                    case EnemyConstants.WHALE:
+                        enemies.add(new Whale(EnemyConstants.WHALE, i, j, map));
+                        break;
+                    case EnemyConstants.BOLD_PIRATE:
+                        enemies.add(new BoldPirate(EnemyConstants.BOLD_PIRATE, i, j, map));
+                        break;
+                    case EnemyConstants.BIG_GUY:
+                        enemies.add(new BigGuy(EnemyConstants.BIG_GUY, i, j, map));
+                        break;
 
-                if (map[i][j] == 6) {
-                    enemies.add(new Captain(EnemyConstants.CAPTAIN, i, j, map));
-                }
-
-                if (map[i][j] == 7) {
-                    enemies.add(new Whale(EnemyConstants.WHALE, i, j, map));
-                }
-
-                if (map[i][j] == 8) {
-                    enemies.add(new BoldPirate(EnemyConstants.BOLD_PIRATE, i, j, map));
-                }
-
-                if (map[i][j] == 9) {
-                    enemies.add(new BigGuy(EnemyConstants.BIG_GUY, i, j, map));
+                    default:
+                        break;
                 }
             }
         }
@@ -51,7 +53,7 @@ public class EnemyManager {
     public void update() {
         Iterator<Enemy> itrEnemy = enemies.iterator();
         while (itrEnemy.hasNext()) {
-            Enemy enemy = (Enemy)itrEnemy.next();
+            Enemy enemy = (Enemy) itrEnemy.next();
             enemy.update(player.getHitBox());
             if (enemy.isHitPlayer()) {
                 player.setDangerTouch(true);
@@ -62,7 +64,7 @@ public class EnemyManager {
     public void render(Graphics g, Camera camera) {
         Iterator<Enemy> itrEnemy = enemies.iterator();
         while (itrEnemy.hasNext()) {
-            Enemy enemy = (Enemy)itrEnemy.next();
+            Enemy enemy = (Enemy) itrEnemy.next();
             enemy.render(g, camera);
         }
     }

@@ -8,7 +8,6 @@ import input.MouseInputs;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.util.Vector;
 
 public class GamePanel extends JPanel implements Runnable {
     // Update interval for each frame
