@@ -64,7 +64,6 @@ public abstract class Button {
 
     public void render(Graphics g) {
         // Draw button depend on state of button
-        System.out.println(index);
         g.drawImage(images[index],
                 (int) position.getX(),
                 (int) position.getY(),
