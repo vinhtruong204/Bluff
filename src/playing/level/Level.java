@@ -33,22 +33,23 @@ public class Level {
 
     private void setIndexMap(String filePath) {
         switch (filePath) {
-            case "Map/Map01.txt":
+            case FilePath.Map.MAP_1:
                 maxCol = 42;
                 maxRow = 14;
                 break;
-            case "Map/Map02.txt":
+            case FilePath.Map.MAP_2:
                 maxCol = 42;
                 maxRow = 24;
                 break;
-            case "Map/Map03.txt":
+            case FilePath.Map.MAP_3:
                 maxCol = 42;
-                maxRow = 24;
+                maxRow = 28;
                 break;
-            case "Map/Map04.txt":
-
+            case FilePath.Map.MAP_4:
+                maxCol = 60;
+                maxRow = 20;
                 break;
-            case "Map/Map05.txt":
+            case FilePath.Map.MAP_5:
 
                 break;
             default:
