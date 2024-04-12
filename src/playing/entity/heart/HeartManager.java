@@ -48,7 +48,7 @@ public class HeartManager {
     }
 
     private void CheckCollisionPlayerWithHeart() {
-        for(int i = 0 ; i < hearts.size() ; i++){
+        for (int i = 0; i < hearts.size(); i++) {
             if (CheckCollision.isCollision(hearts.get(i).getHitBox(), player.getHitBox())) {
                 hearts.remove(i);
                 if (player.getHeartPlayer() < Player.MAX_HEART) {
@@ -78,7 +78,7 @@ public class HeartManager {
             Heart heartPlayer = (Heart) itrHeartPlayer.next();
             heartPlayer.update();
         }
-        
+
         CheckCollisionPlayerWithHeart();
         removeHeartPlayer();
     }

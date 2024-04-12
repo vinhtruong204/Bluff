@@ -3,7 +3,6 @@ package button;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-
 import java.awt.event.MouseEvent;
 
 import core.Position;
@@ -65,6 +64,7 @@ public abstract class Button {
 
     public void render(Graphics g) {
         // Draw button depend on state of button
+        System.out.println(index);
         g.drawImage(images[index],
                 (int) position.getX(),
                 (int) position.getY(),

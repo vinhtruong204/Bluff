@@ -177,7 +177,6 @@ public class Bomb extends GameObject {
             g.drawImage(animations[aniType][aniIndex], (int) position.getX() - camera.getMapStartX(),
                     (int) position.getY() - camera.getMapStartY(), size.getWidth(), size.getHeight(), null);
         }
-
         // Update last time
         lastTime = System.currentTimeMillis();
     }

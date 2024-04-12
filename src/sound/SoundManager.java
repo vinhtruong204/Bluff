@@ -12,22 +12,31 @@ import playing.entity.heart.HeartManager;
 
 public class SoundManager {
     // background music
-    SoundObject sBackground;
+    private SoundObject sBackground;
     // bomb explosion sound
-    SoundObject sBomb;
+    private SoundObject sBomb;
     // The sound of the player eats the heart
-    SoundObject sHeart;
+    private SoundObject sHeart;
 
     // Bombmanager
-    BombManager bombManager;
+    private BombManager bombManager;
     // HeartManager
-    HeartManager heartManager;
+    private HeartManager heartManager;
 
     // constructor
     public SoundManager(BombManager bombManager, HeartManager heartManager) {
         this.bombManager = bombManager;
         this.heartManager = heartManager;
         sBackground = new SoundObject("sound/SoundBackground.wav");
+    }
+
+    public void resumeSound() {
+        if (sBackground != null)
+            sBackground.resume();
+        if (sBomb != null)
+            sBomb.resume();
+        if (sHeart != null)
+            sHeart.resume();
     }
 
     public void stopSound() {
@@ -56,7 +65,7 @@ public class SoundManager {
     }
 
     //
-    public void SoundBomb() {
+    private void SoundBomb() {
         Iterator<Bomb> itrBomb = bombManager.getBombs().iterator();
         while (itrBomb.hasNext()) {
             Bomb bomb = (Bomb) itrBomb.next();
@@ -68,7 +77,7 @@ public class SoundManager {
     }
 
     //
-    public void SoundHeart() {
+    private void SoundHeart() {
         Iterator<Heart> itr = heartManager.getHearts().iterator();
 
         while (itr.hasNext()) {
@@ -81,9 +90,30 @@ public class SoundManager {
     }
 
     //
-    public void SoundBackgroundMusic() {
+    private void SoundBackgroundMusic() {
         sBackground.start();
         sBackground.loop(Clip.LOOP_CONTINUOUSLY);
+    }
+
+    // getter and setter
+    public SoundObject getsBackground() {
+        return sBackground;
+    }
+
+    public SoundObject getsBomb() {
+        return sBomb;
+    }
+
+    public SoundObject getsHeart() {
+        return sHeart;
+    }
+
+    public BombManager getBombManager() {
+        return bombManager;
+    }
+
+    public HeartManager getHeartManager() {
+        return heartManager;
     }
 
 }

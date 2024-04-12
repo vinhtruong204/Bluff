@@ -1,14 +1,18 @@
 package sound;
 
 public interface SoundStatus {
-    //start
+    // start
     public void start();
-    //loop
+
+    // loop
     public void loop(int i);
-    //stop
+
+    // stop
     public void stop();
-    //resume
+
+    // resume
     public void resume();
-    //close
+
+    // close
     public void close();
 }

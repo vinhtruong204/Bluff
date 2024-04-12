@@ -9,6 +9,7 @@ import gamestate.GameState;
 import gamestate.StateMethods;
 import helpmethods.CheckCollision;
 import helpmethods.CheckGame;
+import pauseSound.PauseSoundState;
 import playing.Playing;
 import playing.camera.Camera;
 import playing.entity.Player;
@@ -17,6 +18,7 @@ import playing.entity.bomb.BombManager;
 import playing.entity.door.DoorManager;
 import playing.entity.enemy.EnemyManager;
 import playing.entity.heart.HeartManager;
+import playing.pause.main_pause.PauseOptionState;
 import sound.SoundManager;
 
 public class LevelManager implements StateMethods {
@@ -31,6 +33,7 @@ public class LevelManager implements StateMethods {
     private BombManager bombManager;
     private DoorManager doorManager;
     private SoundManager soundManager;
+
     private Playing playing;
 
     // Constructor
@@ -149,7 +152,10 @@ public class LevelManager implements StateMethods {
             bomb.update();
         }
         //
-        soundManager.update();
+        if(PauseSoundState.pauseSoundState == PauseSoundState.ON){
+            soundManager.update();
+        }
+
         //
 
         handleBombCollision();
@@ -177,7 +183,7 @@ public class LevelManager implements StateMethods {
         enemyManager.render(g, camera);
         heartManager.render(g, camera);
         bombManager.render(g);
-        if (GameState.gameState == GameState.PAUSE) {
+        if (GameState.gameState == GameState.PAUSE || PauseSoundState.pauseSoundState == PauseSoundState.OFF) {
             soundManager.stopSound();
         }
     }
@@ -255,6 +261,12 @@ public class LevelManager implements StateMethods {
             default:
                 break;
         }
+    }
+
+    //getter and setter
+
+    public SoundManager getSoundManager() {
+        return soundManager;
     }
 
 }
