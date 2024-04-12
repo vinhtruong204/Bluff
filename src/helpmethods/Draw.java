@@ -18,7 +18,7 @@ public class Draw {
         // Set font
         Font customFont = null;
         try {
-            customFont = Font.createFont(Font.TRUETYPE_FONT, new File("font/PressStart2P-Regular.ttf")).deriveFont(14f);
+            customFont = Font.createFont(Font.TRUETYPE_FONT, new File(FilePath.Font.PRESS_START2P)).deriveFont(14f);
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge.registerFont(customFont);
         } catch (IOException | FontFormatException e) {

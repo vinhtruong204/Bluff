@@ -1,5 +1,6 @@
 package playing.level;
 
+import helpmethods.FilePath;
 import helpmethods.LoadSave;
 
 public class Level {
@@ -26,8 +27,8 @@ public class Level {
         tiles = new Tile[Tile.TOTAL_TILE_TYPE];
 
         // Load image of tile
-        tiles[Tile.BLUE] = new Tile("img/Tile/Blue.png");
-        tiles[Tile.ELEVATION] = new Tile("img/Tile/Tilemap_Elevation.png");
+        tiles[Tile.BLUE] = new Tile(FilePath.Tile.BLUE);
+        tiles[Tile.ELEVATION] = new Tile(FilePath.Tile.ELEVATION);
     }
 
     private void setIndexMap(String filePath) {

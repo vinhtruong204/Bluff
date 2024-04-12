@@ -8,6 +8,7 @@ import core.Position;
 import core.Size;
 import game.Game;
 import gamestate.GameState;
+import helpmethods.FilePath;
 import helpmethods.LoadSave;
 
 public class MenuButton extends Button {
@@ -54,7 +55,7 @@ public class MenuButton extends Button {
         images = new BufferedImage[3];
 
         // Load image contain all state of the button
-        BufferedImage temp = LoadSave.loadImage("img/Menu/Menu_Buttons.png");
+        BufferedImage temp = LoadSave.loadImage(FilePath.Menu.MENU_BUTTONS);
 
         // Load all state of the button
         for (int i = 0; i < images.length; i++)

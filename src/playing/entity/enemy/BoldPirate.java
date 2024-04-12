@@ -6,6 +6,7 @@ import java.awt.image.BufferedImage;
 import core.Position;
 import core.Size;
 import helpmethods.CheckCollision;
+import helpmethods.FilePath;
 import helpmethods.EnemyConstants.BoldPirateConstants;
 import playing.level.Tile;
 import helpmethods.LoadSave;
@@ -51,7 +52,7 @@ public class BoldPirate extends Enemy {
         // Max frame of all animation (10 type of animation and 36 frames max)
         animations = new BufferedImage[BoldPirateConstants.TOTAL_TYPE][BoldPirateConstants.TOTAL_FRAME];
 
-        BufferedImage temp = LoadSave.loadImage("img/Enemy/Enemy-Bold Pirate.png");
+        BufferedImage temp = LoadSave.loadImage(FilePath.Enemy.BOLD_PIRATE);
 
         // Get all animation frames of enemy
         for (int i = 0; i < animations.length; i++) {

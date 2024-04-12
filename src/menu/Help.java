@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 
 import core.Position;
 import core.Size;
+import helpmethods.FilePath;
 import helpmethods.LoadSave;
 
 public class Help {
@@ -14,7 +15,7 @@ public class Help {
 
     public Help() {
         // Load help image and initialize position and size
-        image = LoadSave.loadImage("img/Menu/Help.png");
+        image = LoadSave.loadImage(FilePath.Menu.HELP_MENU);
         position = new Position(0.0f, 0.0f);
         size = new Size(image.getWidth(), image.getHeight());
     }

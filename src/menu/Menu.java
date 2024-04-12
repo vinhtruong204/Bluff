@@ -6,6 +6,7 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 
 import gamestate.StateMethods;
+import helpmethods.FilePath;
 import helpmethods.LoadSave;
 
 public class Menu implements StateMethods {
@@ -20,7 +21,7 @@ public class Menu implements StateMethods {
 
     public Menu() {
         // Load background from file
-        background = LoadSave.loadImage("img/Menu/Background_Menu.png");
+        background = LoadSave.loadImage(FilePath.Menu.BACKGROUND);
 
         // Allocate memory
         buttons = new MenuButton[3];

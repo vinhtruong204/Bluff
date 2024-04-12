@@ -48,7 +48,7 @@ public class Cucumber extends Enemy {
         // Max frame of all animation (10 type of animation and 36 frames max)
         animations = new BufferedImage[CucumberConstants.TOTAL_TYPE][CucumberConstants.TOTAL_FRAME];
 
-        BufferedImage temp = LoadSave.loadImage("img/Enemy/Enemy-Cucumber.png");
+        BufferedImage temp = LoadSave.loadImage(FilePath.Enemy.CUCUMBER);
 
         // Get all animation frames of enemy
         for (int i = 0; i < animations.length; i++) {

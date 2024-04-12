@@ -11,6 +11,7 @@ import game.GamePanel;
 import gamestate.GameState;
 import helpmethods.BombConstants;
 import helpmethods.CheckCollision;
+import helpmethods.FilePath;
 import helpmethods.LoadSave;
 import playing.camera.Camera;
 import playing.entity.GameObject;
@@ -90,7 +91,7 @@ public class Bomb extends GameObject {
                                                                                              // frames for each type
 
         // Load all image
-        BufferedImage image = LoadSave.loadImage("img/Player/Bomb.png");
+        BufferedImage image = LoadSave.loadImage(FilePath.Object.BOMB);
         for (int i = 0; i < animations.length; i++)
             for (int j = 0; j < animations[i].length; j++)
                 animations[i][j] = image.getSubimage(j * BOMB_WIDTH, i * BOMB_HEIGHT, BOMB_WIDTH, BOMB_HEIGHT);

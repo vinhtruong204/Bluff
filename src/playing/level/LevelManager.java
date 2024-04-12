@@ -9,7 +9,8 @@ import gamestate.GameState;
 import gamestate.StateMethods;
 import helpmethods.CheckCollision;
 import helpmethods.CheckGame;
-import pauseSound.PauseSoundState;
+import helpmethods.FilePath;
+import pause_sound.PauseSoundState;
 import playing.Playing;
 import playing.camera.Camera;
 import playing.entity.Player;
@@ -51,11 +52,11 @@ public class LevelManager implements StateMethods {
 
     private void initPathMap() {
         nameFile = new String[5];
-        nameFile[0] = new String("Map/Map01.txt");
-        nameFile[1] = new String("Map/Map02.txt");
-        nameFile[2] = new String("Map/Map03.txt");
-        nameFile[3] = new String("Map/Map04.txt");
-        nameFile[4] = new String("Map/Map05.txt");
+        nameFile[0] = new String(FilePath.Map.MAP_1);
+        nameFile[1] = new String(FilePath.Map.MAP_2);
+        nameFile[2] = new String(FilePath.Map.MAP_3);
+        nameFile[3] = new String(FilePath.Map.MAP_4);
+        nameFile[4] = new String(FilePath.Map.MAP_5);
     }
 
     private void initMap() {
@@ -86,14 +87,15 @@ public class LevelManager implements StateMethods {
 
     // collision bomb with enemy
     private void handleBombCollision() {
-        for(int i = 0 ; i < bombManager.getBombs().size() ; i++)
-        {
+        for (int i = 0; i < bombManager.getBombs().size(); i++) {
             if (bombManager.getBombs().get(i).isExploded()) {
                 // Collision with enemy
-                for(int j = 0 ; j < enemyManager.getEnemies().size() ; j++){
-                    if (CheckCollision.isCollision(bombManager.getBombs().get(i).getHitBox(), enemyManager.getEnemies().get(j).getHitBox())) {
+                for (int j = 0; j < enemyManager.getEnemies().size(); j++) {
+                    if (CheckCollision.isCollision(bombManager.getBombs().get(i).getHitBox(),
+                            enemyManager.getEnemies().get(j).getHitBox())) {
                         if (enemyManager.getEnemies().get(j).getHealth() > 0) {
-                            enemyManager.getEnemies().get(j).setHealth(enemyManager.getEnemies().get(j).getHealth() - 1);
+                            enemyManager.getEnemies().get(j)
+                                    .setHealth(enemyManager.getEnemies().get(j).getHealth() - 1);
                             enemyManager.getEnemies().get(j).setInjured(true);
                         }
                     }
@@ -116,8 +118,8 @@ public class LevelManager implements StateMethods {
     }
 
     // Delete enemy dead
-    private void deleteenemy() {
-        for(int i = 0 ; i< enemyManager.getEnemies().size() ; i++){
+    private void deleteEnemy() {
+        for (int i = 0; i < enemyManager.getEnemies().size(); i++) {
             if (enemyManager.getEnemies().get(i).isDead()) {
                 enemyManager.getEnemies().remove(i);
             }
@@ -151,14 +153,14 @@ public class LevelManager implements StateMethods {
             bomb.update();
         }
         //
-        if(PauseSoundState.pauseSoundState == PauseSoundState.ON){
+        if (PauseSoundState.pauseSoundState == PauseSoundState.ON) {
             soundManager.update();
         }
 
         //
 
         handleBombCollision();
-        deleteenemy();
+        deleteEnemy();
 
         enemyManager.update();
         heartManager.update();
@@ -262,7 +264,7 @@ public class LevelManager implements StateMethods {
         }
     }
 
-    //getter and setter
+    // getter and setter
 
     public SoundManager getSoundManager() {
         return soundManager;

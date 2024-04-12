@@ -1,4 +1,4 @@
-package pauseSound;
+package pause_sound;
 
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -7,6 +7,7 @@ import button.Button;
 import core.Position;
 import core.Size;
 import game.Game;
+import helpmethods.FilePath;
 import helpmethods.LoadSave;
 
 public class PauseSoundButtons extends Button {
@@ -38,7 +39,7 @@ public class PauseSoundButtons extends Button {
     protected void loadImages() {
         images = new BufferedImage[3];
         // Load image contain all state of the button
-        BufferedImage temp = LoadSave.loadImage("img/Pause/Pause_Button_Sound.png");
+        BufferedImage temp = LoadSave.loadImage(FilePath.Sound.PAUSE_SOUND_BUTTON);
         // Load all state of the button
         for (int i = 0; i < images.length; i++){
             images[i] = temp.getSubimage(i * BUTTON_WIDTH, rowIndex * BUTTON_HEIGHT, BUTTON_WIDTH, BUTTON_HEIGHT);

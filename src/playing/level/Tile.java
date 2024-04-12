@@ -21,7 +21,6 @@ public class Tile {
 
     public Tile(String filePath) {
         image = LoadSave.loadImage(filePath);
-
     }
 
     // getter anf setter to take image and set image

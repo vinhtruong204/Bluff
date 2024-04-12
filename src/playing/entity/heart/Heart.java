@@ -7,6 +7,7 @@ import java.awt.image.BufferedImage;
 import core.Position;
 import core.Size;
 import game.Game;
+import helpmethods.FilePath;
 import helpmethods.HeartConstants;
 import helpmethods.LoadSave;
 import playing.camera.Camera;
@@ -36,7 +37,7 @@ public class Heart extends GameObject {
     }
 
     private void loadAnimations() {
-        BufferedImage image = LoadSave.loadImage("img/Object/Object-Heart.png");
+        BufferedImage image = LoadSave.loadImage(FilePath.Object.HEART);
         for (int i = 0; i < animations.length; i++)
             for (int j = 0; j < animations[i].length; j++) {
                 animations[i][j] = image.getSubimage(j * HEART_WIDTH, i * HEART_HEIGHT, HEART_WIDTH, HEART_HEIGHT);

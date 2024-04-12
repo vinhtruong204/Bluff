@@ -7,6 +7,7 @@ import java.awt.image.BufferedImage;
 
 import game.Game;
 import gamestate.StateMethods;
+import helpmethods.FilePath;
 import helpmethods.LoadSave;
 import playing.Playing;
 import playing.pause.exit.ExitButtons;
@@ -34,10 +35,10 @@ public class Pause implements StateMethods {
         this.playing = playing;
 
         // Load background of game pause
-        background = LoadSave.loadImage("img/Pause/Pause_Background.png");
+        background = LoadSave.loadImage(FilePath.Pause.PAUSE_BACKGROUND);
 
         // Load exit popup background
-        exitBackground = LoadSave.loadImage("img/Pause/Exit_Popup_Background.png");
+        exitBackground = LoadSave.loadImage(FilePath.Pause.POPUP_BACKGROUND);
 
         // Load all pause buttons
         loadPauseOption();

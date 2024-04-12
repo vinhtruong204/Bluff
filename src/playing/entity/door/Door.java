@@ -9,6 +9,7 @@ import core.Size;
 import game.Game;
 import helpmethods.DoorConstants;
 import helpmethods.Draw;
+import helpmethods.FilePath;
 import helpmethods.LoadSave;
 import playing.camera.Camera;
 import playing.entity.GameObject;
@@ -57,7 +58,7 @@ public class Door extends GameObject {
 
     // Load animations of Door
     private void loadAnimations() {
-        BufferedImage image = LoadSave.loadImage("img/Door/Door.png");
+        BufferedImage image = LoadSave.loadImage(FilePath.Object.DOOR);
         for (int i = 0; i < animations.length; i++)
             for (int j = 0; j < animations[i].length; j++) {
                 animations[i][j] = image.getSubimage(j * DoorConstants.DOOR_WIDTH, i * DoorConstants.DOOR_HEIGHT,

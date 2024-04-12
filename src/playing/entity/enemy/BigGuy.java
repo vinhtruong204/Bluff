@@ -6,6 +6,7 @@ import java.awt.image.BufferedImage;
 import core.Position;
 import core.Size;
 import helpmethods.CheckCollision;
+import helpmethods.FilePath;
 import helpmethods.EnemyConstants.BigGuyConstants;
 import playing.level.Tile;
 import helpmethods.LoadSave;
@@ -50,7 +51,7 @@ public class BigGuy extends Enemy {
         // Max frame of all animation (10 type of animation and 36 frames max)
         animations = new BufferedImage[BigGuyConstants.TOTAL_TYPE][BigGuyConstants.TOTAL_FRAME];
 
-        BufferedImage temp = LoadSave.loadImage("img/Enemy/Enemy-Big Guy.png");
+        BufferedImage temp = LoadSave.loadImage(FilePath.Enemy.BIG_GUY);
 
         // Get all animation frames of enemy
         for (int i = 0; i < animations.length; i++) {
@@ -112,11 +113,10 @@ public class BigGuy extends Enemy {
         if (hitting) {
             aniType = BigGuyConstants.ATTACK;
             aniSpeed = 1;
-        }else if(health > 0 && injured){
+        } else if (health > 0 && injured) {
             aniType = BigGuyConstants.HIT;
             aniSpeed = 3;
-        }
-        else if (health == 0) {
+        } else if (health == 0) {
             aniType = BigGuyConstants.DEAD_HIT;
             aniSpeed = 3;
         } else {
@@ -138,7 +138,8 @@ public class BigGuy extends Enemy {
         updateHitting(playerHitbox);
         hitPlayer = false;
 
-        if (aniType != BigGuyConstants.DEAD_HIT && aniType != BigGuyConstants.DEAD_GROUND && aniType != BigGuyConstants.HIT) {
+        if (aniType != BigGuyConstants.DEAD_HIT && aniType != BigGuyConstants.DEAD_GROUND
+                && aniType != BigGuyConstants.HIT) {
 
             // Update current position and hitBox
             upDatePosition(playerHitbox);

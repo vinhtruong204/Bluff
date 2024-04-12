@@ -5,6 +5,7 @@ import java.util.Iterator;
 import javax.sound.sampled.Clip;
 
 import helpmethods.CheckCollision;
+import helpmethods.FilePath;
 import playing.entity.bomb.Bomb;
 import playing.entity.bomb.BombManager;
 import playing.entity.heart.Heart;
@@ -12,7 +13,7 @@ import playing.entity.heart.HeartManager;
 
 public class SoundManager {
     // background music
-    private SoundObject sBackground;
+    private SoundObject mBackground;
     // bomb explosion sound
     private SoundObject sBomb;
     // The sound of the player eats the heart
@@ -27,12 +28,12 @@ public class SoundManager {
     public SoundManager(BombManager bombManager, HeartManager heartManager) {
         this.bombManager = bombManager;
         this.heartManager = heartManager;
-        sBackground = new SoundObject("sound/SoundBackground.wav");
+        mBackground = new SoundObject(FilePath.Sound.MUSIC_BACKGROUND);
     }
 
     public void resumeSound() {
-        if (sBackground != null)
-            sBackground.resume();
+        if (mBackground != null)
+            mBackground.resume();
         if (sBomb != null)
             sBomb.resume();
         if (sHeart != null)
@@ -40,8 +41,8 @@ public class SoundManager {
     }
 
     public void stopSound() {
-        if (sBackground != null)
-            sBackground.stop();
+        if (mBackground != null)
+            mBackground.stop();
         if (sBomb != null)
             sBomb.stop();
         if (sHeart != null)
@@ -49,8 +50,8 @@ public class SoundManager {
     }
 
     public void closeSound() {
-        if (sBackground != null)
-            sBackground.close();
+        if (mBackground != null)
+            mBackground.close();
         if (sBomb != null)
             sBomb.close();
         if (sHeart != null)
@@ -70,7 +71,7 @@ public class SoundManager {
         while (itrBomb.hasNext()) {
             Bomb bomb = (Bomb) itrBomb.next();
             if (bomb.isExploded()) {
-                sBomb = new SoundObject("sound/SoundBomb.wav");
+                sBomb = new SoundObject(FilePath.Sound.BOMB_SOUND);
                 sBomb.start();
             }
         }
@@ -83,7 +84,7 @@ public class SoundManager {
         while (itr.hasNext()) {
             Heart heart = (Heart) itr.next();
             if (CheckCollision.isCollision(heart.getHitBox(), heartManager.getPlayer().getHitBox())) {
-                sHeart = new SoundObject("sound/collect.wav");
+                sHeart = new SoundObject(FilePath.Sound.COLLECTED_HEART_SOUND);
                 sHeart.start();
             }
         }
@@ -91,13 +92,13 @@ public class SoundManager {
 
     //
     private void SoundBackgroundMusic() {
-        sBackground.start();
-        sBackground.loop(Clip.LOOP_CONTINUOUSLY);
+        mBackground.start();
+        mBackground.loop(Clip.LOOP_CONTINUOUSLY);
     }
 
     // getter and setter
-    public SoundObject getsBackground() {
-        return sBackground;
+    public SoundObject getmBackground() {
+        return mBackground;
     }
 
     public SoundObject getsBomb() {

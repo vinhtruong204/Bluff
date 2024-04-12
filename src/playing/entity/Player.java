@@ -9,6 +9,7 @@ import core.Size;
 import core.Vector2D;
 import game.GamePanel;
 import helpmethods.CheckCollision;
+import helpmethods.FilePath;
 import helpmethods.FlipImage;
 import helpmethods.LoadSave;
 import helpmethods.PlayerAnimationType;
@@ -141,7 +142,7 @@ public class Player extends GameObject {
         animations = new BufferedImage[PlayerAnimationType.TOTAL_TYPE][PlayerAnimationType.TOTAL_FRAME];
 
         // Load image from file
-        BufferedImage image = LoadSave.loadImage("img/Player/Player-Bomb Guy.png");
+        BufferedImage image = LoadSave.loadImage(FilePath.Player.PLAYER_IMAGE_PATH);
 
         // Put animation into matrix
         for (int i = 0; i < animations.length; i++)

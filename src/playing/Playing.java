@@ -7,8 +7,8 @@ import java.awt.event.MouseEvent;
 import playing.level.LevelManager;
 import playing.pause.PauseButton;
 import gamestate.StateMethods;
-import pauseSound.PauseSoundButtons;
-import pauseSound.PauseSoundState;
+import pause_sound.PauseSoundButtons;
+import pause_sound.PauseSoundState;
 
 public class Playing implements StateMethods {
     private LevelManager levelManager;
@@ -82,6 +82,7 @@ public class Playing implements StateMethods {
 
     @Override
     public void mouseMoved(MouseEvent e) {
+
         // Reset mouse over when mouse move
         pauseButton.setMouseOver(false);
         pauseSoundButton.setMouseOver(false);

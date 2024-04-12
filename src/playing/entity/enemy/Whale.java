@@ -6,6 +6,7 @@ import java.awt.image.BufferedImage;
 import core.Position;
 import core.Size;
 import helpmethods.CheckCollision;
+import helpmethods.FilePath;
 import helpmethods.EnemyConstants.WhaleConstants;
 import playing.level.Tile;
 import helpmethods.LoadSave;
@@ -50,7 +51,7 @@ public class Whale extends Enemy {
         // Max frame of all animation (10 type of animation and 36 frames max)
         animations = new BufferedImage[WhaleConstants.TOTAL_TYPE][WhaleConstants.TOTAL_FRAME];
 
-        BufferedImage temp = LoadSave.loadImage("img/Enemy/Enemy-Whale.png");
+        BufferedImage temp = LoadSave.loadImage(FilePath.Enemy.WHALE);
 
         // Get all animation frames of enemy
         for (int i = 0; i < animations.length; i++) {
