@@ -10,37 +10,26 @@ public class Level {
 
     // Contructor
     public Level(String filePath) {
+        // Load tile image from file
         initTile();
+
+        // Initialize row and column values of the map
         setIndexMap(filePath);
+
+        // Load matrix map from file
         map = LoadSave.loadMap(filePath, maxCol, maxRow);
     }
 
     // init Tile
     private void initTile() {
-        tiles = new Tile[10];
+        // Allocate memory
+        tiles = new Tile[Tile.TOTAL_TILE_TYPE];
 
-        tiles[0] = new Tile("img/Tile/Blue.png");
-
-        tiles[3] = new Tile("img/Tile/Blue.png");
-
-        tiles[5] = new Tile("img/Tile/Blue.png");
-
-        tiles[6] = new Tile("img/Tile/Blue.png");
-
-        tiles[7] = new Tile("img/Tile/Blue.png");
-
-        tiles[8] = new Tile("img/Tile/Blue.png");
-
-        tiles[9] = new Tile("img/Tile/Blue.png");
-
-        tiles[4] = new Tile("img/Tile/Blue.png");
-
-        tiles[1] = new Tile("img/Tile/Tilemap_Elevation.png");
-
-        tiles[2] = new Tile("img/Tile/wood02.png");
+        // Load image of tile
+        tiles[Tile.BLUE] = new Tile("img/Tile/Blue.png");
+        tiles[Tile.ELEVATION] = new Tile("img/Tile/Tilemap_Elevation.png");
     }
 
-    // set Index of Map
     private void setIndexMap(String filePath) {
         switch (filePath) {
             case "Map/Map01.txt":

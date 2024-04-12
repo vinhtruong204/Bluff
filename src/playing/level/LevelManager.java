@@ -18,7 +18,6 @@ import playing.entity.bomb.BombManager;
 import playing.entity.door.DoorManager;
 import playing.entity.enemy.EnemyManager;
 import playing.entity.heart.HeartManager;
-import playing.pause.main_pause.PauseOptionState;
 import sound.SoundManager;
 
 public class LevelManager implements StateMethods {

@@ -9,21 +9,21 @@ import playing.level.Tile;
 
 public class Camera {
 
-    //The largest location of the map
+    // The largest location of the map
     private int maxMapX;
     private int maxMapY;
 
-    //Camera's starting position in x and y axes
+    // Camera's starting position in x and y axes
     private int mapStartX, mapStartY;
 
     private Level level;
     private Player player;
-    //Starting and ending position of image loading
+    // Starting and ending position of image loading
     private int x1, x2, y1, y2;
-    //Row index and column index of the map matrix
+    // Row index and column index of the map matrix
     private int map_x, map_y;
 
-    //Constructor
+    // Constructor
     public Camera(Level level, Player player) {
         this.level = level;
         this.player = player;
@@ -31,8 +31,7 @@ public class Camera {
         maxMapY = Tile.TILE_SIZE * level.getMaxRow();
     }
 
-
-    //Getter and setter of camera
+    // Getter and setter of camera
     public int getMaxMapX() {
         return maxMapX;
     }
@@ -65,7 +64,7 @@ public class Camera {
         this.mapStartY = mapStartY;
     }
 
-    //Set the player always in the camera
+    // Set the player always in the camera
     private void checkCenterToMap() {
         mapStartX = (int) player.getPosition().getX() - Game.SCREEN_WIDTH / 2;
         if (mapStartX < 0) {
@@ -81,9 +80,9 @@ public class Camera {
         }
     }
 
-    //Start and end location for image loading
+    // Start and end location for image loading
     private void UpdatePositionRenderToMap() {
-        
+
         x1 = (mapStartX % Tile.TILE_SIZE) * -1;
         x2 = x1 + Game.SCREEN_WIDTH + (x1 == 0 ? 0 : Tile.TILE_SIZE);
 
@@ -91,22 +90,41 @@ public class Camera {
         y2 = y1 + Game.SCREEN_HEIGHT + (y1 == 0 ? 0 : Tile.TILE_SIZE);
     }
 
-    //Update 
+    // Update
     public void update() {
         checkCenterToMap();
         UpdatePositionRenderToMap();
     }
 
-    //Render
+    // Render
     public void render(Graphics g) {
+        // Calculate begin row and column 
         map_x = mapStartX / Tile.TILE_SIZE;
         map_y = mapStartY / Tile.TILE_SIZE;
+
+        // Get all tiles
+        Tile[] tiles = level.getTiles();
+
+        // Render map
         for (int i = y1; i < y2; i += Tile.TILE_SIZE) {
             map_x = (mapStartX / Tile.TILE_SIZE);
             for (int j = x1; j < x2; j += Tile.TILE_SIZE) {
-                if (map_x >= 0 && map_x < level.getMaxCol() && map_y >=0 && map_y < level.getMaxRow()) {
+                if (map_x >= 0 && map_x < level.getMaxCol() && map_y >= 0 && map_y < level.getMaxRow()) {
+                    // Get current tile number
                     int tileNum = level.getMap()[map_y][map_x];
-                    g.drawImage(level.getTiles()[tileNum].getImage(), j, i, Tile.TILE_SIZE, Tile.TILE_SIZE, null);
+
+                    switch (tileNum) {
+                        // If tile number is brick
+                        case Tile.ELEVATION:
+                            g.drawImage(tiles[Tile.ELEVATION].getImage(), j, i, Tile.TILE_SIZE, Tile.TILE_SIZE, null);
+                            break;
+
+                        // Enemy, background, heart,.... -> render background
+                        default:
+                            g.drawImage(tiles[Tile.BLUE].getImage(), j, i, Tile.TILE_SIZE, Tile.TILE_SIZE, null);
+                            break;
+                    }
+
                 }
                 map_x++;
             }
