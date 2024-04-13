@@ -24,7 +24,7 @@ import sound.SoundManager;
 public class LevelManager implements StateMethods {
 
     private Level levels[];
-    private int currentLevel = 0;
+    private int currentLevel;
     private String[] nameFile;
     private Camera camera;
     private Player player;
@@ -40,6 +40,7 @@ public class LevelManager implements StateMethods {
     public LevelManager(Playing playing) {
         initPathMap();
         initMap();
+        currentLevel = 0; // Set default level
         this.playing = playing;
         player = new Player(levels[currentLevel].getMap(), false, true);
         camera = new Camera(levels[currentLevel], player);
@@ -48,19 +49,22 @@ public class LevelManager implements StateMethods {
         bombManager = new BombManager(40);
         doorManager = new DoorManager(levels[currentLevel].getMap(), player);
         soundManager = new SoundManager(bombManager, heartManager);
+
     }
 
     private void initPathMap() {
-        nameFile = new String[5];
+        nameFile = new String[7];
         nameFile[0] = new String(FilePath.Map.MAP_1);
         nameFile[1] = new String(FilePath.Map.MAP_2);
         nameFile[2] = new String(FilePath.Map.MAP_3);
         nameFile[3] = new String(FilePath.Map.MAP_4);
         nameFile[4] = new String(FilePath.Map.MAP_5);
+        nameFile[5] = new String(FilePath.Map.MAP_6);
+        nameFile[6] = new String(FilePath.Map.MAP_7);
     }
 
     private void initMap() {
-        levels = new Level[5];
+        levels = new Level[7];
 
         // Initialize first map
         levels[currentLevel] = new Level(nameFile[currentLevel]);

@@ -50,7 +50,16 @@ public class Level {
                 maxRow = 20;
                 break;
             case FilePath.Map.MAP_5:
-
+                maxCol = 60;
+                maxRow = 20;
+                break;
+            case FilePath.Map.MAP_6:
+                maxCol = 80;
+                maxRow = 30;
+                break;
+            case FilePath.Map.MAP_7:
+                maxCol = 60;
+                maxRow = 20;
                 break;
             default:
                 break;

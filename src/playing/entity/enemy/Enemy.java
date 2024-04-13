@@ -18,8 +18,10 @@ import playing.entity.GameObject;
 import playing.level.Tile;
 
 public abstract class Enemy extends GameObject {
-    protected final double MAX_DISTANCE_TRAVEL = 800.0d;
+    // Visible distance
+    protected final double MAX_DISTANCE_TRAVEL = 1000.0d;
 
+    // Speed of enemy
     protected final float NORMAL_SPEED = 1.0f;
     protected final float MAX_SPEED = 3.5f;
     protected final float OFFSET_SPEED = 0.5f;
