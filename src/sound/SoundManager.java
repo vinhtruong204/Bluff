@@ -41,6 +41,7 @@ public class SoundManager {
     //         sHeart.resume();
     // }
 
+    //stop all sound
     public void stopSound() {
         if (mBackground != null)
             mBackground.stop();
@@ -50,6 +51,7 @@ public class SoundManager {
             sHeart.stop();
     }
 
+    //close all sound
     public void closeSound() {
         if (mBackground != null)
             mBackground.close();
@@ -61,14 +63,17 @@ public class SoundManager {
 
     // update
     public void update() {
+        // if status BackGroundMusic is On
         if(PauseMusicBackGroundState.pauseMusicBackGroundState == PauseMusicBackGroundState.ON){
             SoundBackgroundMusic();
         }
+        //Play a bomb sound if you press the e key
         SoundBomb();
+        //Plays a heart-eating sound if the player collides with the heart
         SoundHeart();
     }
 
-    //
+    //If there are bombs left and the bomb is in explosive state
     private void SoundBomb() {
         Iterator<Bomb> itrBomb = bombManager.getBombs().iterator();
         while (itrBomb.hasNext()) {
@@ -80,7 +85,7 @@ public class SoundManager {
         }
     }
 
-    //
+    //If the player collides with the heart
     private void SoundHeart() {
         Iterator<Heart> itr = heartManager.getHearts().iterator();
 
@@ -93,7 +98,7 @@ public class SoundManager {
         }
     }
 
-    //
+    //play background sound
     private void SoundBackgroundMusic() {
         mBackground.start();
         mBackground.loop(Clip.LOOP_CONTINUOUSLY);

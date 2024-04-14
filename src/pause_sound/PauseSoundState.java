@@ -1,6 +1,7 @@
 package pause_sound;
 
 public enum PauseSoundState {
+    //state of Sound
     ON,
     OFF;
     

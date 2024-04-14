@@ -11,7 +11,9 @@ import helpmethods.FilePath;
 import helpmethods.LoadSave;
 
 public class PauseSoundButtons extends Button {
+    //width of PauseSoundButton 
     private final int PAUSE_SOUND_BUTTON_WIDTH = 35;
+    //height of PauseSoundButton
     private final int PAUSE_SOUND_BUTTON_HEIGHT = 35;
 
     public PauseSoundButtons(int rowIndex) {
@@ -31,6 +33,7 @@ public class PauseSoundButtons extends Button {
         loadImages();
     }
 
+    
     @Override
     public void applyGameState() {
     }
