@@ -26,6 +26,7 @@ public class FilePath {
     public class Tile {
         public static final String BLUE = "res/img/Tile/Blue.png";
         public static final String ELEVATION = "res/img/Tile/Tilemap_Elevation.png";
+        public static final String BOX = "res/img/Tile/Box.png";
     }
 
     public class Font {

@@ -9,11 +9,12 @@ public class Tile {
     public static final int TILE_SIZE = 48;
     
     // Total tile type 
-    public static final int TOTAL_TILE_TYPE = 2;
+    public static final int TOTAL_TILE_TYPE = 3;
 
     // All type of tile
     public static final int BLUE = 0; // background
     public static final int ELEVATION = 1; // brick
+    public static final int BOX = 2;
     
 
     // Actual image of tile

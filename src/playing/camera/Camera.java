@@ -98,7 +98,7 @@ public class Camera {
 
     // Render
     public void render(Graphics g) {
-        // Calculate begin row and column 
+        // Calculate begin row and column
         map_x = mapStartX / Tile.TILE_SIZE;
         map_y = mapStartY / Tile.TILE_SIZE;
 
@@ -118,7 +118,9 @@ public class Camera {
                         case Tile.ELEVATION:
                             g.drawImage(tiles[Tile.ELEVATION].getImage(), j, i, Tile.TILE_SIZE, Tile.TILE_SIZE, null);
                             break;
-
+                        case Tile.BOX:
+                            g.drawImage(tiles[Tile.BOX].getImage(), j, i, Tile.TILE_SIZE, Tile.TILE_SIZE, null);
+                            break;
                         // Enemy, background, heart,.... -> render background
                         default:
                             g.drawImage(tiles[Tile.BLUE].getImage(), j, i, Tile.TILE_SIZE, Tile.TILE_SIZE, null);

@@ -29,6 +29,7 @@ public class Level {
         // Load image of tile
         tiles[Tile.BLUE] = new Tile(FilePath.Tile.BLUE);
         tiles[Tile.ELEVATION] = new Tile(FilePath.Tile.ELEVATION);
+        tiles[Tile.BOX] = new Tile(FilePath.Tile.BOX);
     }
 
     private void setIndexMap(String filePath) {

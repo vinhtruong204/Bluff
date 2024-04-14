@@ -125,6 +125,8 @@ public class CheckCollision {
             case 1:
                 return true;
             // Isn't brick
+            case 2:
+                return true;
             default:
                 return false;
         }
