@@ -10,6 +10,7 @@ import gamestate.StateMethods;
 import helpmethods.CheckCollision;
 import helpmethods.CheckGame;
 import helpmethods.FilePath;
+import pause_music_background.PauseMusicBackGroundState;
 import pause_sound.PauseSoundState;
 import playing.Playing;
 import playing.camera.Camera;
@@ -190,6 +191,10 @@ public class LevelManager implements StateMethods {
         bombManager.render(g);
         if (GameState.gameState == GameState.PAUSE || PauseSoundState.pauseSoundState == PauseSoundState.OFF) {
             soundManager.stopSound();
+        }
+
+        if(PauseMusicBackGroundState.pauseMusicBackGroundState == PauseMusicBackGroundState.OFF){
+            soundManager.getmBackground().stop();
         }
     }
 

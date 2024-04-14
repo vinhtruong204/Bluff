@@ -46,6 +46,7 @@ public class FilePath {
     public class Sound {
         // Button
         public static final String PAUSE_SOUND_BUTTON = "res/img/Pause/Pause_Button_Sound.png";
+        public static final String PAUSE_SOUND_BACKGROUND_BUTTON = "res/img/Pause/Pause_Music_Button.png";
 
         // Audio
         public static final String MUSIC_BACKGROUND = "res/sound/SoundBackground.wav";

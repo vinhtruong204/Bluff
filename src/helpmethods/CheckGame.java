@@ -12,8 +12,7 @@ public class CheckGame {
         return false;
     }
 
-    public static boolean checkGameWin(int heartNumber, int numberOfEnemy)
-    {
+    public static boolean checkGameWin(int heartNumber, int numberOfEnemy){
         if(heartNumber != 0 && numberOfEnemy == 0){
             return true;
         }

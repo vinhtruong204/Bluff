@@ -6,6 +6,7 @@ import javax.sound.sampled.Clip;
 
 import helpmethods.CheckCollision;
 import helpmethods.FilePath;
+import pause_music_background.PauseMusicBackGroundState;
 import playing.entity.bomb.Bomb;
 import playing.entity.bomb.BombManager;
 import playing.entity.heart.Heart;
@@ -31,14 +32,14 @@ public class SoundManager {
         mBackground = new SoundObject(FilePath.Sound.MUSIC_BACKGROUND);
     }
 
-    public void resumeSound() {
-        if (mBackground != null)
-            mBackground.resume();
-        if (sBomb != null)
-            sBomb.resume();
-        if (sHeart != null)
-            sHeart.resume();
-    }
+    // public void resumeSound() {
+    //     if (mBackground != null)
+    //         mBackground.resume();
+    //     if (sBomb != null)
+    //         sBomb.resume();
+    //     if (sHeart != null)
+    //         sHeart.resume();
+    // }
 
     public void stopSound() {
         if (mBackground != null)
@@ -60,7 +61,9 @@ public class SoundManager {
 
     // update
     public void update() {
-        SoundBackgroundMusic();
+        if(PauseMusicBackGroundState.pauseMusicBackGroundState == PauseMusicBackGroundState.ON){
+            SoundBackgroundMusic();
+        }
         SoundBomb();
         SoundHeart();
     }

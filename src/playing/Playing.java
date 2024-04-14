@@ -7,6 +7,8 @@ import java.awt.event.MouseEvent;
 import playing.level.LevelManager;
 import playing.pause.PauseButton;
 import gamestate.StateMethods;
+import pause_music_background.PauseMusicBackGroundState;
+import pause_music_background.PauseMusicBackground;
 import pause_sound.PauseSoundButtons;
 import pause_sound.PauseSoundState;
 
@@ -14,18 +16,22 @@ public class Playing implements StateMethods {
     private LevelManager levelManager;
     private PauseButton pauseButton;
     private PauseSoundButtons pauseSoundButton;
+    private PauseMusicBackground pauseMusicBackground;
 
     public Playing() {
         levelManager = new LevelManager(this);
         pauseButton = new PauseButton(3);
         pauseSoundButton = new PauseSoundButtons(1);
+        pauseMusicBackground = new PauseMusicBackground(1);
     } 
 
     public void resetAll() {
         levelManager = new LevelManager(this);
         pauseButton = new PauseButton(3);
         pauseSoundButton = new PauseSoundButtons(1);
-
+        PauseSoundState.pauseSoundState = PauseSoundState.ON;
+        pauseMusicBackground = new PauseMusicBackground(1);
+        PauseMusicBackGroundState.pauseMusicBackGroundState = PauseMusicBackGroundState.ON;
     }
 
     @Override
@@ -33,6 +39,7 @@ public class Playing implements StateMethods {
         levelManager.update();
         pauseButton.update();
         pauseSoundButton.update();
+        pauseMusicBackground.update();
     }
 
     @Override
@@ -40,6 +47,7 @@ public class Playing implements StateMethods {
         levelManager.render(g);
         pauseButton.render(g);
         pauseSoundButton.render(g);
+        pauseMusicBackground.render(g);
     }
 
     @Override
@@ -57,6 +65,15 @@ public class Playing implements StateMethods {
         }else if(pauseSoundButton.isIn(e) && PauseSoundState.pauseSoundState == PauseSoundState.OFF){
             pauseSoundButton.setMousePressed(true);
         }
+
+        if(pauseMusicBackground.isIn(e) && PauseMusicBackGroundState.pauseMusicBackGroundState == PauseMusicBackGroundState.ON){
+            pauseMusicBackground.setMousePressed(true);
+        }
+        else if(pauseMusicBackground.isIn(e) && PauseMusicBackGroundState.pauseMusicBackGroundState == PauseMusicBackGroundState.OFF){
+            pauseMusicBackground.setMousePressed(true);
+        }
+
+
     }
 
     @Override
@@ -75,9 +92,18 @@ public class Playing implements StateMethods {
             PauseSoundState.pauseSoundState = PauseSoundState.ON;
         }
 
+        if(pauseMusicBackground.isIn(e) && PauseMusicBackGroundState.pauseMusicBackGroundState == PauseMusicBackGroundState.ON){
+            pauseMusicBackground = new PauseMusicBackground(0);
+            PauseMusicBackGroundState.pauseMusicBackGroundState = PauseMusicBackGroundState.OFF;
+        }else if(pauseMusicBackground.isIn(e) && PauseMusicBackGroundState.pauseMusicBackGroundState == PauseMusicBackGroundState.OFF){
+            pauseMusicBackground = new PauseMusicBackground(1);
+            PauseMusicBackGroundState.pauseMusicBackGroundState = PauseMusicBackGroundState.ON;
+        }
+
         // Reset mouse over when mouse moved
         pauseButton.resetBoolean();
         pauseSoundButton.resetBoolean();
+        pauseMusicBackground.resetBoolean();
     }
 
     @Override
@@ -86,6 +112,7 @@ public class Playing implements StateMethods {
         // Reset mouse over when mouse move
         pauseButton.setMouseOver(false);
         pauseSoundButton.setMouseOver(false);
+        pauseMusicBackground.setMouseOver(false);
 
         // Check mouse over if mouse is in pause button
         if (pauseButton.isIn(e)) {
@@ -94,6 +121,10 @@ public class Playing implements StateMethods {
 
         if(pauseSoundButton.isIn(e)){
             pauseSoundButton.setMouseOver(true);
+        }
+
+        if(pauseMusicBackground.isIn(e)){
+            pauseMusicBackground.setMouseOver(true);
         }
     }
 

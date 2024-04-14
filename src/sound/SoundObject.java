@@ -51,7 +51,7 @@ public class SoundObject implements SoundStatus {
         clip.stop();
     }
 
-    //pause
+    // //pause
     @Override
     public void resume(){
         // Reposition the clip
