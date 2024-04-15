@@ -2,6 +2,7 @@ package game;
 
 import java.awt.Graphics;
 
+import gameover.GameOver;
 import gamestate.GameState;
 import menu.Menu;
 import playing.Playing;
@@ -16,12 +17,14 @@ public class Game {
     private Playing playing;
     private Menu menu;
     private Pause pause;
+    private GameOver gameOver;
 
     public Game() {
         // Create new playing and menu objects
         playing = new Playing();
         menu = new Menu();
         pause = new Pause(playing);
+        gameOver = new GameOver();
     }
 
     public void update() {
@@ -35,6 +38,9 @@ public class Game {
                 break;
             case PAUSE:
                 pause.update();
+                break;
+            case GAMEOVER:
+                gameOver.update();
                 break;
             default:
                 break;
@@ -53,6 +59,9 @@ public class Game {
             case PAUSE:
                 playing.render(g);
                 pause.render(g);
+                break;
+            case GAMEOVER:
+                gameOver.render(g);
                 break;
             default:
                 break;

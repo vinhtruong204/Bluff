@@ -54,6 +54,12 @@ public class FilePath {
         // Sound effect
         public static final String BOMB_SOUND = "res/sound/SoundBomb.wav";
         public static final String COLLECTED_HEART_SOUND = "res/sound/collect.wav";
+        public static final String GAMEOVER_SOUND = "res/sound/GameOver.wav";
+    }
+
+    public class GameOver{
+        //game over
+        public static final String GAME_OVER = "res/img/Win_Lose/You_Lose.png";
     }
 
     public class Menu {

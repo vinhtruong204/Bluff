@@ -33,15 +33,6 @@ public class SoundManager {
         mBackground = new SoundObject(FilePath.Sound.MUSIC_BACKGROUND);
     }
 
-    // public void resumeSound() {
-    // if (mBackground != null)
-    // mBackground.resume();
-    // if (sBomb != null)
-    // sBomb.resume();
-    // if (sHeart != null)
-    // sHeart.resume();
-    // }
-
     // stop all sound
     public void stopSound() {
         if (mBackground != null)
