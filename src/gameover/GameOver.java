@@ -27,7 +27,7 @@ public class GameOver {
         if(PauseSoundState.pauseSoundState == PauseSoundState.ON){
             gameOver.start();
         }
-        if ((System.currentTimeMillis() - currentTime) / 1000 >= 15) {
+        if (System.currentTimeMillis() - currentTime >= 15000) {
             GameState.gameState = GameState.MENU;
         }
     }
