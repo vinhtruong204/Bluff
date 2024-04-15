@@ -39,9 +39,9 @@ public class LevelManager implements StateMethods {
 
     // Constructor
     public LevelManager(Playing playing) {
+        currentLevel = 0; // Set default level
         initPathMap();
         initMap();
-        currentLevel = 0; // Set default level
         this.playing = playing;
         player = new Player(levels[currentLevel].getMap(), false, true);
         camera = new Camera(levels[currentLevel], player);

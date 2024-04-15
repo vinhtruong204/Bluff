@@ -308,8 +308,8 @@ public abstract class Enemy extends GameObject {
                 && (int) renderPos.getY() - camera.getMapStartY() <= Game.SCREEN_HEIGHT)
             // Render image
             g.drawImage(temp,
-                    (int) renderPos.getX() - camera.getMapStartX(),
-                    (int) renderPos.getY() - camera.getMapStartY(),
+                    (int) renderPos.getX() - camera.getMapStartX() - offsetX,
+                    (int) renderPos.getY() - camera.getMapStartY() - offsetY,
                     size.getWidth(),
                     size.getHeight(),
                     null);
