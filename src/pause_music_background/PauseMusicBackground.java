@@ -48,7 +48,7 @@ public class PauseMusicBackground extends Button {
 
     @Override
     protected void setPosition() {
-        // Set position of pause button to top left of window
+        // Set position of pause button to top right of window
         position = new Position(Game.SCREEN_WIDTH - 3 * size.getWidth() - 40, 0);
     }
 }

@@ -24,11 +24,48 @@ public class BombManager {
     private BufferedImage bombItem;
 
     // contructor
-    public BombManager(int maxBomb) {
+    public BombManager(int currentLevel) {
         bombs = new CopyOnWriteArrayList<Bomb>();
-        this.maxBomb = maxBomb;
+        initMaxBomb(currentLevel);
         this.numberOfBombsExploded = 0;
         initBombItem();
+    }
+
+    private void initMaxBomb(int currentLevel) {
+
+        switch (currentLevel) {
+            // Map 1
+            case 0:
+                maxBomb = 20;
+                break;
+            // Map 2
+            case 1:
+                maxBomb = 40;
+                break;
+            // Map 3
+            case 2:
+                maxBomb = 65;
+                break;
+            // Map 4
+            case 3:
+                maxBomb = 95;
+                break;
+            // Map 5
+            case 4:
+                maxBomb = 130;
+                break;
+            // Map 6
+            case 5:
+                maxBomb = 100;
+                break;
+            // Map 7
+            case 6:
+                maxBomb = 180;
+                break;
+
+            default:
+                break;
+        }
     }
 
     // render
@@ -41,7 +78,7 @@ public class BombManager {
         // Load image bom item
         bombItem = LoadSave.loadImage(FilePath.Object.BOMB_ITEM);
     }
-    
+
     // getter and setter
     public List<Bomb> getBombs() {
         return bombs;

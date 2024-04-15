@@ -47,7 +47,7 @@ public class LevelManager implements StateMethods {
         camera = new Camera(levels[currentLevel], player);
         enemyManager = new EnemyManager(levels[currentLevel].getMap(), player);
         heartManager = new HeartManager(levels[currentLevel].getMap(), player);
-        bombManager = new BombManager(40);
+        bombManager = new BombManager(currentLevel);
         doorManager = new DoorManager(levels[currentLevel].getMap(), player);
         soundManager = new SoundManager(bombManager, heartManager);
 
@@ -84,7 +84,7 @@ public class LevelManager implements StateMethods {
             camera = new Camera(levels[currentLevel], player);
             enemyManager = new EnemyManager(levels[currentLevel].getMap(), player);
             heartManager = new HeartManager(levels[currentLevel].getMap(), player);
-            bombManager = new BombManager(40);
+            bombManager = new BombManager(currentLevel);
             doorManager = new DoorManager(levels[currentLevel].getMap(), player);
             soundManager = new SoundManager(bombManager, heartManager);
         }

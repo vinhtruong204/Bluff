@@ -95,7 +95,9 @@ public class Playing implements StateMethods {
         if(pauseMusicBackground.isIn(e) && PauseMusicBackGroundState.pauseMusicBackGroundState == PauseMusicBackGroundState.ON){
             pauseMusicBackground = new PauseMusicBackground(0);
             PauseMusicBackGroundState.pauseMusicBackGroundState = PauseMusicBackGroundState.OFF;
-        }else if(pauseMusicBackground.isIn(e) && PauseMusicBackGroundState.pauseMusicBackGroundState == PauseMusicBackGroundState.OFF){
+        }
+        
+        else if(pauseMusicBackground.isIn(e) && PauseMusicBackGroundState.pauseMusicBackGroundState == PauseMusicBackGroundState.OFF){
             pauseMusicBackground = new PauseMusicBackground(1);
             PauseMusicBackGroundState.pauseMusicBackGroundState = PauseMusicBackGroundState.ON;
         }
