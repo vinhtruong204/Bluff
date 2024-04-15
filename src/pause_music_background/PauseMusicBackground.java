@@ -41,7 +41,7 @@ public class PauseMusicBackground extends Button {
         // Load image contain all state of the button
         BufferedImage temp = LoadSave.loadImage(FilePath.Sound.PAUSE_SOUND_BACKGROUND_BUTTON);
         // Load all state of the button
-        for (int i = 0; i < images.length; i++){
+        for (int i = 0; i < images.length; i++) {
             images[i] = temp.getSubimage(i * BUTTON_WIDTH, rowIndex * BUTTON_HEIGHT, BUTTON_WIDTH, BUTTON_HEIGHT);
         }
     }

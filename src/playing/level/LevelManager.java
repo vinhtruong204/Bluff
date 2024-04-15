@@ -158,10 +158,7 @@ public class LevelManager implements StateMethods {
             bomb.update();
         }
         //
-        if (PauseSoundState.pauseSoundState == PauseSoundState.ON) {
-            soundManager.update();
-        }
-
+        soundManager.update();
         //
 
         handleBombCollision();
@@ -189,12 +186,17 @@ public class LevelManager implements StateMethods {
         enemyManager.render(g, camera);
         heartManager.render(g, camera);
         bombManager.render(g);
-        if (GameState.gameState == GameState.PAUSE || PauseSoundState.pauseSoundState == PauseSoundState.OFF) {
+        if (GameState.gameState == GameState.PAUSE) {
             soundManager.stopSound();
         }
 
+        if(PauseSoundState.pauseSoundState == PauseSoundState.OFF){
+            if(soundManager.getsBomb() != null) soundManager.getsBomb().stop();
+            if(soundManager.getsHeart() != null) soundManager.getsHeart().stop();
+        }
+
         if(PauseMusicBackGroundState.pauseMusicBackGroundState == PauseMusicBackGroundState.OFF){
-            soundManager.getmBackground().stop();
+            if(soundManager.getmBackground() != null) soundManager.getmBackground().stop();
         }
     }
 
