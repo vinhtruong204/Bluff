@@ -66,8 +66,9 @@ public abstract class Enemy extends GameObject {
     // Map
     protected int[][] map;
 
-    // Old pos help render method
+    // Position help render method
     protected Position oldPos;
+    protected Position renderPos;
 
     public Enemy(int enemyType, int[][] map) {
         this.enemyType = enemyType;
@@ -80,7 +81,9 @@ public abstract class Enemy extends GameObject {
         enemySpeed = NORMAL_SPEED;
         velocity = new Vector2D(enemySpeed, 0);
         traveled = 0.0d;
-        oldPos = new Position(0.0f, 0.0f);
+        position = new Position(0.0f, 0.0f);
+        oldPos = new Position(position.getX(), position.getY());
+        renderPos = new Position(position.getX(), position.getY());
         onGround = false;
 
         // Default animation speed
@@ -93,16 +96,16 @@ public abstract class Enemy extends GameObject {
     private void initHealth() {
         switch (enemyType) {
             case EnemyConstants.CUCUMBER:
-                health = 2;
+                health = 1;
                 break;
             case EnemyConstants.CAPTAIN:
-                health = 2;
+                health = 5;
                 break;
             case EnemyConstants.BOLD_PIRATE:
-                health = 2;
+                health = 3;
                 break;
             case EnemyConstants.BIG_GUY:
-                health = 2;
+                health = 4;
                 break;
             case EnemyConstants.WHALE:
                 health = 2;
@@ -290,39 +293,26 @@ public abstract class Enemy extends GameObject {
         if (direction == WalkDirection.LEFT)
             temp = FlipImage.horizontalflip(temp);
 
-        // Check cucumber if screen contain it and render
-        if ((int) position.getX() - camera.getMapStartX() >= 0
-                && (int) position.getX() - camera.getMapStartX() <= Game.SCREEN_WIDTH
-                && (int) position.getY() - camera.getMapStartY() >= 0
-                && (int) position.getY() - camera.getMapStartY() <= Game.SCREEN_HEIGHT) {
-            // Draw hitbox
-            // g.setColor(Color.red);
-            // g.drawRect(hitBox.x - camera.getMapStartX(), hitBox.y -
-            // camera.getMapStartY(), hitBox.width, hitBox.height);
-
-            // Draw enemy minus offset
-            if (oldPos.compareTo(position) == 0) {
-                g.drawImage(
-                        temp,
-                        (int) position.getX() - offsetX - camera.getMapStartX(),
-                        (int) position.getY() - offsetY - camera.getMapStartY(),
-                        size.getWidth(),
-                        size.getHeight(),
-                        null);
-            } else {
-                g.drawImage(
-                        temp,
-                        (int) (oldPos.getX() + velocity.getX() * GamePanel.interpolation)
-                                - offsetX
-                                - camera.getMapStartX(),
-                        (int) (oldPos.getY() + velocity.getY() * GamePanel.interpolation)
-                                - offsetY
-                                - camera.getMapStartY(),
-                        size.getWidth(),
-                        size.getHeight(),
-                        null);
-            }
+        // Calculate render position
+        if (oldPos.compareTo(position) == 0)
+            renderPos = position;
+        else {
+            renderPos.setX(oldPos.getX() + velocity.getX() * GamePanel.interpolation);
+            renderPos.setY(oldPos.getY() + velocity.getY() * GamePanel.interpolation);
         }
+
+        // Render the bomb if it is in the screen
+        if ((int) renderPos.getX() - camera.getMapStartX() >= 0
+                && (int) renderPos.getX() - camera.getMapStartX() <= Game.SCREEN_WIDTH
+                && (int) renderPos.getY() - camera.getMapStartY() >= 0
+                && (int) renderPos.getY() - camera.getMapStartY() <= Game.SCREEN_HEIGHT)
+            // Render image
+            g.drawImage(temp,
+                    (int) renderPos.getX() - camera.getMapStartX(),
+                    (int) renderPos.getY() - camera.getMapStartY(),
+                    size.getWidth(),
+                    size.getHeight(),
+                    null);
     }
 
     // Getter and Setter

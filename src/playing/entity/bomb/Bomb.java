@@ -7,6 +7,7 @@ import java.awt.image.BufferedImage;
 import core.Position;
 import core.Size;
 import core.Vector2D;
+import game.Game;
 import game.GamePanel;
 import gamestate.GameState;
 import helpmethods.BombConstants;
@@ -45,8 +46,9 @@ public class Bomb extends GameObject {
     // Box of Bomb
     private Rectangle hitBox;
 
-    // Old pos help render
+    // Position help render
     private Position oldPos;
+    private Position renderPos;
 
     // Move
     private Vector2D velocity;
@@ -63,6 +65,7 @@ public class Bomb extends GameObject {
         position = new Position(i * Tile.TILE_SIZE - 30.0f, j * Tile.TILE_SIZE);
         hitBox = new Rectangle((int) position.getX(), (int) position.getY(), size.getWidth(), size.getHeight());
         oldPos = new Position(position.getX(), position.getY());
+        renderPos = new Position(position.getX(), position.getY());
 
         // Speed of animation
         aniSpeed = 3;
@@ -181,35 +184,32 @@ public class Bomb extends GameObject {
         if (GameState.gameState == GameState.PLAYING)
             timePassed += System.currentTimeMillis() - lastTime;
 
-        // Render the bomb
-
-        if ((int) position.getX() - camera.getMapStartX() >= 0
-                && (int) position.getY() - camera.getMapStartY() >= 0) {
+        // Calculate render position
+        if (onGround)
             // The bomb isn't falling
-            if (onGround) {
-                // Draw current position
-                g.drawImage(animations[aniType][aniIndex],
-                        (int) position.getX() - camera.getMapStartX(),
-                        (int) position.getY() - camera.getMapStartY(),
-                        size.getWidth(),
-                        size.getHeight(),
-                        null);
-            }
-
-            // The bomb is falling
-            else {
-                // Draw depend on speed and time
-                g.drawImage(animations[aniType][aniIndex],
-                        (int) (oldPos.getX() + velocity.getY() * GamePanel.interpolation) - camera.getMapStartX(),
-                        (int) (oldPos.getY() + velocity.getY() * GamePanel.interpolation) - camera.getMapStartY(),
-                        size.getWidth(),
-                        size.getHeight(),
-                        null);
-            }
-
+            renderPos = position;
+        else {
+            renderPos.setX(oldPos.getX() + velocity.getX() * GamePanel.interpolation);
+            renderPos.setY(oldPos.getY() + velocity.getY() * GamePanel.interpolation);
         }
+
+        // Render the bomb if it is in the screen
+        if ((int) renderPos.getX() - camera.getMapStartX() >= 0
+                && (int) renderPos.getX() - camera.getMapStartX() <= Game.SCREEN_WIDTH
+                && (int) renderPos.getY() - camera.getMapStartY() >= 0
+                && (int) renderPos.getY() - camera.getMapStartY() <= Game.SCREEN_HEIGHT) {
+            // Draw current position
+            g.drawImage(animations[aniType][aniIndex],
+                    (int) renderPos.getX() - camera.getMapStartX(),
+                    (int) renderPos.getY() - camera.getMapStartY(),
+                    size.getWidth(),
+                    size.getHeight(),
+                    null);
+        }
+
         // Update last time
         lastTime = System.currentTimeMillis();
+
     }
 
     // Getter and setter

@@ -78,14 +78,16 @@ public class Player extends GameObject {
 
     private boolean locked;
 
-    // Old posisition
+    // Posisition help render
     private Position oldPos;
+    private Position renderPos;
 
     // Contructor
     public Player(int[][] map, boolean doorOut, boolean reset) {
         // Set first position, size
         position = new Position(2 * Tile.TILE_SIZE, 1 * Tile.TILE_SIZE); // Column 2, row 1 TileSize = 48
-        oldPos = position;
+        oldPos = new Position(position.getX(), position.getY());
+        renderPos = new Position(position.getX(), position.getY());
         size = new Size(PLAYER_WIDTH, PLAYER_HEIGHT);
 
         // Init hitbox depend on position and size
@@ -428,23 +430,29 @@ public class Player extends GameObject {
     // Render
     @Override
     public void render(Graphics g, Camera camera) {
+        // Image and position render
         BufferedImage temp = animations[aniType][aniIndex];
+
+        // If player's direction is left
         if (currentDirection == WalkDirection.LEFT)
+            // flip image
             temp = FlipImage.horizontalflip(temp);
-        if (oldPos.compareTo(position) == 0) {
-            g.drawImage(temp,
-                    (int) position.getX() - camera.getMapStartX(),
-                    (int) position.getY() - camera.getMapStartY(),
-                    size.getWidth(),
-                    size.getHeight(),
-                    null);
-        } else
-            g.drawImage(temp,
-                    (int) (oldPos.getX() + velocity.getX() * GamePanel.interpolation) - camera.getMapStartX(),
-                    (int) (oldPos.getY() + velocity.getY() * GamePanel.interpolation) - camera.getMapStartY(),
-                    size.getWidth(),
-                    size.getHeight(),
-                    null);
+
+        // Calculate render position
+        if (oldPos.compareTo(position) == 0)
+            renderPos = position;
+        else {
+            renderPos.setX(oldPos.getX() + velocity.getX() * GamePanel.interpolation);
+            renderPos.setY(oldPos.getY() + velocity.getY() * GamePanel.interpolation);
+        }
+
+        // Render image
+        g.drawImage(temp,
+                (int) renderPos.getX() - camera.getMapStartX(),
+                (int) renderPos.getY() - camera.getMapStartY(),
+                size.getWidth(),
+                size.getHeight(),
+                null);
     }
 
     // Getter and Setter
