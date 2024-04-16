@@ -147,13 +147,15 @@ public class LevelManager implements StateMethods {
     }
 
     private void checkWinGame(){
-        if(currentLevel == 5 && doorManager.getDoor().isClosed()){
+        if(currentLevel == 0 && doorManager.getDoor().isClosed()){
+            soundManager.closeSound();
             GameState.gameState = GameState.WIN;
         }
     }
 
     // Update Map
     public void update() {
+        checkWinGame();
         setNewMap();
         camera.update();
         player.update();
@@ -174,7 +176,6 @@ public class LevelManager implements StateMethods {
 
         checkGameOver();
         checkNewScreen();
-        checkWinGame();
     }
 
     // Render Map
