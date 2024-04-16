@@ -64,4 +64,9 @@ public class SoundObject implements SoundStatus {
     public void close() {
         clip.close();
     }
+
+    //getter and setter
+    public Clip getClip() {
+        return clip;
+    }
 }

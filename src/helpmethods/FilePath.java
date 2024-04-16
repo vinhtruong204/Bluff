@@ -55,6 +55,8 @@ public class FilePath {
         public static final String BOMB_SOUND = "res/sound/SoundBomb.wav";
         public static final String COLLECTED_HEART_SOUND = "res/sound/collect.wav";
         public static final String GAMEOVER_SOUND = "res/sound/GameOver.wav";
+        public static final String ENEMY_ATTACK = "res/sound/EnemyAttack.wav";
+        public static final String SOUND_NEW_MAP = "res/sound/SoundNewMap.wav";
     }
 
     public class GameOver{

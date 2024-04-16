@@ -12,7 +12,7 @@ import sound.SoundObject;
 public class GameOver {
     private BufferedImage image;
     private SoundObject gameOver;
-    private long lastTime,totalTime;
+    private long lastTime, totalTime;
 
     private final int GAME_OVER_WIDTH = 490;
     private final int GAME_OVER_HEIGHT = 160;
@@ -24,7 +24,7 @@ public class GameOver {
 
     public void update() {
         lastTime = System.currentTimeMillis();
-        if(PauseSoundState.pauseSoundState == PauseSoundState.ON){
+        if (PauseSoundState.pauseSoundState == PauseSoundState.ON) {
             gameOver.start();
         }
         if (totalTime >= 10) {
