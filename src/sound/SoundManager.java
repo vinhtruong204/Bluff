@@ -8,6 +8,7 @@ import helpmethods.CheckCollision;
 import helpmethods.FilePath;
 import pause_music_background.PauseMusicBackGroundState;
 import pause_sound.PauseSoundState;
+import playing.entity.Player;
 import playing.entity.bomb.Bomb;
 import playing.entity.bomb.BombManager;
 import playing.entity.door.DoorManager;
@@ -27,6 +28,8 @@ public class SoundManager {
     private SoundObject sEnemyAttack;
     // The Sound of new Map
     private SoundObject sNewMap;
+    // The Sound of jumping
+    private SoundObject sJumpPlayer;
 
     // Bombmanager
     private BombManager bombManager;
@@ -36,13 +39,16 @@ public class SoundManager {
     private EnemyManager enemyManager;
     //DoorManager
     private DoorManager doorManager;
+    //Player
+    private Player player;
 
     // constructor
-    public SoundManager(BombManager bombManager, HeartManager heartManager, EnemyManager enemyManager,DoorManager doorManager) {
+    public SoundManager(BombManager bombManager, HeartManager heartManager, EnemyManager enemyManager,DoorManager doorManager,Player player) {
         this.bombManager = bombManager;
         this.heartManager = heartManager;
         this.enemyManager = enemyManager;
         this.doorManager = doorManager;
+        this.player = player;
         mBackground = new SoundObject(FilePath.Sound.MUSIC_BACKGROUND);
         sNewMap = new SoundObject(FilePath.Sound.SOUND_NEW_MAP);
     }
@@ -59,6 +65,8 @@ public class SoundManager {
             sEnemyAttack.stop();
         if (sNewMap != null)
             sNewMap.stop();
+        if(sJumpPlayer != null)
+            sJumpPlayer.stop();
     }
 
     // close all sound
@@ -73,6 +81,8 @@ public class SoundManager {
             sEnemyAttack.close();
         if (sNewMap != null)
             sNewMap.close();
+        if(sJumpPlayer != null)
+            sJumpPlayer.close();
     }
 
     // update
@@ -90,6 +100,8 @@ public class SoundManager {
             SoundEnemyAttack();
 
             SoundNewMap();
+
+            SoundJumpPlayer();
         }
     }
 
@@ -138,6 +150,14 @@ public class SoundManager {
         }
     }
 
+    // if Player is jumping
+    private void SoundJumpPlayer(){
+        if(player.isJumping() && player.isOnGround()){
+            sJumpPlayer = new SoundObject(FilePath.Sound.SOUND_JUMP_PLAYER);
+            sJumpPlayer.start();
+        }
+    }
+
     // play background sound
     private void SoundBackgroundMusic() {
         mBackground.start();
@@ -163,6 +183,10 @@ public class SoundManager {
 
     public SoundObject getsNewMap() {
         return sNewMap;
+    }
+
+    public SoundObject getsJumpPlayer() {
+        return sJumpPlayer;
     }
 
 }

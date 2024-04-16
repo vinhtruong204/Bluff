@@ -49,7 +49,7 @@ public class LevelManager implements StateMethods {
         heartManager = new HeartManager(levels[currentLevel].getMap(), player);
         bombManager = new BombManager(currentLevel);
         doorManager = new DoorManager(levels[currentLevel].getMap(), player);
-        soundManager = new SoundManager(bombManager, heartManager,enemyManager,doorManager);
+        soundManager = new SoundManager(bombManager, heartManager, enemyManager, doorManager, player);
 
     }
 
@@ -86,7 +86,7 @@ public class LevelManager implements StateMethods {
             heartManager = new HeartManager(levels[currentLevel].getMap(), player);
             bombManager = new BombManager(currentLevel);
             doorManager = new DoorManager(levels[currentLevel].getMap(), player);
-            soundManager = new SoundManager(bombManager, heartManager,enemyManager,doorManager);
+            soundManager = new SoundManager(bombManager, heartManager, enemyManager, doorManager, player);
         }
     }
 
@@ -157,7 +157,7 @@ public class LevelManager implements StateMethods {
             Bomb bomb = (Bomb) itrBomb.next();
             bomb.update();
         }
-        
+
         soundManager.update();
 
         handleBombCollision();
@@ -189,15 +189,22 @@ public class LevelManager implements StateMethods {
             soundManager.stopSound();
         }
 
-        if(PauseSoundState.pauseSoundState == PauseSoundState.OFF){
-            if(soundManager.getsBomb() != null) soundManager.getsBomb().stop();
-            if(soundManager.getsHeart() != null) soundManager.getsHeart().stop();
-            if(soundManager.getsEnemyAttack() != null) soundManager.getsEnemyAttack().stop();
-            if(soundManager.getsNewMap() != null) soundManager.getsNewMap().stop();
+        if (PauseSoundState.pauseSoundState == PauseSoundState.OFF) {
+            if (soundManager.getsBomb() != null)
+                soundManager.getsBomb().stop();
+            if (soundManager.getsHeart() != null)
+                soundManager.getsHeart().stop();
+            if (soundManager.getsEnemyAttack() != null)
+                soundManager.getsEnemyAttack().stop();
+            if (soundManager.getsNewMap() != null)
+                soundManager.getsNewMap().stop();
+            if (soundManager.getsJumpPlayer() != null)
+                soundManager.getsJumpPlayer().stop();
         }
 
-        if(PauseMusicBackGroundState.pauseMusicBackGroundState == PauseMusicBackGroundState.OFF){
-            if(soundManager.getmBackground() != null) soundManager.getmBackground().stop();
+        if (PauseMusicBackGroundState.pauseMusicBackGroundState == PauseMusicBackGroundState.OFF) {
+            if (soundManager.getmBackground() != null)
+                soundManager.getmBackground().stop();
         }
     }
 
