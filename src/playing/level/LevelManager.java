@@ -39,7 +39,7 @@ public class LevelManager implements StateMethods {
 
     // Constructor
     public LevelManager(Playing playing) {
-        currentLevel = 0; // Set default level
+        currentLevel = 5; // Set default level
         initPathMap();
         initMap();
         this.playing = playing;
@@ -54,18 +54,17 @@ public class LevelManager implements StateMethods {
     }
 
     private void initPathMap() {
-        nameFile = new String[7];
+        nameFile = new String[6];
         nameFile[0] = new String(FilePath.Map.MAP_1);
         nameFile[1] = new String(FilePath.Map.MAP_2);
         nameFile[2] = new String(FilePath.Map.MAP_3);
         nameFile[3] = new String(FilePath.Map.MAP_4);
         nameFile[4] = new String(FilePath.Map.MAP_5);
         nameFile[5] = new String(FilePath.Map.MAP_6);
-        nameFile[6] = new String(FilePath.Map.MAP_7);
     }
 
     private void initMap() {
-        levels = new Level[7];
+        levels = new Level[6];
 
         // Initialize first map
         levels[currentLevel] = new Level(nameFile[currentLevel]);
@@ -73,7 +72,6 @@ public class LevelManager implements StateMethods {
     }
 
     private void setNewMap() {
-        if(currentLevel == 7) GameState.gameState = GameState.WIN;
         if (enemyManager.getEnemies().size() == 0 && doorManager.getDoor().isClosed()) {
             soundManager.closeSound();
             currentLevel++;
@@ -100,7 +98,8 @@ public class LevelManager implements StateMethods {
                     if (CheckCollision.isCollision(bombManager.getBombs().get(i).getHitBox(),
                             enemyManager.getEnemies().get(j).getHitBox())) {
                         if (enemyManager.getEnemies().get(j).getHealth() > 0) {
-                            enemyManager.getEnemies().get(j).setHealth(enemyManager.getEnemies().get(j).getHealth() - 1);
+                            enemyManager.getEnemies().get(j)
+                                    .setHealth(enemyManager.getEnemies().get(j).getHealth() - 1);
                             enemyManager.getEnemies().get(j).setInjured(true);
                         }
                     }
@@ -147,6 +146,12 @@ public class LevelManager implements StateMethods {
         }
     }
 
+    private void checkWinGame(){
+        if(currentLevel == 5 && doorManager.getDoor().isClosed()){
+            GameState.gameState = GameState.WIN;
+        }
+    }
+
     // Update Map
     public void update() {
         setNewMap();
@@ -169,6 +174,7 @@ public class LevelManager implements StateMethods {
 
         checkGameOver();
         checkNewScreen();
+        checkWinGame();
     }
 
     // Render Map

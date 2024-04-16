@@ -58,11 +58,6 @@ public class BombManager {
             case 5:
                 maxBomb = 150;
                 break;
-            // Map 7
-            case 6:
-                maxBomb = 220;
-                break;
-
             default:
                 break;
         }
