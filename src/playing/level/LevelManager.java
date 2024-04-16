@@ -146,8 +146,8 @@ public class LevelManager implements StateMethods {
         }
     }
 
-    private void checkWinGame(){
-        if(currentLevel == 0 && doorManager.getDoor().isClosed()){
+    private void checkWinGame() {
+        if (currentLevel == 5 && doorManager.getDoor().isClosed()) {
             soundManager.closeSound();
             GameState.gameState = GameState.WIN;
         }
@@ -156,26 +156,28 @@ public class LevelManager implements StateMethods {
     // Update Map
     public void update() {
         checkWinGame();
-        setNewMap();
-        camera.update();
-        player.update();
-        Iterator<Bomb> itrBomb = bombManager.getBombs().iterator();
-        while (itrBomb.hasNext()) {
-            Bomb bomb = (Bomb) itrBomb.next();
-            bomb.update();
+        if (GameState.gameState == GameState.PLAYING) {
+            setNewMap();
+            camera.update();
+            player.update();
+            Iterator<Bomb> itrBomb = bombManager.getBombs().iterator();
+            while (itrBomb.hasNext()) {
+                Bomb bomb = (Bomb) itrBomb.next();
+                bomb.update();
+            }
+
+            soundManager.update();
+
+            handleBombCollision();
+            deleteEnemy();
+
+            enemyManager.update();
+            heartManager.update();
+            doorManager.update();
+
+            checkGameOver();
+            checkNewScreen();
         }
-
-        soundManager.update();
-
-        handleBombCollision();
-        deleteEnemy();
-
-        enemyManager.update();
-        heartManager.update();
-        doorManager.update();
-
-        checkGameOver();
-        checkNewScreen();
     }
 
     // Render Map
