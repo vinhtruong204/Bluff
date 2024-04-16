@@ -3,6 +3,7 @@ package gameover;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
+import game.Game;
 import gamestate.GameState;
 import helpmethods.FilePath;
 import helpmethods.LoadSave;
@@ -12,7 +13,7 @@ import sound.SoundObject;
 public class GameOver {
     private BufferedImage image;
     private SoundObject gameOver;
-    private long lastTime,totalTime;
+    private long lastTime, totalTime;
 
     private final int GAME_OVER_WIDTH = 490;
     private final int GAME_OVER_HEIGHT = 160;
@@ -24,7 +25,7 @@ public class GameOver {
 
     public void update() {
         lastTime = System.currentTimeMillis();
-        if(PauseSoundState.pauseSoundState == PauseSoundState.ON){
+        if (PauseSoundState.pauseSoundState == PauseSoundState.ON) {
             gameOver.start();
         }
         if (totalTime >= 10) {
@@ -35,6 +36,7 @@ public class GameOver {
     }
 
     public void render(Graphics g) {
-        g.drawImage(image, 100, 150, GAME_OVER_WIDTH, GAME_OVER_HEIGHT, null);
+        g.drawImage(image, (Game.SCREEN_WIDTH - GAME_OVER_WIDTH) / 2, (Game.SCREEN_HEIGHT - GAME_OVER_HEIGHT) / 2,
+                GAME_OVER_WIDTH, GAME_OVER_HEIGHT, null);
     }
 }

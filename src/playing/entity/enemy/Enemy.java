@@ -79,7 +79,7 @@ public abstract class Enemy extends GameObject {
         hitting = false;
 
         enemySpeed = NORMAL_SPEED;
-        velocity = new Vector2D(enemySpeed, 0);
+        velocity = new Vector2D(0.0f, 0.0f);
         traveled = 0.0d;
         position = new Position(0.0f, 0.0f);
         oldPos = new Position(position.getX(), position.getY());
@@ -110,7 +110,18 @@ public abstract class Enemy extends GameObject {
             case EnemyConstants.WHALE:
                 health = 2;
                 break;
-
+            case EnemyConstants.ARCHER_BLUE:
+                health = 2;
+                break;
+            case EnemyConstants.ARCHER_PURPLE:
+                health = 2;
+                break;
+            case EnemyConstants.ARCHER_YELLOW:
+                health = 2;
+                break;
+            case EnemyConstants.ARCHER_RED:
+                health = 2;
+                break;
             default:
                 break;
         }
@@ -293,9 +304,11 @@ public abstract class Enemy extends GameObject {
         if (direction == WalkDirection.LEFT)
             temp = FlipImage.horizontalflip(temp);
 
-        // Calculate render position
-        if (oldPos.compareTo(position) == 0)
+        // If enemy isn't moving
+        if (oldPos.compareTo(position) == 0) {
             renderPos = position;
+        }
+        // Calculate render position
         else {
             renderPos.setX(oldPos.getX() + velocity.getX() * GamePanel.interpolation);
             renderPos.setY(oldPos.getY() + velocity.getY() * GamePanel.interpolation);

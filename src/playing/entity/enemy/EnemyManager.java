@@ -8,6 +8,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import helpmethods.EnemyConstants;
 import playing.camera.Camera;
 import playing.entity.Player;
+import playing.entity.enemy.boss.Boss;
 
 public class EnemyManager {
     private List<Enemy> enemies;
@@ -41,6 +42,18 @@ public class EnemyManager {
                         break;
                     case EnemyConstants.BIG_GUY:
                         enemies.add(new BigGuy(EnemyConstants.BIG_GUY, i, j, map));
+                        break;
+                    case EnemyConstants.ARCHER_BLUE:
+                        enemies.add(new Boss(EnemyConstants.ARCHER_BLUE, i, j, map));
+                        break;
+                    case EnemyConstants.ARCHER_PURPLE:
+                        enemies.add(new Boss(EnemyConstants.ARCHER_PURPLE, i, j, map));
+                        break;
+                    case EnemyConstants.ARCHER_YELLOW:
+                        enemies.add(new Boss(EnemyConstants.ARCHER_YELLOW, i, j, map));
+                        break;
+                    case EnemyConstants.ARCHER_RED:
+                        enemies.add(new Boss(EnemyConstants.ARCHER_RED, i, j, map));
                         break;
 
                     default:

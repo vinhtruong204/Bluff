@@ -3,10 +3,10 @@ import java.io.*;
 public class WriteMap {
     public static void main(String[] args) {
         FileWriter writer = null;
-        int row = 30, col = 80;
+        int row = 15, col = 30;
 
         try {
-            writer = new FileWriter("res/map/Map06.txt");
+            writer = new FileWriter("res/map/Map07.txt");
             for (int i = 0; i < row; i++) {
                 for (int j = 0; j < col; j++) {
                     if (i == 0 || j == 0 || i == row - 1 || j == col - 1)

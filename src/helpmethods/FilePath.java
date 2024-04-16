@@ -14,6 +14,11 @@ public class FilePath {
         public static final String WHALE = "res/img/Enemy/Enemy-Whale.png";
         public static final String BOLD_PIRATE = "res/img/Enemy/Enemy-Bold Pirate.png";
         public static final String BIG_GUY = "res/img/Enemy/Enemy-Big Guy.png";
+        public static final String ARCHER_BLUE = "res/img/Enemy/Boss_Archer/Archer_Blue.png";
+        public static final String ARCHER_PURPLE = "res/img/Enemy/Boss_Archer/Archer_Purple.png";
+        public static final String ARCHER_YELLOW = "res/img/Enemy/Boss_Archer/Archer_Red.png";
+        public static final String ARCHER_RED = "res/img/Enemy/Boss_Archer/Archer_Yellow.png";
+
     }
 
     public class Object {
