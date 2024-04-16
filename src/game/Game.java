@@ -40,6 +40,8 @@ public class Game {
                 if(GameWinState.gameWinState == GameWinState.NOSTART) GameWinState.gameWinState = GameWinState.START;
                 gameOver = new GameOver();
                 gameWin = new GameWin();
+                playing = new Playing();
+                pause = new Pause(playing);
                 menu.update();
                 break;
             case PLAYING:

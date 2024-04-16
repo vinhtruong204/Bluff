@@ -8,5 +8,5 @@ public enum GameState {
     WIN;
 
     // Set default start game state
-    public static GameState gameState = MENU;
+    public static GameState gameState = WIN;
 }
