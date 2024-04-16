@@ -3,7 +3,10 @@ package game;
 import java.awt.Graphics;
 
 import gameover.GameOver;
+import gameover.GameOverState;
 import gamestate.GameState;
+import gamewin.GameWin;
+import gamewin.GameWinState;
 import menu.Menu;
 import playing.Playing;
 import playing.pause.Pause;
@@ -18,6 +21,7 @@ public class Game {
     private Menu menu;
     private Pause pause;
     private GameOver gameOver;
+    private GameWin gameWin;
 
     public Game() {
         // Create new playing and menu objects
@@ -25,12 +29,17 @@ public class Game {
         menu = new Menu();
         pause = new Pause(playing);
         gameOver = new GameOver();
+        gameWin = new GameWin();
     }
 
     public void update() {
         // Update depend on game state
         switch (GameState.gameState) {
             case MENU:
+                if(GameOverState.gameOverState == GameOverState.NOSTART) GameOverState.gameOverState = GameOverState.START;
+                if(GameWinState.gameWinState == GameWinState.NOSTART) GameWinState.gameWinState = GameWinState.START;
+                gameOver = new GameOver();
+                gameWin = new GameWin();
                 menu.update();
                 break;
             case PLAYING:
@@ -40,7 +49,18 @@ public class Game {
                 pause.update();
                 break;
             case GAMEOVER:
+                if(GameOverState.gameOverState == GameOverState.START){
+                    gameOver.setCurrentTime(System.currentTimeMillis());
+                    GameOverState.gameOverState = GameOverState.NOSTART;
+                }
                 gameOver.update();
+                break;
+            case WIN:
+                if(GameWinState.gameWinState == GameWinState.START){
+                    gameWin.setCurrentTime(System.currentTimeMillis());
+                    GameWinState.gameWinState = GameWinState.NOSTART;
+                }
+                gameWin.update();
                 break;
             default:
                 break;
@@ -62,6 +82,9 @@ public class Game {
                 break;
             case GAMEOVER:
                 gameOver.render(g);
+                break;
+            case WIN:
+                gameWin.render(g);
                 break;
             default:
                 break;

@@ -73,6 +73,7 @@ public class LevelManager implements StateMethods {
     }
 
     private void setNewMap() {
+        if(currentLevel == 7) GameState.gameState = GameState.WIN;
         if (enemyManager.getEnemies().size() == 0 && doorManager.getDoor().isClosed()) {
             soundManager.closeSound();
             currentLevel++;
@@ -99,8 +100,7 @@ public class LevelManager implements StateMethods {
                     if (CheckCollision.isCollision(bombManager.getBombs().get(i).getHitBox(),
                             enemyManager.getEnemies().get(j).getHitBox())) {
                         if (enemyManager.getEnemies().get(j).getHealth() > 0) {
-                            enemyManager.getEnemies().get(j)
-                                    .setHealth(enemyManager.getEnemies().get(j).getHealth() - 1);
+                            enemyManager.getEnemies().get(j).setHealth(enemyManager.getEnemies().get(j).getHealth() - 1);
                             enemyManager.getEnemies().get(j).setInjured(true);
                         }
                     }

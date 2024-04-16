@@ -55,6 +55,7 @@ public class FilePath {
         public static final String BOMB_SOUND = "res/sound/SoundBomb.wav";
         public static final String COLLECTED_HEART_SOUND = "res/sound/collect.wav";
         public static final String GAMEOVER_SOUND = "res/sound/GameOver.wav";
+        public static final String GAMEWIN_SOUND = "res/sound/GameWin.wav";
         public static final String ENEMY_ATTACK = "res/sound/EnemyAttack.wav";
         public static final String SOUND_NEW_MAP = "res/sound/SoundNewMap.wav";
         public static final String SOUND_JUMP_PLAYER = "res/sound/Jump.wav";
@@ -63,6 +64,10 @@ public class FilePath {
     public class GameOver{
         //game over
         public static final String GAME_OVER = "res/img/Win_Lose/You_Lose.png";
+    }
+
+    public class GameWin{
+        public static final String GAME_WIN = "res/img/Win_Lose/You_Win.png";
     }
 
     public class Menu {
