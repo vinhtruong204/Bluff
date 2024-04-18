@@ -39,7 +39,7 @@ public class LevelManager implements StateMethods {
 
     // Constructor
     public LevelManager(Playing playing) {
-        currentLevel = 0; // Set default level
+        currentLevel = 5; // Set default level
         initPathMap();
         initMap();
         this.playing = playing;
@@ -149,6 +149,7 @@ public class LevelManager implements StateMethods {
     private void checkWinGame() {
         if (currentLevel == 5 && doorManager.getDoor().isClosed()) {
             soundManager.closeSound();
+            playing.resetAll();
             GameState.gameState = GameState.WIN;
         }
     }
