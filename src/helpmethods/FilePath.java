@@ -21,6 +21,10 @@ public class FilePath {
 
     }
 
+    public class Arrow{
+        public static final String ARROW = "res/img/Arrow/Arrow.png";
+    }
+
     public class Object {
         public static final String HEART = "res/img/Object/Object-Heart.png";
         public static final String DOOR = "res/img/Door/Door.png";

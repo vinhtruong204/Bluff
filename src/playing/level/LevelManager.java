@@ -5,6 +5,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.Iterator;
 
+import core.Position;
 import gamestate.GameState;
 import gamestate.StateMethods;
 import helpmethods.CheckCollision;
@@ -16,7 +17,9 @@ import playing.Playing;
 import playing.camera.Camera;
 import playing.entity.Player;
 import playing.entity.bomb.Bomb;
+import playing.entity.arrow.Arrow;
 import playing.entity.bomb.BombManager;
+import playing.entity.arrow.ArrowManager;
 import playing.entity.door.DoorManager;
 import playing.entity.enemy.EnemyManager;
 import playing.entity.heart.HeartManager;
@@ -32,6 +35,7 @@ public class LevelManager implements StateMethods {
     private EnemyManager enemyManager;
     private HeartManager heartManager;
     private BombManager bombManager;
+    private ArrowManager arrowManager;
     private DoorManager doorManager;
     private SoundManager soundManager;
 
@@ -50,6 +54,7 @@ public class LevelManager implements StateMethods {
         bombManager = new BombManager(currentLevel);
         doorManager = new DoorManager(levels[currentLevel].getMap(), player);
         soundManager = new SoundManager(bombManager, heartManager);
+        arrowManager = new ArrowManager(player,enemyManager);
 
     }
 
@@ -87,6 +92,7 @@ public class LevelManager implements StateMethods {
             bombManager = new BombManager(currentLevel);
             doorManager = new DoorManager(levels[currentLevel].getMap(), player);
             soundManager = new SoundManager(bombManager, heartManager);
+            arrowManager = new ArrowManager(player,enemyManager);
         }
     }
 
@@ -164,6 +170,7 @@ public class LevelManager implements StateMethods {
         handleBombCollision();
         deleteEnemy();
 
+        arrowManager.update();
         enemyManager.update();
         heartManager.update();
         doorManager.update();
@@ -183,6 +190,8 @@ public class LevelManager implements StateMethods {
             Bomb bomb = (Bomb) itrBomb.next();
             bomb.render(g, camera);
         }
+        
+        arrowManager.render(g, camera);
         enemyManager.render(g, camera);
         heartManager.render(g, camera);
         bombManager.render(g);
@@ -236,6 +245,9 @@ public class LevelManager implements StateMethods {
                 break;
             case KeyEvent.VK_SPACE:
                 player.setUp(true);
+                break;
+            case KeyEvent.VK_Q:
+                arrowManager.getArrows().add(new Arrow(new Position(100, 500), new Position(300, 100)));
                 break;
             default:
                 break;

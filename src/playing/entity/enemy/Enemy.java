@@ -1,5 +1,6 @@
 package playing.entity.enemy;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -143,7 +144,7 @@ public abstract class Enemy extends GameObject {
                 (int) newPosition.getX(),
                 (int) newPosition.getY(),
                 size.getWidth() - offsetX * 2,
-                size.getHeight() - offsetY);
+                size.getHeight() - offsetY );
 
         // If enemy is onground
         if (CheckCollision.isEntityOnground(map, newHibox)) {
@@ -191,7 +192,7 @@ public abstract class Enemy extends GameObject {
                 (int) newPosition.getX(),
                 (int) newPosition.getY(),
                 size.getWidth() - offsetX * 2,
-                size.getHeight() - offsetY);
+                size.getHeight() - offsetY  );
 
         // Update postion depend on direction and in bounds
         switch (direction) {
@@ -313,6 +314,7 @@ public abstract class Enemy extends GameObject {
             renderPos.setX(oldPos.getX() + velocity.getX() * GamePanel.interpolation);
             renderPos.setY(oldPos.getY() + velocity.getY() * GamePanel.interpolation);
         }
+
 
         // Render the bomb if it is in the screen
         if ((int) renderPos.getX() - camera.getMapStartX() >= 0

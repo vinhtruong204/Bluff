@@ -25,32 +25,23 @@ public class Boss extends Enemy {
      * diagonal up right,
      * diagonal down right
      */
-    private int[] dx = { 0, -1, 1, -1, 1, 0, -1, 1 }; // row
-    private int[] dy = { -1, -1, -1, 0, 0, 1, 1, 1 }; // col
-    private boolean[][] visited;
-
     public Boss(int enemyType, int i, int j, int[][] map) {
         super(enemyType, map);
 
-        // Allocate memory
-        visited = new boolean[map.length][map[0].length];
-
-        resetBooleanVisited();
-
-        offsetX = 1;
-        offsetY = 1;
+        offsetX = 30;
+        offsetY = 30;
 
         // Init position
-        position = new Position(j * Tile.TILE_SIZE, Tile.TILE_SIZE * i);
+        position = new Position(j * Tile.TILE_SIZE + offsetX, Tile.TILE_SIZE * i + offsetY);
         oldPos = position;
         size = new Size(BossConstants.BOSS_WIDTH, BossConstants.BOSS_HEIGHT);
         hitBox = new Rectangle(
                 (int) position.getX(),
                 (int) position.getY(),
-                size.getWidth(),
-                size.getHeight());
+                size.getWidth() - 2 * offsetX,
+                size.getHeight() - 2 * offsetY);
 
-        // Initialize boolean dea
+        // Initialize boolean dead
         dead = false;
 
         // Initialize boolean injured
@@ -66,19 +57,6 @@ public class Boss extends Enemy {
         // Set animation speed for boss
         aniSpeed = 4;
         loadAni();
-    }
-
-    private void resetBooleanVisited() {
-        for (int i = 0; i < visited.length; i++) {
-            for (int j = 0; j < visited[i].length; j++) {
-                visited = false;
-            }
-        }
-    }
-
-    private void initVisited() {
-        
-        for (int i = )
     }
 
     @Override
@@ -123,7 +101,6 @@ public class Boss extends Enemy {
     @Override
     public void update(Rectangle playerHitBox) {
         updateAnimationTick(playerHitBox);
-        System.out.println(seePlayer());
     }
 
     private boolean seePlayer() {
@@ -152,4 +129,6 @@ public class Boss extends Enemy {
     public void update() {
     }
 
+
+    //getter and setter
 }
