@@ -156,7 +156,7 @@ public class Boss extends Enemy {
 
     @Override
     public void update(Rectangle playerHitBox) {
-        chasePlayer(playerHitBox);
+        //chasePlayer(playerHitBox);
         updateAnimationTick(playerHitBox);
     }
 

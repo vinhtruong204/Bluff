@@ -8,6 +8,8 @@ import java.awt.image.BufferedImage;
 
 import core.Position;
 import core.Size;
+import core.Vector2D;
+import game.Game;
 import helpmethods.ArrowConstants;
 import helpmethods.FilePath;
 import helpmethods.LoadSave;
@@ -18,13 +20,16 @@ public class Arrow extends GameObject {
 
     private static final int ARROW_WIDTH = 64;
     private static final int ARROW_HEIGHT = 15;
-    private final int MAXSPEED = 10;
+    private final float MAXSPEED = 10;
 
     private float speedX;
     private float speedY;
 
     private BufferedImage[][] animations;
+
     private Rectangle hitBox;
+    private Vector2D velocity;
+
     private ArrowDirection direction;
     private Position positionStart;
     private Position positionEnd;
@@ -36,6 +41,7 @@ public class Arrow extends GameObject {
         this.positionStart = positionStart;
         this.positionEnd = positionEnd;
         position = new Position(positionStart.getX(), positionStart.getY());
+        velocity = new Vector2D(0, 0);
         hitBox = new Rectangle((int) positionStart.getX(), (int) positionStart.getY(), ARROW_WIDTH, ARROW_HEIGHT);
         size = new Size(ARROW_WIDTH, ARROW_HEIGHT);
         aniType = ArrowConstants.ARROW_SHOT;
@@ -69,6 +75,7 @@ public class Arrow extends GameObject {
             speedY = MAXSPEED;
             speedX = (distanceX / (distanceY / speedY));
         }
+        System.out.println(speedX + " " + speedY);
     }
 
     // Align Time
@@ -143,7 +150,7 @@ public class Arrow extends GameObject {
                 break;
         }
 
-        hitBox = new Rectangle((int) positionStart.getX(), (int) positionStart.getY(), ARROW_WIDTH, ARROW_HEIGHT);
+        hitBox = new Rectangle((int) position.getX(), (int) position.getY(), ARROW_WIDTH, ARROW_HEIGHT);
     }
 
     @Override
@@ -157,53 +164,72 @@ public class Arrow extends GameObject {
         // Image and position render
         BufferedImage temp = animations[aniType][aniIndex];
 
-        Graphics2D g2d = (Graphics2D) g.create();
+        if ((int) position.getX() - camera.getMapStartX() >= 0
+                && (int) position.getX() - camera.getMapStartX() <= Game.SCREEN_WIDTH
+                && (int) position.getY() - camera.getMapStartY() >= 0
+                && (int) position.getY() - camera.getMapStartY() <= Game.SCREEN_HEIGHT) {
 
-        // If player's direction is left
+            Graphics2D g2d = (Graphics2D) g.create();
 
-        int imageWidth = temp.getWidth();
-        int imageHeight = temp.getHeight();
+            // If player's direction is left
 
-        // Tính toán tọa độ của tâm của ảnh
-        int imageCenterX = (int) position.getX() - camera.getMapStartX() + imageWidth / 2;
-        int imageCenterY = (int) position.getY() - camera.getMapStartY() + imageHeight / 2;
+            int imageWidth = temp.getWidth();
+            int imageHeight = temp.getHeight();
 
-        // Di chuyển trục tọa độ để làm cho tâm của ảnh là (0, 0)
-        AffineTransform oldAT = g2d.getTransform();
-        g2d.translate(imageCenterX, imageCenterY);
-        //
-        float doy = (float) Math.sqrt(Math.pow(positionEnd.getX() - positionStart.getX(), 2)
-                + Math.pow(positionEnd.getY() - positionStart.getY(), 2));
-        float dyx = Math.abs(positionStart.getY() - positionEnd.getY());
-        float angle = (float) Math.toDegrees((float) Math.asin(dyx / doy));
-        //
-        if (direction == ArrowDirection.LEFT) {
-            // Thực hiện xoay
-            g2d.rotate(Math.toRadians(180)); // Đổi giá trị góc xoay ở đây nếu cần
-        } else if (direction == ArrowDirection.RIGHT) {
-            g2d.rotate(Math.toRadians(0));
-        } else if (direction == ArrowDirection.UP) {
-            g2d.rotate(Math.toRadians(270));
-        } else if (direction == ArrowDirection.DOWN) {
-            g2d.rotate(Math.toRadians(90));
-        } else if (direction == ArrowDirection.DIAGONAL_UP_RIGHT) {
-            g2d.rotate(Math.toRadians(360 - (int) angle));
-        } else if (direction == ArrowDirection.DIAGONAL_UP_LEFT) {
-            g2d.rotate(Math.toRadians(180 + (int) angle));
-        } else if (direction == ArrowDirection.DIAGONAL_DOWN_RIGHT) {
-            g2d.rotate(Math.toRadians((int) angle));
-        } else if (direction == ArrowDirection.DIAGONAL_DOWN_LEFT) {
-            g2d.rotate(Math.toRadians(180 - (int) angle));
+            // Calculate the coordinates of the center of the image
+            int imageCenterX = (int) position.getX() - camera.getMapStartX() + imageWidth / 2;
+            int imageCenterY = (int) position.getY() - camera.getMapStartY() + imageHeight / 2;
+
+            // Move the coordinate axis to make the center of the image (0, 0)
+            AffineTransform oldAT = g2d.getTransform();
+            g2d.translate(imageCenterX, imageCenterY);
+            //
+            float doy = (float) Math.sqrt(Math.pow(positionEnd.getX() - positionStart.getX(), 2)
+                    + Math.pow(positionEnd.getY() - positionStart.getY(), 2));
+            float dyx = Math.abs(positionStart.getY() - positionEnd.getY());
+            float angle = (float) Math.toDegrees((float) Math.asin(dyx / doy));
+            //
+            if (direction == ArrowDirection.LEFT) {
+                // Thực hiện xoay
+                g2d.rotate(Math.toRadians(180));
+            } else if (direction == ArrowDirection.RIGHT) {
+                g2d.rotate(Math.toRadians(0));
+            } else if (direction == ArrowDirection.UP) {
+                g2d.rotate(Math.toRadians(270));
+            } else if (direction == ArrowDirection.DOWN) {
+                g2d.rotate(Math.toRadians(90));
+            } else if (direction == ArrowDirection.DIAGONAL_UP_RIGHT) {
+                g2d.rotate(Math.toRadians(360 - (int) angle));
+            } else if (direction == ArrowDirection.DIAGONAL_UP_LEFT) {
+                g2d.rotate(Math.toRadians(180 + (int) angle));
+            } else if (direction == ArrowDirection.DIAGONAL_DOWN_RIGHT) {
+                g2d.rotate(Math.toRadians((int) angle));
+            } else if (direction == ArrowDirection.DIAGONAL_DOWN_LEFT) {
+                g2d.rotate(Math.toRadians(180 - (int) angle));
+            }
+
+            // Render image
+            g2d.drawImage(temp,
+                    -imageWidth / 2,
+                    -imageHeight / 2,
+                    size.getWidth(),
+                    size.getHeight(),
+                    null);
+            // Khôi phục lại trạng thái trước khi di chuyển trục tọa độ
+            g2d.setTransform(oldAT);
         }
+    }
 
-        // Render image
-        g2d.drawImage(temp,
-                -imageWidth / 2,
-                -imageHeight / 2,
-                size.getWidth(),
-                size.getHeight(),
-                null);
-        // Khôi phục lại trạng thái trước khi di chuyển trục tọa độ
-        g2d.setTransform(oldAT);
+    // getter and setter
+    public ArrowDirection getDirection() {
+        return direction;
+    }
+
+    public Rectangle getHitBox() {
+        return hitBox;
+    }
+
+    public void setAniType(int aniType) {
+        this.aniType = aniType;
     }
 }

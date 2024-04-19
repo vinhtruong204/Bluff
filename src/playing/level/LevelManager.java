@@ -54,7 +54,7 @@ public class LevelManager implements StateMethods {
         bombManager = new BombManager(currentLevel);
         doorManager = new DoorManager(levels[currentLevel].getMap(), player);
         soundManager = new SoundManager(bombManager, heartManager);
-        arrowManager = new ArrowManager(player,enemyManager);
+        arrowManager = new ArrowManager(player,enemyManager,levels[currentLevel].getMap());
 
     }
 
@@ -92,7 +92,7 @@ public class LevelManager implements StateMethods {
             bombManager = new BombManager(currentLevel);
             doorManager = new DoorManager(levels[currentLevel].getMap(), player);
             soundManager = new SoundManager(bombManager, heartManager);
-            arrowManager = new ArrowManager(player,enemyManager);
+            arrowManager = new ArrowManager(player,enemyManager,levels[currentLevel].getMap());
         }
     }
 

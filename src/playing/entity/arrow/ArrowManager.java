@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import helpmethods.CheckCollision;
 import playing.camera.Camera;
 import playing.entity.Player;
 import playing.entity.enemy.Enemy;
@@ -16,17 +17,19 @@ public class ArrowManager {
 
     private Player player;
     private EnemyManager enemyManager;
+    private int [][] map;
     private int aniTick = 0;
 
-    public ArrowManager(Player player, EnemyManager enemyManager) {
+    public ArrowManager(Player player, EnemyManager enemyManager,int [][] map) {
         this.player = player;
         this.enemyManager = enemyManager;
-        arrows = new CopyOnWriteArrayList<>();
+        this.map = map;
+        arrows = new CopyOnWriteArrayList<Arrow>();
     }
 
-    public void enterBossAttackRange() {
+    private void enterBossAttackRange() {
         aniTick++;
-        if (aniTick >= 50) {
+        if (aniTick >= 100) {
             Iterator<Enemy> itrBoss = enemyManager.getEnemies().iterator();
             while (itrBoss.hasNext()) {
                 Enemy boss = (Enemy) itrBoss.next();
@@ -39,6 +42,23 @@ public class ArrowManager {
         }
     }
 
+    private void arrowCollidesWithTheplayer(){
+        for (int i = 0; i < arrows.size(); i++) {
+            if (CheckCollision.isCollision(player.getHitBox(), arrows.get(i).getHitBox())) {
+                arrows.remove(i);
+                player.setDangerTouch(true);
+            }
+        }
+    }
+
+    private void arrowCollidesWithTheMap(){
+        for (int i = 0; i < arrows.size(); i++) {
+            if(CheckCollision.isSolid(map,arrows.get(i).getPosition().getX(),arrows.get(i).getPosition().getY())){
+                arrows.remove(i);
+            }
+        }
+    }
+
     public void update() {
         Iterator<Arrow> itrArrow = arrows.iterator();
         while (itrArrow.hasNext()) {
@@ -46,6 +66,8 @@ public class ArrowManager {
             arrow.update();
         }
         enterBossAttackRange();
+        arrowCollidesWithTheplayer();
+        arrowCollidesWithTheMap();
     }
 
     public void render(Graphics g, Camera camera) {
