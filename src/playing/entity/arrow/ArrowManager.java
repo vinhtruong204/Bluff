@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+
 import helpmethods.CheckCollision;
 import playing.camera.Camera;
 import playing.entity.Player;
@@ -29,7 +30,7 @@ public class ArrowManager {
 
     private void enterBossAttackRange() {
         aniTick++;
-        if (aniTick >= 100) {
+        if (aniTick >= 150) {
             Iterator<Enemy> itrBoss = enemyManager.getEnemies().iterator();
             while (itrBoss.hasNext()) {
                 Enemy boss = (Enemy) itrBoss.next();

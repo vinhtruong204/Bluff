@@ -34,8 +34,8 @@ public class Arrow extends GameObject {
     private Position positionStart;
     private Position positionEnd;
 
-    protected int aniType;
-    protected int aniTick, aniIndex, aniSpeed;
+    protected int aniType; 
+    protected int aniIndex;
 
     public Arrow(Position positionStart, Position positionEnd) {
         this.positionStart = positionStart;
@@ -46,7 +46,6 @@ public class Arrow extends GameObject {
         size = new Size(ARROW_WIDTH, ARROW_HEIGHT);
         aniType = ArrowConstants.ARROW_SHOT;
         aniIndex = 0;
-        aniSpeed = 3;
         loadAnimations();
         setDirection();
         setSpeed();
@@ -78,19 +77,6 @@ public class Arrow extends GameObject {
         System.out.println(speedX + " " + speedY);
     }
 
-    // Align Time
-    private void updateAnimationTick() {
-        // 60fps => 20 animation frames rendered
-        aniTick++;
-
-        if (aniTick > aniSpeed) {
-            aniTick = 0;
-            aniIndex++;
-            if (aniIndex >= ArrowConstants.getSpriteAmount(aniType)) {
-                aniIndex = 0;
-            }
-        }
-    }
 
     private void setDirection() {
         if (positionStart.getY() == positionEnd.getY()) {
@@ -156,13 +142,13 @@ public class Arrow extends GameObject {
     @Override
     public void update() {
         updatePosition();
-        updateAnimationTick();
     }
 
     @Override
     public void render(Graphics g, Camera camera) {
         // Image and position render
         BufferedImage temp = animations[aniType][aniIndex];
+        System.out.println(aniIndex);
 
         if ((int) position.getX() - camera.getMapStartX() >= 0
                 && (int) position.getX() - camera.getMapStartX() <= Game.SCREEN_WIDTH
