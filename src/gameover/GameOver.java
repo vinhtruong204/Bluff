@@ -6,8 +6,8 @@ import java.awt.image.BufferedImage;
 import gamestate.GameState;
 import helpmethods.FilePath;
 import helpmethods.LoadSave;
-import pause_sound.PauseSoundState;
-import sound.SoundObject;
+import playing.sound.SoundObject;
+import playing.sound.pause_sound.PauseSoundState;
 
 public class GameOver {
     //method

@@ -1,4 +1,4 @@
-package sound;
+package playing.sound;
 
 public interface SoundStatus {
     // start

@@ -1,4 +1,4 @@
-package sound;
+package playing.sound;
 
 import java.util.Iterator;
 
@@ -6,8 +6,6 @@ import javax.sound.sampled.Clip;
 
 import helpmethods.CheckCollision;
 import helpmethods.FilePath;
-import pause_music_background.PauseMusicBackGroundState;
-import pause_sound.PauseSoundState;
 import playing.entity.Player;
 import playing.entity.bomb.Bomb;
 import playing.entity.bomb.BombManager;
@@ -16,6 +14,8 @@ import playing.entity.enemy.Enemy;
 import playing.entity.enemy.EnemyManager;
 import playing.entity.heart.Heart;
 import playing.entity.heart.HeartManager;
+import playing.sound.pause_music_background.PauseMusicBackGroundState;
+import playing.sound.pause_sound.PauseSoundState;
 
 public class SoundManager {
     // background music

@@ -1,4 +1,4 @@
-package pause_sound;
+package playing.sound.pause_sound;
 
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;

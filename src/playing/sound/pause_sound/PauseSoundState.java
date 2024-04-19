@@ -1,4 +1,4 @@
-package pause_sound;
+package playing.sound.pause_sound;
 
 public enum PauseSoundState {
     //state of Sound

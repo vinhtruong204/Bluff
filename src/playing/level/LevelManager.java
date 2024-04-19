@@ -10,8 +10,6 @@ import gamestate.StateMethods;
 import helpmethods.CheckCollision;
 import helpmethods.CheckGame;
 import helpmethods.FilePath;
-import pause_music_background.PauseMusicBackGroundState;
-import pause_sound.PauseSoundState;
 import playing.Playing;
 import playing.camera.Camera;
 import playing.entity.Player;
@@ -20,7 +18,9 @@ import playing.entity.bomb.BombManager;
 import playing.entity.door.DoorManager;
 import playing.entity.enemy.EnemyManager;
 import playing.entity.heart.HeartManager;
-import sound.SoundManager;
+import playing.sound.SoundManager;
+import playing.sound.pause_music_background.PauseMusicBackGroundState;
+import playing.sound.pause_sound.PauseSoundState;
 
 public class LevelManager implements StateMethods {
 

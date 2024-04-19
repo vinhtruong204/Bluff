@@ -1,4 +1,4 @@
-package pause_music_background;
+package playing.sound.pause_music_background;
 
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
