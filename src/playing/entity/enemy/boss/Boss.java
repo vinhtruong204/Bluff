@@ -8,6 +8,7 @@ import java.util.Stack;
 import core.PointMatrix;
 import core.Position;
 import core.Size;
+import core.Vector2D;
 import helpmethods.EnemyConstants;
 import helpmethods.EnemyConstants.BossConstants;
 import helpmethods.FilePath;
@@ -34,6 +35,8 @@ public class Boss extends Enemy {
     private int[] dy = { -1, 0, 0, 1 };
     private boolean[][] visited;
     private Stack<PointMatrix> points;
+    private PointMatrix currPointMatrix;
+    private PointMatrix nextPointMatrix;
 
     public Boss(int enemyType, int i, int j, int[][] map) {
         super(enemyType, map);
@@ -56,6 +59,8 @@ public class Boss extends Enemy {
                 (int) position.getY(),
                 size.getWidth() - 2 * offsetX,
                 size.getHeight() - 2 * offsetY);
+        currPointMatrix = new PointMatrix(0, 0, 0, 0);
+        nextPointMatrix = new PointMatrix(0, 0, 0, 0);
 
         // Initialize boolean dead
         dead = false;
@@ -104,10 +109,18 @@ public class Boss extends Enemy {
                 break;
 
             for (int i = 0; i < dx.length; i++) {
-                PointMatrix nextPoint = new PointMatrix(current.getRow() + dx[i], current.getCol() + dy[i],
-                        current.getRow(), current.getCol());
-                if (isValid(nextPoint.getRow(), nextPoint.getCol()) && !visited[nextPoint.getRow()][nextPoint.getCol()]
+                // Calculate next point around current point
+                PointMatrix nextPoint = new PointMatrix(
+                        current.getRow() + dx[i],
+                        current.getCol() + dy[i],
+                        current.getRow(),
+                        current.getCol());
+
+                // If can move to this point
+                if (isValid(nextPoint.getRow(), nextPoint.getCol())
+                        && !visited[nextPoint.getRow()][nextPoint.getCol()]
                         && map[nextPoint.getRow()][nextPoint.getCol()] != 1) {
+                    // add to deque and set visited to true
                     q.addLast(nextPoint);
                     visited[nextPoint.getRow()][nextPoint.getCol()] = true;
                 }
@@ -156,30 +169,41 @@ public class Boss extends Enemy {
 
     @Override
     public void update(Rectangle playerHitBox) {
-        //chasePlayer(playerHitBox);
+        chasePlayer(playerHitBox);
         updateAnimationTick(playerHitBox);
     }
 
     private void chasePlayer(Rectangle playerHitBox) {
+        velocity = new Vector2D(0.0f, 0.0f);
+        oldPos = position;
         // Calculate point of player, boss in map matrix
-        PointMatrix bossPosMatrix = new PointMatrix((int) hitBox.y / Tile.TILE_SIZE,
+        currPointMatrix = new PointMatrix((int) hitBox.y / Tile.TILE_SIZE,
                 (int) hitBox.x / Tile.TILE_SIZE, -1, -1);
         PointMatrix playerPosMatrix = new PointMatrix((int) playerHitBox.y / Tile.TILE_SIZE,
                 (int) playerHitBox.x / Tile.TILE_SIZE, -1, -1);
 
-        if (bossPosMatrix.getCol() == playerPosMatrix.getCol()
-                && bossPosMatrix.getRow() == playerPosMatrix.getRow())
-            return;
+        // if (currPointMatrix.getCol() == playerPosMatrix.getCol()
+        // && currPointMatrix.getRow() == playerPosMatrix.getRow())
+        // return;
 
-        bfs(playerPosMatrix, bossPosMatrix);
+        bfs(playerPosMatrix, currPointMatrix);
 
-        PointMatrix nextPoint = points.pop();
-        nextPoint = points.pop();
+        if (!points.isEmpty()) {
+            nextPointMatrix = points.pop();
+            if (!points.isEmpty()) {
+                nextPointMatrix = points.pop();
+            }
+        }
+
+        // System.out.println("Complete");
+        // System.out.println(currPointMatrix.getRow() + " " + currPointMatrix.getCol()
+        // + "\t" +
+        // nextPointMatrix.getRow()
+        // + " " + nextPointMatrix.getCol());
         // System.out.println(currPoint.getRow() + "\t" + currPoint.getCol());
         // int prevRow = currPoint.getPrevRow();
         // int prevCol = currPoint.getPrevCol();
 
-        setVelocity(bossPosMatrix, nextPoint);
         moveBoss();
 
         // while (!points.isEmpty()) {
@@ -194,15 +218,26 @@ public class Boss extends Enemy {
         // System.out.println("Complete");
     }
 
-    private void setVelocity(PointMatrix bossPosMatrix, PointMatrix nextPoint) {
-        velocity.setX((nextPoint.getCol() - bossPosMatrix.getCol()));
-        velocity.setY((nextPoint.getRow() - bossPosMatrix.getRow()));
-    }
-
     private void moveBoss() {
+        // Set velocity for x coordinate
+        if (nextPointMatrix.getCol() - currPointMatrix.getCol() < 0)
+            velocity.setX(-enemySpeed * 2);
+        else
+            velocity.setX(enemySpeed * 2);
+
+        // Set velocity for x coordinate
+        if (nextPointMatrix.getRow() - currPointMatrix.getRow() < 0)
+            velocity.setY(-enemySpeed * 2);
+        else
+            velocity.setY(enemySpeed * 2);
+
+        // Move the boss
         position.setX(position.getX() + velocity.getX());
         position.setY(position.getY() + velocity.getY());
-        hitBox = new Rectangle((int) position.getX(),
+
+        // Update new hitbox
+        hitBox = new Rectangle(
+                (int) position.getX(),
                 (int) position.getY(),
                 size.getWidth() - 2 * offsetX,
                 size.getHeight() - 2 * offsetY);

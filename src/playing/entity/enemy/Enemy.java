@@ -7,7 +7,6 @@ import java.awt.image.BufferedImage;
 import core.Position;
 import core.Vector2D;
 import game.Game;
-import game.GamePanel;
 import helpmethods.CheckCollision;
 import helpmethods.EnemyConstants;
 import helpmethods.EnemyConstants.CucumberConstants;
@@ -143,7 +142,7 @@ public abstract class Enemy extends GameObject {
                 (int) newPosition.getX(),
                 (int) newPosition.getY(),
                 size.getWidth() - offsetX * 2,
-                size.getHeight() - offsetY );
+                size.getHeight() - offsetY);
 
         // If enemy is onground
         if (CheckCollision.isEntityOnground(map, newHibox)) {
@@ -191,7 +190,7 @@ public abstract class Enemy extends GameObject {
                 (int) newPosition.getX(),
                 (int) newPosition.getY(),
                 size.getWidth() - offsetX * 2,
-                size.getHeight() - offsetY  );
+                size.getHeight() - offsetY);
 
         // Update postion depend on direction and in bounds
         switch (direction) {
@@ -303,17 +302,16 @@ public abstract class Enemy extends GameObject {
         // If enemy change move direction flip horizontal image
         if (direction == WalkDirection.LEFT)
             temp = FlipImage.horizontalflip(temp);
-
-        // If enemy isn't moving
-        if (oldPos.compareTo(position) == 0) {
+            
             renderPos = position;
-        }
-        // Calculate render position
-        else {
-            renderPos.setX(oldPos.getX() + velocity.getX() * GamePanel.interpolation);
-            renderPos.setY(oldPos.getY() + velocity.getY() * GamePanel.interpolation);
-        }
-
+        // If enemy isn't moving
+        // if (oldPos.compareTo(position) == 0) {
+        // }
+        // // Calculate render position
+        // else {
+        //     renderPos.setX(oldPos.getX() + velocity.getX() * GamePanel.interpolation);
+        //     renderPos.setY(oldPos.getY() + velocity.getY() * GamePanel.interpolation);
+        // }
 
         // Render the bomb if it is in the screen
         if ((int) renderPos.getX() - camera.getMapStartX() >= 0
