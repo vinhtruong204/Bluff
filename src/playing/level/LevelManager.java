@@ -149,6 +149,7 @@ public class LevelManager implements StateMethods {
     private void checkWinGame() {
         if (currentLevel == 5 && doorManager.getDoor().isClosed()) {
             soundManager.closeSound();
+            playing.resetAll();
             GameState.gameState = GameState.WIN;
         }
     }
