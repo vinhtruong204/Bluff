@@ -5,12 +5,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-
 import helpmethods.CheckCollision;
+import helpmethods.CheckDirectionShot;
+import helpmethods.DirectionShot;
 import playing.camera.Camera;
 import playing.entity.Player;
 import playing.entity.enemy.Enemy;
 import playing.entity.enemy.EnemyManager;
+import playing.entity.enemy.boss.Boss;
 import playing.level.Tile;
 
 public class ArrowManager {
@@ -18,32 +20,38 @@ public class ArrowManager {
 
     private Player player;
     private EnemyManager enemyManager;
-    private int [][] map;
-    private int aniTick = 0;
+    private int[][] map;
+    private int aniTick;
 
-    public ArrowManager(Player player, EnemyManager enemyManager,int [][] map) {
+    public ArrowManager(Player player, EnemyManager enemyManager, int[][] map) {
         this.player = player;
         this.enemyManager = enemyManager;
         this.map = map;
+        this.aniTick = 0;
         arrows = new CopyOnWriteArrayList<Arrow>();
     }
 
     private void enterBossAttackRange() {
-        aniTick++;
-        if (aniTick >= 150) {
+            aniTick ++;
+            if(aniTick >= 60){
             Iterator<Enemy> itrBoss = enemyManager.getEnemies().iterator();
             while (itrBoss.hasNext()) {
-                Enemy boss = (Enemy) itrBoss.next();
+                Boss boss = (Boss) itrBoss.next();
                 if (Math.abs(boss.getPosition().getX() - player.getPosition().getX()) < 6 * Tile.TILE_SIZE
                         && Math.abs(boss.getPosition().getY() - player.getPosition().getY()) < 6 * Tile.TILE_SIZE) {
+                    DirectionShot directionShot = CheckDirectionShot.setDirection(boss.getPosition(),
+                            player.getPosition());
+                    boss.setDirectionAttack(directionShot);
+                    if (boss.isAttacked()) {
                         arrows.add(new Arrow(boss.getPosition(), player.getPosition()));
+                    }
                 }
             }
             aniTick = 0;
         }
     }
 
-    private void arrowCollidesWithTheplayer(){
+    private void arrowCollidesWithTheplayer() {
         for (int i = 0; i < arrows.size(); i++) {
             if (CheckCollision.isCollision(player.getHitBox(), arrows.get(i).getHitBox())) {
                 arrows.remove(i);
@@ -52,9 +60,9 @@ public class ArrowManager {
         }
     }
 
-    private void arrowCollidesWithTheMap(){
+    private void arrowCollidesWithTheMap() {
         for (int i = 0; i < arrows.size(); i++) {
-            if(CheckCollision.isSolid(map,arrows.get(i).getPosition().getX(),arrows.get(i).getPosition().getY())){
+            if (CheckCollision.isSolid(map, arrows.get(i).getPosition().getX(), arrows.get(i).getPosition().getY())) {
                 arrows.remove(i);
             }
         }

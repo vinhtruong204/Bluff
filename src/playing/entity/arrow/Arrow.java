@@ -11,6 +11,8 @@ import core.Size;
 import core.Vector2D;
 import game.Game;
 import helpmethods.ArrowConstants;
+import helpmethods.CheckDirectionShot;
+import helpmethods.DirectionShot;
 import helpmethods.FilePath;
 import helpmethods.LoadSave;
 import playing.camera.Camera;
@@ -20,7 +22,7 @@ public class Arrow extends GameObject {
 
     private static final int ARROW_WIDTH = 64;
     private static final int ARROW_HEIGHT = 15;
-    private final float MAXSPEED = 10;
+    private final float MAXSPEED = 8;
 
     private float speedX;
     private float speedY;
@@ -30,7 +32,7 @@ public class Arrow extends GameObject {
     private Rectangle hitBox;
     private Vector2D velocity;
 
-    private ArrowDirection direction;
+    private DirectionShot direction;
     private Position positionStart;
     private Position positionEnd;
 
@@ -40,7 +42,7 @@ public class Arrow extends GameObject {
     public Arrow(Position positionStart, Position positionEnd) {
         this.positionStart = positionStart;
         this.positionEnd = positionEnd;
-        position = new Position(positionStart.getX(), positionStart.getY());
+        position = new Position(positionStart.getX() + (float)ARROW_WIDTH, positionStart.getY() + (float)ARROW_HEIGHT);
         velocity = new Vector2D(0, 0);
         hitBox = new Rectangle((int) positionStart.getX(), (int) positionStart.getY(), ARROW_WIDTH, ARROW_HEIGHT);
         size = new Size(ARROW_WIDTH, ARROW_HEIGHT);
@@ -64,7 +66,7 @@ public class Arrow extends GameObject {
                 animations[i][j] = image.getSubimage(j * ARROW_WIDTH, i * ARROW_HEIGHT, ARROW_WIDTH, ARROW_HEIGHT);
     }
 
-    public void setSpeed() {
+    private void setSpeed() {
         float distanceX = Math.abs(positionStart.getX() - positionEnd.getX());
         float distanceY = Math.abs(positionStart.getY() - positionEnd.getY());
         if (distanceX >= distanceY) {
@@ -74,61 +76,43 @@ public class Arrow extends GameObject {
             speedY = MAXSPEED;
             speedX = (distanceX / (distanceY / speedY));
         }
-        System.out.println(speedX + " " + speedY);
     }
+
+    
+
 
 
     private void setDirection() {
-        if (positionStart.getY() == positionEnd.getY()) {
-            if (positionStart.getX() < positionEnd.getX()) {
-                direction = ArrowDirection.RIGHT;
-            } else {
-                direction = ArrowDirection.LEFT;
-            }
-        } else {
-            if (positionStart.getY() > positionEnd.getY() && positionStart.getX() < positionEnd.getX()) {
-                direction = ArrowDirection.DIAGONAL_UP_RIGHT;
-            } else if (positionStart.getY() > positionEnd.getY() && positionStart.getX() > positionEnd.getX()) {
-                direction = ArrowDirection.DIAGONAL_UP_LEFT;
-            } else if (positionStart.getY() > positionEnd.getY() && positionStart.getX() == positionEnd.getX()) {
-                direction = ArrowDirection.UP;
-            } else if (positionStart.getY() < positionEnd.getY() && positionStart.getX() < positionEnd.getX()) {
-                direction = ArrowDirection.DIAGONAL_DOWN_RIGHT;
-            } else if (positionStart.getY() < positionEnd.getY() && positionStart.getX() > positionEnd.getX()) {
-                direction = ArrowDirection.DIAGONAL_DOWN_LEFT;
-            } else if (positionStart.getY() < positionEnd.getY() && positionStart.getX() == positionEnd.getX()) {
-                direction = ArrowDirection.DOWN;
-            }
-        }
+        direction = CheckDirectionShot.setDirection(positionStart, positionEnd);
     }
 
     private void updatePosition() {
         switch (direction) {
-            case ArrowDirection.RIGHT:
+            case DirectionShot.RIGHT:
                 position.setX(position.getX() + speedX);
                 break;
-            case ArrowDirection.LEFT:
+            case DirectionShot.LEFT:
                 position.setX(position.getX() - speedX);
                 break;
-            case ArrowDirection.UP:
+            case DirectionShot.UP:
                 position.setY(position.getY() - speedY);
                 break;
-            case ArrowDirection.DOWN:
+            case DirectionShot.DOWN:
                 position.setY(position.getY() + speedY);
                 break;
-            case ArrowDirection.DIAGONAL_UP_LEFT:
+            case DirectionShot.DIAGONAL_UP_LEFT:
                 position.setX(position.getX() - speedX);
                 position.setY(position.getY() - speedY);
                 break;
-            case ArrowDirection.DIAGONAL_UP_RIGHT:
+            case DirectionShot.DIAGONAL_UP_RIGHT:
                 position.setY(position.getY() - speedY);
                 position.setX(position.getX() + speedX);
                 break;
-            case ArrowDirection.DIAGONAL_DOWN_LEFT:
+            case DirectionShot.DIAGONAL_DOWN_LEFT:
                 position.setY(position.getY() + speedY);
                 position.setX(position.getX() - speedX);
                 break;
-            case ArrowDirection.DIAGONAL_DOWN_RIGHT:
+            case DirectionShot.DIAGONAL_DOWN_RIGHT:
                 position.setY(position.getY() + speedY);
                 position.setX(position.getX() + speedX);
                 break;
@@ -175,22 +159,22 @@ public class Arrow extends GameObject {
             float dyx = Math.abs(positionStart.getY() - positionEnd.getY());
             float angle = (float) Math.toDegrees((float) Math.asin(dyx / doy));
             //
-            if (direction == ArrowDirection.LEFT) {
+            if (direction == DirectionShot.LEFT) {
                 // Thực hiện xoay
                 g2d.rotate(Math.toRadians(180));
-            } else if (direction == ArrowDirection.RIGHT) {
+            } else if (direction == DirectionShot.RIGHT) {
                 g2d.rotate(Math.toRadians(0));
-            } else if (direction == ArrowDirection.UP) {
+            } else if (direction == DirectionShot.UP) {
                 g2d.rotate(Math.toRadians(270));
-            } else if (direction == ArrowDirection.DOWN) {
+            } else if (direction == DirectionShot.DOWN) {
                 g2d.rotate(Math.toRadians(90));
-            } else if (direction == ArrowDirection.DIAGONAL_UP_RIGHT) {
+            } else if (direction == DirectionShot.DIAGONAL_UP_RIGHT) {
                 g2d.rotate(Math.toRadians(360 - (int) angle));
-            } else if (direction == ArrowDirection.DIAGONAL_UP_LEFT) {
+            } else if (direction == DirectionShot.DIAGONAL_UP_LEFT) {
                 g2d.rotate(Math.toRadians(180 + (int) angle));
-            } else if (direction == ArrowDirection.DIAGONAL_DOWN_RIGHT) {
+            } else if (direction == DirectionShot.DIAGONAL_DOWN_RIGHT) {
                 g2d.rotate(Math.toRadians((int) angle));
-            } else if (direction == ArrowDirection.DIAGONAL_DOWN_LEFT) {
+            } else if (direction == DirectionShot.DIAGONAL_DOWN_LEFT) {
                 g2d.rotate(Math.toRadians(180 - (int) angle));
             }
 
@@ -207,7 +191,7 @@ public class Arrow extends GameObject {
     }
 
     // getter and setter
-    public ArrowDirection getDirection() {
+    public DirectionShot getDirection() {
         return direction;
     }
 

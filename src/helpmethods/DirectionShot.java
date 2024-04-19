@@ -1,6 +1,6 @@
-package playing.entity.arrow;
+package helpmethods;
 
-public enum ArrowDirection {
+public enum DirectionShot {
     DIAGONAL_UP_RIGHT,
     DIAGONAL_UP_LEFT,
     UP,
@@ -8,5 +8,6 @@ public enum ArrowDirection {
     DIAGONAL_DOWN_LEFT,
     DOWN,
     LEFT,
-    RIGHT;
+    RIGHT,
+    NOSHOOT;
 }

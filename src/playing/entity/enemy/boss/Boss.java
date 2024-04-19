@@ -9,6 +9,7 @@ import core.PointMatrix;
 import core.Position;
 import core.Size;
 import core.Vector2D;
+import helpmethods.DirectionShot;
 import helpmethods.EnemyConstants;
 import helpmethods.EnemyConstants.BossConstants;
 import helpmethods.FilePath;
@@ -37,6 +38,11 @@ public class Boss extends Enemy {
     private Stack<PointMatrix> points;
     private PointMatrix currPointMatrix;
     private PointMatrix nextPointMatrix;
+
+    private DirectionShot directionAttack;
+    private boolean moving;
+
+    private boolean attacked;
 
     public Boss(int enemyType, int i, int j, int[][] map) {
         super(enemyType, map);
@@ -67,6 +73,15 @@ public class Boss extends Enemy {
 
         // Initialize boolean injured
         injured = false;
+
+        //
+        directionAttack = DirectionShot.NOSHOOT;
+
+        //
+        attacked = false;
+
+        // Initalize boolean moving
+        moving = true;
 
         // Init left and right bounds
         initBounds();
@@ -169,7 +184,10 @@ public class Boss extends Enemy {
 
     @Override
     public void update(Rectangle playerHitBox) {
-        chasePlayer(playerHitBox);
+        setAniType();
+        if (moving) {
+            chasePlayer(playerHitBox);
+        }
         updateAnimationTick(playerHitBox);
     }
 
@@ -245,6 +263,58 @@ public class Boss extends Enemy {
 
     @Override
     protected void setAniType() {
+         // Initialize start animation type
+         int startAni = aniType;
+
+        switch (directionAttack) {
+            case DirectionShot.UP:
+                aniType = BossConstants.SHOOT_UP;
+                moving = false;
+                break;
+            case DirectionShot.DOWN:
+                aniType = BossConstants.SHOOT_DOWN;
+                moving = false;
+                break;
+            case DirectionShot.LEFT:
+                aniType = BossConstants.SHOOT_FRONT;
+                moving = false;
+                direction = WalkDirection.LEFT;
+                break;
+            case DirectionShot.RIGHT:
+                aniType = BossConstants.SHOOT_FRONT;
+                moving = false;
+                direction = WalkDirection.RIGHT;
+                break;
+            case DirectionShot.DIAGONAL_UP_LEFT:
+                aniType = BossConstants.SHOOT_DIAGONAL_UP;
+                moving = false;
+                direction = WalkDirection.LEFT;
+                break;
+            case DirectionShot.DIAGONAL_UP_RIGHT:
+                aniType = BossConstants.SHOOT_DIAGONAL_UP;
+                moving = false;
+                direction = WalkDirection.RIGHT;
+                break;
+            case DirectionShot.DIAGONAL_DOWN_LEFT:
+                aniType = BossConstants.SHOOT_DIAGONAL_DOWN;
+                moving = false;
+                direction = WalkDirection.LEFT;
+                break;
+            case DirectionShot.DIAGONAL_DOWN_RIGHT:
+                aniType = BossConstants.SHOOT_DIAGONAL_DOWN;
+                moving = false;
+                direction = WalkDirection.RIGHT;
+                break;
+            default:
+                aniType = BossConstants.RUN;
+                moving = true;
+                break;
+        }
+
+        if(startAni != aniType){
+            aniIndex = 0;
+            aniTick = 0;
+        }
 
     }
 
@@ -256,6 +326,12 @@ public class Boss extends Enemy {
             aniIndex++;
             if (aniIndex >= BossConstants.getSpriteAmount(aniType)) {
                 aniIndex = 0;
+                if(aniType != BossConstants.IDLE && aniType != BossConstants.RUN){
+                    aniType = BossConstants.RUN;
+                    moving = true;
+                    directionAttack = DirectionShot.NOSHOOT;
+                    attacked = true;
+                }
             }
         }
     }
@@ -265,4 +341,20 @@ public class Boss extends Enemy {
     }
 
     // getter and setter
+
+    public DirectionShot getDirectionAttack() {
+        return directionAttack;
+    }
+
+    public void setDirectionAttack(DirectionShot directionAttack) {
+        this.directionAttack = directionAttack;
+    }
+
+    public boolean isAttacked() {
+        return attacked;
+    }
+
+    public void setMoving(boolean moving) {
+        this.moving = moving;
+    }
 }
