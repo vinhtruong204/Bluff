@@ -5,8 +5,8 @@ import java.awt.Graphics;
 import gamestate.GameState;
 import helpmethods.FilePath;
 import helpmethods.LoadSave;
-import playing.sound.SoundObject;
-import playing.sound.pause_sound.PauseSoundState;
+import sound.SoundObject;
+import sound.pause_sound.PauseSoundState;
 
 public class GameWin {
     //method

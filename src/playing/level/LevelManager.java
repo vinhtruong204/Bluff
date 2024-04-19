@@ -18,9 +18,9 @@ import playing.entity.bomb.BombManager;
 import playing.entity.door.DoorManager;
 import playing.entity.enemy.EnemyManager;
 import playing.entity.heart.HeartManager;
-import playing.sound.SoundManager;
-import playing.sound.pause_music_background.PauseMusicBackGroundState;
-import playing.sound.pause_sound.PauseSoundState;
+import sound.SoundManager;
+import sound.pause_music_background.PauseMusicBackGroundState;
+import sound.pause_sound.PauseSoundState;
 
 public class LevelManager implements StateMethods {
 

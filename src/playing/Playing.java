@@ -6,10 +6,10 @@ import java.awt.event.MouseEvent;
 
 import playing.level.LevelManager;
 import playing.pause.PauseButton;
-import playing.sound.pause_music_background.PauseMusicBackGroundState;
-import playing.sound.pause_music_background.PauseMusicBackground;
-import playing.sound.pause_sound.PauseSoundButtons;
-import playing.sound.pause_sound.PauseSoundState;
+import sound.pause_music_background.PauseMusicBackGroundState;
+import sound.pause_music_background.PauseMusicBackground;
+import sound.pause_sound.PauseSoundButtons;
+import sound.pause_sound.PauseSoundState;
 import gamestate.StateMethods;
 
 public class Playing implements StateMethods {
