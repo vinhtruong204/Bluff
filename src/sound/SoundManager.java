@@ -6,12 +6,16 @@ import javax.sound.sampled.Clip;
 
 import helpmethods.CheckCollision;
 import helpmethods.FilePath;
-import pause_music_background.PauseMusicBackGroundState;
-import pause_sound.PauseSoundState;
+import playing.entity.Player;
 import playing.entity.bomb.Bomb;
 import playing.entity.bomb.BombManager;
+import playing.entity.door.DoorManager;
+import playing.entity.enemy.Enemy;
+import playing.entity.enemy.EnemyManager;
 import playing.entity.heart.Heart;
 import playing.entity.heart.HeartManager;
+import sound.pause_music_background.PauseMusicBackGroundState;
+import sound.pause_sound.PauseSoundState;
 
 public class SoundManager {
     // background music
@@ -20,27 +24,49 @@ public class SoundManager {
     private SoundObject sBomb;
     // The sound of the player eats the heart
     private SoundObject sHeart;
+    // The Sound of enemy attack
+    private SoundObject sEnemyAttack;
+    // The Sound of new Map
+    private SoundObject sNewMap;
+    // The Sound of jumping
+    private SoundObject sJumpPlayer;
 
     // Bombmanager
     private BombManager bombManager;
     // HeartManager
     private HeartManager heartManager;
+    // EnemyManager
+    private EnemyManager enemyManager;
+    //DoorManager
+    private DoorManager doorManager;
+    //Player
+    private Player player;
 
     // constructor
-    public SoundManager(BombManager bombManager, HeartManager heartManager) {
+    public SoundManager(BombManager bombManager, HeartManager heartManager, EnemyManager enemyManager,DoorManager doorManager,Player player) {
         this.bombManager = bombManager;
         this.heartManager = heartManager;
+        this.enemyManager = enemyManager;
+        this.doorManager = doorManager;
+        this.player = player;
         mBackground = new SoundObject(FilePath.Sound.MUSIC_BACKGROUND);
+        sNewMap = new SoundObject(FilePath.Sound.SOUND_NEW_MAP);
     }
 
     // stop all sound
     public void stopSound() {
-        if (mBackground != null)
+        if(mBackground != null)
             mBackground.stop();
         if (sBomb != null)
             sBomb.stop();
         if (sHeart != null)
             sHeart.stop();
+        if (sEnemyAttack != null)
+            sEnemyAttack.stop();
+        if (sNewMap != null)
+            sNewMap.stop();
+        if(sJumpPlayer != null)
+            sJumpPlayer.stop();
     }
 
     // close all sound
@@ -51,6 +77,12 @@ public class SoundManager {
             sBomb.close();
         if (sHeart != null)
             sHeart.close();
+        if (sEnemyAttack != null)
+            sEnemyAttack.close();
+        if (sNewMap != null)
+            sNewMap.close();
+        if(sJumpPlayer != null)
+            sJumpPlayer.close();
     }
 
     // update
@@ -64,6 +96,12 @@ public class SoundManager {
             SoundBomb();
             // Plays a heart-eating sound if the player collides with the heart
             SoundHeart();
+            // Enemy attack
+            SoundEnemyAttack();
+
+            SoundNewMap();
+
+            SoundJumpPlayer();
         }
     }
 
@@ -92,6 +130,34 @@ public class SoundManager {
         }
     }
 
+    // If the enemy Attack
+    private void SoundEnemyAttack() {
+        Iterator<Enemy> itr = enemyManager.getEnemies().iterator();
+
+        while (itr.hasNext()) {
+            Enemy enemy = (Enemy) itr.next();
+            if (enemy.isHitPlayer()) {
+                sEnemyAttack = new SoundObject(FilePath.Sound.ENEMY_ATTACK);
+                sEnemyAttack.start();
+            }
+        }
+    }
+
+    // if over new Map
+    private void SoundNewMap(){
+        if(doorManager.getDoor().isOpen()){
+            sNewMap.start();
+        }
+    }
+
+    // if Player is jumping
+    private void SoundJumpPlayer(){
+        if(player.isJumping() && player.isOnGround()){
+            sJumpPlayer = new SoundObject(FilePath.Sound.SOUND_JUMP_PLAYER);
+            sJumpPlayer.start();
+        }
+    }
+
     // play background sound
     private void SoundBackgroundMusic() {
         mBackground.start();
@@ -111,12 +177,16 @@ public class SoundManager {
         return sHeart;
     }
 
-    public BombManager getBombManager() {
-        return bombManager;
+    public SoundObject getsEnemyAttack() {
+        return sEnemyAttack;
     }
 
-    public HeartManager getHeartManager() {
-        return heartManager;
+    public SoundObject getsNewMap() {
+        return sNewMap;
+    }
+
+    public SoundObject getsJumpPlayer() {
+        return sJumpPlayer;
     }
 
 }

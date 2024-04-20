@@ -513,4 +513,13 @@ public class Player extends GameObject {
         this.locked = locked;
     }
 
+    public boolean isJumping() {
+        return jumping;
+    }
+
+    public boolean isOnGround() {
+        return onGround;
+    }
+
+    
 }

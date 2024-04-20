@@ -11,8 +11,6 @@ import gamestate.StateMethods;
 import helpmethods.CheckCollision;
 import helpmethods.CheckGame;
 import helpmethods.FilePath;
-import pause_music_background.PauseMusicBackGroundState;
-import pause_sound.PauseSoundState;
 import playing.Playing;
 import playing.camera.Camera;
 import playing.entity.Player;
@@ -24,6 +22,8 @@ import playing.entity.door.DoorManager;
 import playing.entity.enemy.EnemyManager;
 import playing.entity.heart.HeartManager;
 import sound.SoundManager;
+import sound.pause_music_background.PauseMusicBackGroundState;
+import sound.pause_sound.PauseSoundState;
 
 public class LevelManager implements StateMethods {
 
@@ -53,24 +53,23 @@ public class LevelManager implements StateMethods {
         heartManager = new HeartManager(levels[currentLevel].getMap(), player);
         bombManager = new BombManager(currentLevel);
         doorManager = new DoorManager(levels[currentLevel].getMap(), player);
-        soundManager = new SoundManager(bombManager, heartManager);
+        soundManager = new SoundManager(bombManager, heartManager, enemyManager, doorManager, player);
         arrowManager = new ArrowManager(player,enemyManager,levels[currentLevel].getMap());
 
     }
 
     private void initPathMap() {
-        nameFile = new String[7];
+        nameFile = new String[6];
         nameFile[0] = new String(FilePath.Map.MAP_1);
         nameFile[1] = new String(FilePath.Map.MAP_2);
         nameFile[2] = new String(FilePath.Map.MAP_3);
         nameFile[3] = new String(FilePath.Map.MAP_4);
         nameFile[4] = new String(FilePath.Map.MAP_5);
         nameFile[5] = new String(FilePath.Map.MAP_6);
-        nameFile[6] = new String(FilePath.Map.MAP_7);
     }
 
     private void initMap() {
-        levels = new Level[7];
+        levels = new Level[6];
 
         // Initialize first map
         levels[currentLevel] = new Level(nameFile[currentLevel]);
@@ -91,7 +90,7 @@ public class LevelManager implements StateMethods {
             heartManager = new HeartManager(levels[currentLevel].getMap(), player);
             bombManager = new BombManager(currentLevel);
             doorManager = new DoorManager(levels[currentLevel].getMap(), player);
-            soundManager = new SoundManager(bombManager, heartManager);
+            soundManager = new SoundManager(bombManager, heartManager, enemyManager, doorManager, player);
             arrowManager = new ArrowManager(player,enemyManager,levels[currentLevel].getMap());
         }
     }
@@ -153,30 +152,40 @@ public class LevelManager implements StateMethods {
         }
     }
 
+    private void checkWinGame() {
+        if (currentLevel == 5 && doorManager.getDoor().isClosed()) {
+            soundManager.closeSound();
+            playing.resetAll();
+            GameState.gameState = GameState.WIN;
+        }
+    }
+
     // Update Map
     public void update() {
-        setNewMap();
-        camera.update();
-        player.update();
-        Iterator<Bomb> itrBomb = bombManager.getBombs().iterator();
-        while (itrBomb.hasNext()) {
-            Bomb bomb = (Bomb) itrBomb.next();
-            bomb.update();
-        }
-        //
-        soundManager.update();
-        //
+        checkWinGame();
+        if (GameState.gameState == GameState.PLAYING) {
+            setNewMap();
+            camera.update();
+            player.update();
+            Iterator<Bomb> itrBomb = bombManager.getBombs().iterator();
+            while (itrBomb.hasNext()) {
+                Bomb bomb = (Bomb) itrBomb.next();
+                bomb.update();
+            }
 
-        handleBombCollision();
-        deleteEnemy();
+            soundManager.update();
+
+            handleBombCollision();
+            deleteEnemy();
 
         arrowManager.update();
-        enemyManager.update();
-        heartManager.update();
-        doorManager.update();
+            enemyManager.update();
+            heartManager.update();
+            doorManager.update();
 
-        checkGameOver();
-        checkNewScreen();
+            checkGameOver();
+            checkNewScreen();
+        }
     }
 
     // Render Map
@@ -199,13 +208,22 @@ public class LevelManager implements StateMethods {
             soundManager.stopSound();
         }
 
-        if(PauseSoundState.pauseSoundState == PauseSoundState.OFF){
-            if(soundManager.getsBomb() != null) soundManager.getsBomb().stop();
-            if(soundManager.getsHeart() != null) soundManager.getsHeart().stop();
+        if (PauseSoundState.pauseSoundState == PauseSoundState.OFF) {
+            if (soundManager.getsBomb() != null)
+                soundManager.getsBomb().stop();
+            if (soundManager.getsHeart() != null)
+                soundManager.getsHeart().stop();
+            if (soundManager.getsEnemyAttack() != null)
+                soundManager.getsEnemyAttack().stop();
+            if (soundManager.getsNewMap() != null)
+                soundManager.getsNewMap().stop();
+            if (soundManager.getsJumpPlayer() != null)
+                soundManager.getsJumpPlayer().stop();
         }
 
-        if(PauseMusicBackGroundState.pauseMusicBackGroundState == PauseMusicBackGroundState.OFF){
-            if(soundManager.getmBackground() != null) soundManager.getmBackground().stop();
+        if (PauseMusicBackGroundState.pauseMusicBackGroundState == PauseMusicBackGroundState.OFF) {
+            if (soundManager.getmBackground() != null)
+                soundManager.getmBackground().stop();
         }
     }
 

@@ -60,6 +60,7 @@ public abstract class Enemy extends GameObject {
 
     //
     protected boolean hitting;
+
     protected boolean hitPlayer;
 
     // Map
@@ -363,7 +364,6 @@ public abstract class Enemy extends GameObject {
     public void setHitBox(Rectangle hitBox) {
         this.hitBox = hitBox;
     }
-
     protected abstract void loadAni();
 
     public abstract void update(Rectangle playerHitBox);

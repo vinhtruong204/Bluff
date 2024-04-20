@@ -1,4 +1,4 @@
-package pause_music_background;
+package sound.pause_music_background;
 
 public enum PauseMusicBackGroundState {
     //state of BackGround Music

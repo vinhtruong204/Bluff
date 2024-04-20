@@ -80,7 +80,7 @@ public class Door extends GameObject {
                     opend = true;
                     aniIndex = DoorConstants.getSpriteAmount(aniType) - 1;
                 }
-
+                
                 if (aniType == DoorConstants.CLOSE) {
                     closed = true;
                     aniIndex = DoorConstants.getSpriteAmount(aniType) - 1;

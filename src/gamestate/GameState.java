@@ -4,7 +4,8 @@ public enum GameState {
     MENU,
     PLAYING,
     PAUSE,
-    GAMEOVER;
+    GAMEOVER,
+    WIN;
 
     // Set default start game state
     public static GameState gameState = MENU;
