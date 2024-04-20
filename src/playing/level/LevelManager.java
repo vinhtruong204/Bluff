@@ -43,7 +43,7 @@ public class LevelManager implements StateMethods {
 
     // Constructor
     public LevelManager(Playing playing) {
-        currentLevel = 6; // Set default level
+        currentLevel = 0; // Set default level
         initPathMap();
         initMap();
         this.playing = playing;
@@ -54,7 +54,7 @@ public class LevelManager implements StateMethods {
         bombManager = new BombManager(currentLevel);
         doorManager = new DoorManager(levels[currentLevel].getMap(), player);
         soundManager = new SoundManager(bombManager, heartManager, enemyManager, doorManager, player);
-        arrowManager = new ArrowManager(player, enemyManager, levels[currentLevel].getMap());
+        if(currentLevel == 6) arrowManager = new ArrowManager(player, enemyManager, levels[currentLevel].getMap());
 
     }
 
@@ -92,7 +92,7 @@ public class LevelManager implements StateMethods {
             bombManager = new BombManager(currentLevel);
             doorManager = new DoorManager(levels[currentLevel].getMap(), player);
             soundManager = new SoundManager(bombManager, heartManager, enemyManager, doorManager, player);
-            arrowManager = new ArrowManager(player, enemyManager, levels[currentLevel].getMap());
+            if(currentLevel == 6) arrowManager = new ArrowManager(player, enemyManager, levels[currentLevel].getMap());
         }
     }
 
@@ -179,7 +179,7 @@ public class LevelManager implements StateMethods {
             handleBombCollision();
             deleteEnemy();
 
-            arrowManager.update();
+            if(currentLevel == 6) arrowManager.update();
             enemyManager.update();
             heartManager.update();
             doorManager.update();
@@ -201,7 +201,7 @@ public class LevelManager implements StateMethods {
             bomb.render(g, camera);
         }
 
-        arrowManager.render(g, camera);
+        if(currentLevel == 6) arrowManager.render(g, camera);
         enemyManager.render(g, camera);
         heartManager.render(g, camera);
         bombManager.render(g);
