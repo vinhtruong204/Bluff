@@ -3,7 +3,6 @@ package gameover;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
-import game.Game;
 import gamestate.GameState;
 import helpmethods.FilePath;
 import helpmethods.LoadSave;
