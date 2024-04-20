@@ -19,7 +19,7 @@ public class Draw {
         Font customFont = null;
         try {
             customFont = Font.createFont(Font.TRUETYPE_FONT, new File(FilePath.Font.PRESS_START2P)).deriveFont(14f);
-            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+           GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge.registerFont(customFont);
         } catch (IOException | FontFormatException e) {
             e.printStackTrace();

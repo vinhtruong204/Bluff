@@ -327,8 +327,6 @@ public class Boss extends Enemy {
             if (aniIndex >= BossConstants.getSpriteAmount(aniType)) {
                 aniIndex = 0;
                 if(aniType != BossConstants.IDLE && aniType != BossConstants.RUN){
-                    aniType = BossConstants.RUN;
-                    moving = true;
                     directionAttack = DirectionShot.NOSHOOT;
                     attacked = true;
                 }
