@@ -315,6 +315,7 @@ public abstract class Enemy extends GameObject {
         // }
 
         // Render the bomb if it is in the screen
+        g.drawRect(hitBox.x - camera.getMapStartX(), hitBox.y - camera.getMapStartY(), hitBox.width, hitBox.height);
         if ((int) renderPos.getX() - camera.getMapStartX() >= 0
                 && (int) renderPos.getX() - camera.getMapStartX() <= Game.SCREEN_WIDTH
                 && (int) renderPos.getY() - camera.getMapStartY() >= 0

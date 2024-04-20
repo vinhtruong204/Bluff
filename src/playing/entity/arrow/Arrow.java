@@ -8,7 +8,6 @@ import java.awt.image.BufferedImage;
 
 import core.Position;
 import core.Size;
-import core.Vector2D;
 import game.Game;
 import helpmethods.ArrowConstants;
 import helpmethods.CheckDirectionShot;
@@ -30,26 +29,27 @@ public class Arrow extends GameObject {
     private BufferedImage[][] animations;
 
     private Rectangle hitBox;
-    private Vector2D velocity;
+    // private Vector2D velocity;
 
     private DirectionShot direction;
     private Position positionStart;
     private Position positionEnd;
 
-    protected int aniType; 
+    protected int aniType;
     protected int aniIndex;
 
     public Arrow(Position positionStart, Position positionEnd) {
         this.positionStart = positionStart;
         this.positionEnd = positionEnd;
-        position = new Position(positionStart.getX() + (float)ARROW_WIDTH, positionStart.getY() + (float)ARROW_HEIGHT);
-        velocity = new Vector2D(0, 0);
+        position = new Position(positionStart.getX(), positionStart.getY());
+        // velocity = new Vector2D(0, 0);
         hitBox = new Rectangle((int) positionStart.getX(), (int) positionStart.getY(), ARROW_WIDTH, ARROW_HEIGHT);
         size = new Size(ARROW_WIDTH, ARROW_HEIGHT);
         aniType = ArrowConstants.ARROW_SHOT;
         aniIndex = 0;
         loadAnimations();
         setDirection();
+        //setShootingPoint();
         setSpeed();
     }
 
@@ -78,9 +78,45 @@ public class Arrow extends GameObject {
         }
     }
 
-    
-
-
+    // private void setShootingPoint() {
+    //     switch (direction) {
+    //         case DirectionShot.RIGHT:
+    //             position = new Position(position.getX(),
+    //                     position.getY() + (float) ARROW_HEIGHT / 2);
+    //                     System.out.println("right");
+    //             break;
+    //         case DirectionShot.LEFT:
+    //             position = new Position(position.getX() - (float)ARROW_WIDTH, position.getY() + (float) ARROW_HEIGHT / 2);
+    //             System.out.println("left");
+    //             break;
+    //         case DirectionShot.UP:
+    //             position = new Position(position.getX() - (float) ARROW_WIDTH / 2, position.getY());
+    //             System.out.println("up");
+    //             break;
+    //         case DirectionShot.DOWN:
+    //             position = new Position(position.getX() + (float) ARROW_WIDTH / 2,
+    //                     position.getY() + (float) ARROW_HEIGHT);
+    //                     System.out.println("down");
+    //             break;
+    //         case DirectionShot.DIAGONAL_UP_LEFT:
+    //         position = new Position(position.getX() - (float) ARROW_WIDTH / 2, position.getY());
+    //         System.out.println("up left");
+    //             break;
+    //         case DirectionShot.DIAGONAL_UP_RIGHT:
+    //             System.out.println("up right");
+    //             break;
+    //         case DirectionShot.DIAGONAL_DOWN_LEFT:
+    //             position = new Position(position.getX() - (float)ARROW_WIDTH, position.getY() + (float) ARROW_HEIGHT);
+    //             System.out.println("down left");
+    //             break;
+    //         case DirectionShot.DIAGONAL_DOWN_RIGHT:
+    //             position = new Position(position.getX(), position.getY() + (float) ARROW_HEIGHT);
+    //             System.out.println("down right");
+    //             break;
+    //         default:
+    //             break;
+    //     }
+    // }
 
     private void setDirection() {
         direction = CheckDirectionShot.setDirection(positionStart, positionEnd);
@@ -132,7 +168,6 @@ public class Arrow extends GameObject {
     public void render(Graphics g, Camera camera) {
         // Image and position render
         BufferedImage temp = animations[aniType][aniIndex];
-        System.out.println(aniIndex);
 
         if ((int) position.getX() - camera.getMapStartX() >= 0
                 && (int) position.getX() - camera.getMapStartX() <= Game.SCREEN_WIDTH
@@ -158,9 +193,8 @@ public class Arrow extends GameObject {
                     + Math.pow(positionEnd.getY() - positionStart.getY(), 2));
             float dyx = Math.abs(positionStart.getY() - positionEnd.getY());
             float angle = (float) Math.toDegrees((float) Math.asin(dyx / doy));
-            //
+            //perform rotation
             if (direction == DirectionShot.LEFT) {
-                // Thực hiện xoay
                 g2d.rotate(Math.toRadians(180));
             } else if (direction == DirectionShot.RIGHT) {
                 g2d.rotate(Math.toRadians(0));
@@ -185,7 +219,7 @@ public class Arrow extends GameObject {
                     size.getWidth(),
                     size.getHeight(),
                     null);
-            // Khôi phục lại trạng thái trước khi di chuyển trục tọa độ
+            // Restore the state before moving the coordinate axis
             g2d.setTransform(oldAT);
         }
     }

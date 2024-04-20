@@ -33,15 +33,13 @@ public class ArrowManager {
 
     private void enterBossAttackRange() {
             aniTick ++;
-            if(aniTick >= 60){
+            if(aniTick >= 50){
             Iterator<Enemy> itrBoss = enemyManager.getEnemies().iterator();
             while (itrBoss.hasNext()) {
                 Boss boss = (Boss) itrBoss.next();
                 if (Math.abs(boss.getPosition().getX() - player.getPosition().getX()) < 6 * Tile.TILE_SIZE
                         && Math.abs(boss.getPosition().getY() - player.getPosition().getY()) < 6 * Tile.TILE_SIZE) {
-                    DirectionShot directionShot = CheckDirectionShot.setDirection(boss.getPosition(),
-                            player.getPosition());
-                    boss.setDirectionAttack(directionShot);
+                    boss.setDirectionAttack(CheckDirectionShot.setDirection(boss.getPosition(),player.getPosition()));
                     if (boss.isAttacked()) {
                         arrows.add(new Arrow(boss.getPosition(), player.getPosition()));
                     }

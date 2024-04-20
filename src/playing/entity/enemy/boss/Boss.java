@@ -182,12 +182,18 @@ public class Boss extends Enemy {
         }
     }
 
+    private void setDead() {
+        if (health == 0)
+            dead = true;
+    }
+
     @Override
     public void update(Rectangle playerHitBox) {
         setAniType();
         if (moving) {
             chasePlayer(playerHitBox);
         }
+        setDead();
         updateAnimationTick(playerHitBox);
     }
 
@@ -263,8 +269,8 @@ public class Boss extends Enemy {
 
     @Override
     protected void setAniType() {
-         // Initialize start animation type
-         int startAni = aniType;
+        // Initialize start animation type
+        int startAni = aniType;
 
         switch (directionAttack) {
             case DirectionShot.UP:
@@ -311,7 +317,7 @@ public class Boss extends Enemy {
                 break;
         }
 
-        if(startAni != aniType){
+        if (startAni != aniType) {
             aniIndex = 0;
             aniTick = 0;
         }
@@ -326,9 +332,7 @@ public class Boss extends Enemy {
             aniIndex++;
             if (aniIndex >= BossConstants.getSpriteAmount(aniType)) {
                 aniIndex = 0;
-                if(aniType != BossConstants.IDLE && aniType != BossConstants.RUN){
-                    aniType = BossConstants.RUN;
-                    moving = true;
+                if (aniType != BossConstants.IDLE && aniType != BossConstants.RUN) {
                     directionAttack = DirectionShot.NOSHOOT;
                     attacked = true;
                 }
