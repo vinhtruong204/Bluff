@@ -182,16 +182,17 @@ public class Boss extends Enemy {
         }
     }
 
-    private void setDead(){
-        if(health == 0) dead = true;
+    private void setDead() {
+        if (health == 0)
+            dead = true;
     }
 
     @Override
     public void update(Rectangle playerHitBox) {
         setAniType();
-        // if (moving) {
-        //     chasePlayer(playerHitBox);
-        // }
+        if (moving) {
+            chasePlayer(playerHitBox);
+        }
         setDead();
         updateAnimationTick(playerHitBox);
     }
