@@ -263,8 +263,8 @@ public class Boss extends Enemy {
 
     @Override
     protected void setAniType() {
-         // Initialize start animation type
-         int startAni = aniType;
+        // Initialize start animation type
+        int startAni = aniType;
 
         switch (directionAttack) {
             case DirectionShot.UP:
@@ -311,7 +311,7 @@ public class Boss extends Enemy {
                 break;
         }
 
-        if(startAni != aniType){
+        if (startAni != aniType) {
             aniIndex = 0;
             aniTick = 0;
         }
@@ -326,7 +326,7 @@ public class Boss extends Enemy {
             aniIndex++;
             if (aniIndex >= BossConstants.getSpriteAmount(aniType)) {
                 aniIndex = 0;
-                if(aniType != BossConstants.IDLE && aniType != BossConstants.RUN){
+                if (aniType != BossConstants.IDLE && aniType != BossConstants.RUN) {
                     directionAttack = DirectionShot.NOSHOOT;
                     attacked = true;
                 }
