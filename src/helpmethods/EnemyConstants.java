@@ -7,6 +7,10 @@ public class EnemyConstants {
     public static final int WHALE = 7;
     public static final int BOLD_PIRATE = 8;
     public static final int BIG_GUY = 9;
+    public static final int ARCHER_BLUE = 10;
+    public static final int ARCHER_PURPLE = 11;
+    public static final int ARCHER_RED = 12;
+    public static final int ARCHER_YELLOW = 13;
 
     public class CucumberConstants {
         //
@@ -248,6 +252,46 @@ public class EnemyConstants {
                     return 6;
                 case DEAD_GROUND:
                     return 4;
+                default:
+                    return 0;
+            }
+        }
+    }
+
+    public class BossConstants {
+        public static final int BOSS_WIDTH = 160;
+        public static final int BOSS_HEIGHT = 160;
+
+        //
+        public static final int TOTAL_TYPE = 7;
+        public static final int TOTAL_FRAME = 8;
+
+        // All types animation of the Big Guy enemy
+        public static final int IDLE = 0;
+        public static final int RUN = 1;
+        public static final int SHOOT_UP = 2;
+        public static final int SHOOT_DIAGONAL_UP = 3;
+        public static final int SHOOT_FRONT = 4;
+        public static final int SHOOT_DIAGONAL_DOWN = 5;
+        public static final int SHOOT_DOWN = 6;
+
+        // Get total animation frames depend on type
+        public static int getSpriteAmount(int aniType) {
+            switch (aniType) {
+                case IDLE:
+                    return 6;
+                case RUN:
+                    return 6;
+                case SHOOT_UP:
+                    return 8;
+                case SHOOT_DIAGONAL_UP:
+                    return 8;
+                case SHOOT_FRONT:
+                    return 8;
+                case SHOOT_DIAGONAL_DOWN:
+                    return 8;
+                case SHOOT_DOWN:
+                    return 8;
                 default:
                     return 0;
             }

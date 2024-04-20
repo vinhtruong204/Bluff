@@ -7,7 +7,6 @@ import java.awt.image.BufferedImage;
 import core.Position;
 import core.Vector2D;
 import game.Game;
-import game.GamePanel;
 import helpmethods.CheckCollision;
 import helpmethods.EnemyConstants;
 import helpmethods.EnemyConstants.CucumberConstants;
@@ -80,7 +79,7 @@ public abstract class Enemy extends GameObject {
         hitting = false;
 
         enemySpeed = NORMAL_SPEED;
-        velocity = new Vector2D(enemySpeed, 0);
+        velocity = new Vector2D(0.0f, 0.0f);
         traveled = 0.0d;
         position = new Position(0.0f, 0.0f);
         oldPos = new Position(position.getX(), position.getY());
@@ -111,7 +110,18 @@ public abstract class Enemy extends GameObject {
             case EnemyConstants.WHALE:
                 health = 2;
                 break;
-
+            case EnemyConstants.ARCHER_BLUE:
+                health = 2;
+                break;
+            case EnemyConstants.ARCHER_PURPLE:
+                health = 2;
+                break;
+            case EnemyConstants.ARCHER_YELLOW:
+                health = 2;
+                break;
+            case EnemyConstants.ARCHER_RED:
+                health = 2;
+                break;
             default:
                 break;
         }
@@ -293,16 +303,19 @@ public abstract class Enemy extends GameObject {
         // If enemy change move direction flip horizontal image
         if (direction == WalkDirection.LEFT)
             temp = FlipImage.horizontalflip(temp);
-
-        // Calculate render position
-        if (oldPos.compareTo(position) == 0)
+            
             renderPos = position;
-        else {
-            renderPos.setX(oldPos.getX() + velocity.getX() * GamePanel.interpolation);
-            renderPos.setY(oldPos.getY() + velocity.getY() * GamePanel.interpolation);
-        }
+        // If enemy isn't moving
+        // if (oldPos.compareTo(position) == 0) {
+        // }
+        // // Calculate render position
+        // else {
+        //     renderPos.setX(oldPos.getX() + velocity.getX() * GamePanel.interpolation);
+        //     renderPos.setY(oldPos.getY() + velocity.getY() * GamePanel.interpolation);
+        // }
 
         // Render the bomb if it is in the screen
+        g.drawRect(hitBox.x - camera.getMapStartX(), hitBox.y - camera.getMapStartY(), hitBox.width, hitBox.height);
         if ((int) renderPos.getX() - camera.getMapStartX() >= 0
                 && (int) renderPos.getX() - camera.getMapStartX() <= Game.SCREEN_WIDTH
                 && (int) renderPos.getY() - camera.getMapStartY() >= 0

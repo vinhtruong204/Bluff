@@ -419,7 +419,7 @@ public class Player extends GameObject {
             oldPos = position;
             updatePosition();
         }
-
+        
         // Set current type of animation
         setAnimationType();
 

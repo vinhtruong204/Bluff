@@ -70,7 +70,7 @@ public class CheckCollision {
                 || isSolid(map, newHitbox.x + newHitbox.width, newHitbox.y - 1);
     }
 
-    private static boolean isSolid(int[][] map, float x, float y) {
+    public static boolean isSolid(int[][] map, float x, float y) {
         // Get current row and column index of entity
         int colIndex = (int) (x / Tile.TILE_SIZE);
         int rowIndex = (int) (y / Tile.TILE_SIZE);
