@@ -54,22 +54,23 @@ public class LevelManager implements StateMethods {
         bombManager = new BombManager(currentLevel);
         doorManager = new DoorManager(levels[currentLevel].getMap(), player);
         soundManager = new SoundManager(bombManager, heartManager, enemyManager, doorManager, player);
-        arrowManager = new ArrowManager(player,enemyManager,levels[currentLevel].getMap());
+        arrowManager = new ArrowManager(player, enemyManager, levels[currentLevel].getMap());
 
     }
 
     private void initPathMap() {
-        nameFile = new String[6];
+        nameFile = new String[7];
         nameFile[0] = new String(FilePath.Map.MAP_1);
         nameFile[1] = new String(FilePath.Map.MAP_2);
         nameFile[2] = new String(FilePath.Map.MAP_3);
         nameFile[3] = new String(FilePath.Map.MAP_4);
         nameFile[4] = new String(FilePath.Map.MAP_5);
         nameFile[5] = new String(FilePath.Map.MAP_6);
+        nameFile[6] = new String(FilePath.Map.MAP_7);
     }
 
     private void initMap() {
-        levels = new Level[6];
+        levels = new Level[7];
 
         // Initialize first map
         levels[currentLevel] = new Level(nameFile[currentLevel]);
@@ -91,7 +92,7 @@ public class LevelManager implements StateMethods {
             bombManager = new BombManager(currentLevel);
             doorManager = new DoorManager(levels[currentLevel].getMap(), player);
             soundManager = new SoundManager(bombManager, heartManager, enemyManager, doorManager, player);
-            arrowManager = new ArrowManager(player,enemyManager,levels[currentLevel].getMap());
+            arrowManager = new ArrowManager(player, enemyManager, levels[currentLevel].getMap());
         }
     }
 
@@ -104,7 +105,8 @@ public class LevelManager implements StateMethods {
                     if (CheckCollision.isCollision(bombManager.getBombs().get(i).getHitBox(),
                             enemyManager.getEnemies().get(j).getHitBox())) {
                         if (enemyManager.getEnemies().get(j).getHealth() > 0) {
-                            enemyManager.getEnemies().get(j).setHealth(enemyManager.getEnemies().get(j).getHealth() - 1);
+                            enemyManager.getEnemies().get(j)
+                                    .setHealth(enemyManager.getEnemies().get(j).getHealth() - 1);
                             enemyManager.getEnemies().get(j).setInjured(true);
                         }
                     }
@@ -152,7 +154,7 @@ public class LevelManager implements StateMethods {
     }
 
     private void checkWinGame() {
-        if (currentLevel == 5 && doorManager.getDoor().isClosed()) {
+        if (currentLevel == levels.length - 1 && doorManager.getDoor().isClosed()) {
             soundManager.closeSound();
             playing.resetAll();
             GameState.gameState = GameState.WIN;
@@ -177,7 +179,7 @@ public class LevelManager implements StateMethods {
             handleBombCollision();
             deleteEnemy();
 
-        arrowManager.update();
+            arrowManager.update();
             enemyManager.update();
             heartManager.update();
             doorManager.update();
@@ -198,7 +200,7 @@ public class LevelManager implements StateMethods {
             Bomb bomb = (Bomb) itrBomb.next();
             bomb.render(g, camera);
         }
-        
+
         arrowManager.render(g, camera);
         enemyManager.render(g, camera);
         heartManager.render(g, camera);

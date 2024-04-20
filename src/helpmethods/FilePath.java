@@ -49,6 +49,7 @@ public class FilePath {
         public static final String MAP_4 = "res/map/Map04.txt";
         public static final String MAP_5 = "res/map/Map05.txt";
         public static final String MAP_6 = "res/map/Map06.txt";
+        public static final String MAP_7 = "res/map/Map07.txt";
     }
 
     public class Sound {

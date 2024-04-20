@@ -7,7 +7,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import helpmethods.CheckCollision;
 import helpmethods.CheckDirectionShot;
-import helpmethods.DirectionShot;
 import playing.camera.Camera;
 import playing.entity.Player;
 import playing.entity.enemy.Enemy;
@@ -32,14 +31,14 @@ public class ArrowManager {
     }
 
     private void enterBossAttackRange() {
-            aniTick ++;
-            if(aniTick >= 50){
+        aniTick++;
+        if (aniTick >= 50) {
             Iterator<Enemy> itrBoss = enemyManager.getEnemies().iterator();
             while (itrBoss.hasNext()) {
                 Boss boss = (Boss) itrBoss.next();
                 if (Math.abs(boss.getPosition().getX() - player.getPosition().getX()) < 6 * Tile.TILE_SIZE
                         && Math.abs(boss.getPosition().getY() - player.getPosition().getY()) < 6 * Tile.TILE_SIZE) {
-                    boss.setDirectionAttack(CheckDirectionShot.setDirection(boss.getPosition(),player.getPosition()));
+                    boss.setDirectionAttack(CheckDirectionShot.setDirection(boss.getPosition(), player.getPosition()));
                     if (boss.isAttacked()) {
                         arrows.add(new Arrow(boss.getPosition(), player.getPosition()));
                     }
