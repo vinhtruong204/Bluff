@@ -104,7 +104,7 @@ public class Boss extends Enemy {
     }
 
     private boolean isValid(int row, int col) {
-        return row >= 0 && col >= 0 && row < 25 && col < 30;
+        return row >= 0 && col >= 0 && row < map.length && col < map[0].length;
     }
 
     private void bfs(PointMatrix src, PointMatrix des) {
@@ -198,20 +198,20 @@ public class Boss extends Enemy {
     }
 
     private void chasePlayer(Rectangle playerHitBox) {
+        // Reset velocity
         velocity = new Vector2D(0.0f, 0.0f);
         oldPos = position;
+
         // Calculate point of player, boss in map matrix
         currPointMatrix = new PointMatrix((int) hitBox.y / Tile.TILE_SIZE,
                 (int) hitBox.x / Tile.TILE_SIZE, -1, -1);
         PointMatrix playerPosMatrix = new PointMatrix((int) playerHitBox.y / Tile.TILE_SIZE,
                 (int) playerHitBox.x / Tile.TILE_SIZE, -1, -1);
 
-        // if (currPointMatrix.getCol() == playerPosMatrix.getCol()
-        // && currPointMatrix.getRow() == playerPosMatrix.getRow())
-        // return;
-
+        // Find path and move to the player
         bfs(playerPosMatrix, currPointMatrix);
 
+        // Get next row and column and move to it
         if (!points.isEmpty()) {
             nextPointMatrix = points.pop();
             if (!points.isEmpty()) {
@@ -219,27 +219,8 @@ public class Boss extends Enemy {
             }
         }
 
-        // System.out.println("Complete");
-        // System.out.println(currPointMatrix.getRow() + " " + currPointMatrix.getCol()
-        // + "\t" +
-        // nextPointMatrix.getRow()
-        // + " " + nextPointMatrix.getCol());
-        // System.out.println(currPoint.getRow() + "\t" + currPoint.getCol());
-        // int prevRow = currPoint.getPrevRow();
-        // int prevCol = currPoint.getPrevCol();
-
+        // Move the boss
         moveBoss();
-
-        // while (!points.isEmpty()) {
-        // currPoint = points.pop();
-        // if (currPoint.getRow() == prevRow && currPoint.getCol() == prevCol) {
-        // System.out.println(currPoint.getRow() + "\t" + currPoint.getCol());
-        // prevRow = currPoint.getPrevRow();
-        // prevCol = currPoint.getPrevCol();
-        // }
-        // }
-
-        // System.out.println("Complete");
     }
 
     private void moveBoss() {
