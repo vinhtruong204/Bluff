@@ -119,7 +119,7 @@ public class LevelManager implements StateMethods {
                     if (player.getHeartPlayer() > 0) {
                         player.setHeartPlayer(player.getHeartPlayer() - 1);
 
-                        //
+                        // Decrease heart of player
                         heartManager.getHeartPlayer().remove(heartManager.getHeartPlayer().size() - 1);
                     }
                 }
@@ -204,7 +204,8 @@ public class LevelManager implements StateMethods {
             bomb.render(g, camera);
         }
 
-        if (currentLevel == 6)
+        // If is the last level
+        if (currentLevel == levels.length - 1)
             arrowManager.render(g, camera);
         enemyManager.render(g, camera);
         heartManager.render(g, camera);
