@@ -31,38 +31,7 @@ public class Camera {
         maxMapY = Tile.TILE_SIZE * level.getMaxRow();
     }
 
-    // Getter and setter of camera
-    public int getMaxMapX() {
-        return maxMapX;
-    }
-
-    public void setMaxMapX(int maxMapX) {
-        this.maxMapX = maxMapX;
-    }
-
-    public int getMaxMapY() {
-        return maxMapY;
-    }
-
-    public void setMaxMapY(int maxMapY) {
-        this.maxMapY = maxMapY;
-    }
-
-    public int getMapStartX() {
-        return mapStartX;
-    }
-
-    public void setMapStartX(int mapStartX) {
-        this.mapStartX = mapStartX;
-    }
-
-    public int getMapStartY() {
-        return mapStartY;
-    }
-
-    public void setMapStartY(int mapStartY) {
-        this.mapStartY = mapStartY;
-    }
+    
 
     // Set the player always in the camera
     private void checkCenterToMap() {
@@ -132,6 +101,39 @@ public class Camera {
             }
             map_y++;
         }
+    }
+
+    // Getter and setter of camera
+    public int getMaxMapX() {
+        return maxMapX;
+    }
+
+    public void setMaxMapX(int maxMapX) {
+        this.maxMapX = maxMapX;
+    }
+
+    public int getMaxMapY() {
+        return maxMapY;
+    }
+
+    public void setMaxMapY(int maxMapY) {
+        this.maxMapY = maxMapY;
+    }
+
+    public int getMapStartX() {
+        return mapStartX;
+    }
+
+    public void setMapStartX(int mapStartX) {
+        this.mapStartX = mapStartX;
+    }
+
+    public int getMapStartY() {
+        return mapStartY;
+    }
+
+    public void setMapStartY(int mapStartY) {
+        this.mapStartY = mapStartY;
     }
 
 }

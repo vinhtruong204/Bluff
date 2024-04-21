@@ -60,7 +60,6 @@ public class Cucumber extends Enemy {
                         CucumberConstants.CUCUMBER_HEIGHT);
             }
         }
-
     }
 
     @Override

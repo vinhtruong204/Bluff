@@ -11,10 +11,10 @@ import helpmethods.LoadSave;
 
 public class SoundObject implements SoundStatus {
     // used to perform and control an audio clip
-    Clip clip;
+    private Clip clip;
 
     //Stores the clip's current position
-    long clipPosition;
+    private long clipPosition;
 
     //constructor
     public SoundObject(String filePath) {

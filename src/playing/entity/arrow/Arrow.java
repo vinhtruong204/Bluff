@@ -49,7 +49,6 @@ public class Arrow extends GameObject {
         aniIndex = 0;
         loadAnimations();
         setDirection();
-        //setShootingPoint();
         setSpeed();
     }
 
@@ -77,46 +76,6 @@ public class Arrow extends GameObject {
             speedX = (distanceX / (distanceY / speedY));
         }
     }
-
-    // private void setShootingPoint() {
-    //     switch (direction) {
-    //         case DirectionShot.RIGHT:
-    //             position = new Position(position.getX(),
-    //                     position.getY() + (float) ARROW_HEIGHT / 2);
-    //                     System.out.println("right");
-    //             break;
-    //         case DirectionShot.LEFT:
-    //             position = new Position(position.getX() - (float)ARROW_WIDTH, position.getY() + (float) ARROW_HEIGHT / 2);
-    //             System.out.println("left");
-    //             break;
-    //         case DirectionShot.UP:
-    //             position = new Position(position.getX() - (float) ARROW_WIDTH / 2, position.getY());
-    //             System.out.println("up");
-    //             break;
-    //         case DirectionShot.DOWN:
-    //             position = new Position(position.getX() + (float) ARROW_WIDTH / 2,
-    //                     position.getY() + (float) ARROW_HEIGHT);
-    //                     System.out.println("down");
-    //             break;
-    //         case DirectionShot.DIAGONAL_UP_LEFT:
-    //         position = new Position(position.getX() - (float) ARROW_WIDTH / 2, position.getY());
-    //         System.out.println("up left");
-    //             break;
-    //         case DirectionShot.DIAGONAL_UP_RIGHT:
-    //             System.out.println("up right");
-    //             break;
-    //         case DirectionShot.DIAGONAL_DOWN_LEFT:
-    //             position = new Position(position.getX() - (float)ARROW_WIDTH, position.getY() + (float) ARROW_HEIGHT);
-    //             System.out.println("down left");
-    //             break;
-    //         case DirectionShot.DIAGONAL_DOWN_RIGHT:
-    //             position = new Position(position.getX(), position.getY() + (float) ARROW_HEIGHT);
-    //             System.out.println("down right");
-    //             break;
-    //         default:
-    //             break;
-    //     }
-    // }
 
     private void setDirection() {
         direction = CheckDirectionShot.setDirection(positionStart, positionEnd);
@@ -193,23 +152,35 @@ public class Arrow extends GameObject {
                     + Math.pow(positionEnd.getY() - positionStart.getY(), 2));
             float dyx = Math.abs(positionStart.getY() - positionEnd.getY());
             float angle = (float) Math.toDegrees((float) Math.asin(dyx / doy));
-            //perform rotation
-            if (direction == DirectionShot.LEFT) {
-                g2d.rotate(Math.toRadians(180));
-            } else if (direction == DirectionShot.RIGHT) {
-                g2d.rotate(Math.toRadians(0));
-            } else if (direction == DirectionShot.UP) {
-                g2d.rotate(Math.toRadians(270));
-            } else if (direction == DirectionShot.DOWN) {
-                g2d.rotate(Math.toRadians(90));
-            } else if (direction == DirectionShot.DIAGONAL_UP_RIGHT) {
-                g2d.rotate(Math.toRadians(360 - (int) angle));
-            } else if (direction == DirectionShot.DIAGONAL_UP_LEFT) {
-                g2d.rotate(Math.toRadians(180 + (int) angle));
-            } else if (direction == DirectionShot.DIAGONAL_DOWN_RIGHT) {
-                g2d.rotate(Math.toRadians((int) angle));
-            } else if (direction == DirectionShot.DIAGONAL_DOWN_LEFT) {
-                g2d.rotate(Math.toRadians(180 - (int) angle));
+            //perform rotation;
+
+            switch (direction) {
+                case DirectionShot.LEFT:
+                    g2d.rotate(Math.toRadians(180));
+                    break;
+                case DirectionShot.RIGHT:
+                    g2d.rotate(Math.toRadians(0));
+                    break;
+                case DirectionShot.UP:
+                    g2d.rotate(Math.toRadians(270));
+                    break;
+                case DirectionShot.DOWN:
+                    g2d.rotate(Math.toRadians(90));
+                    break;
+                case DirectionShot.DIAGONAL_UP_RIGHT:
+                    g2d.rotate(Math.toRadians(360 - (int) angle));
+                    break;
+                case DirectionShot.DIAGONAL_UP_LEFT:
+                    g2d.rotate(Math.toRadians(180 + (int) angle));
+                    break;
+                case DirectionShot.DIAGONAL_DOWN_RIGHT:
+                    g2d.rotate(Math.toRadians((int) angle));
+                    break;
+                case DirectionShot.DIAGONAL_DOWN_LEFT:
+                    g2d.rotate(Math.toRadians(180 - (int) angle));
+                    break;
+                default:
+                    break;
             }
 
             // Render image

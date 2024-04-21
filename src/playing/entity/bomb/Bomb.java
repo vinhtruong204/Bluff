@@ -106,7 +106,7 @@ public class Bomb extends GameObject {
         int startAni = aniType;
 
         // Set new type of animation depend on time has passed
-        if (timePassed <= 500) {
+        if (timePassed   <= 500) {
             aniType = BombConstants.PLACINGBOMB;
         } else if (timePassed > 500 && timePassed <= 3000) {
             aniType = BombConstants.ACTIVATINGBOMB;
