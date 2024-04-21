@@ -4,16 +4,16 @@ import java.util.Iterator;
 
 import javax.sound.sampled.Clip;
 
+import gamestate.playing.entity.Player;
+import gamestate.playing.entity.bomb.Bomb;
+import gamestate.playing.entity.bomb.BombManager;
+import gamestate.playing.entity.door.DoorManager;
+import gamestate.playing.entity.enemy.Enemy;
+import gamestate.playing.entity.enemy.EnemyManager;
+import gamestate.playing.entity.heart.Heart;
+import gamestate.playing.entity.heart.HeartManager;
 import helpmethods.CheckCollision;
 import helpmethods.FilePath;
-import playing.entity.Player;
-import playing.entity.bomb.Bomb;
-import playing.entity.bomb.BombManager;
-import playing.entity.door.DoorManager;
-import playing.entity.enemy.Enemy;
-import playing.entity.enemy.EnemyManager;
-import playing.entity.heart.Heart;
-import playing.entity.heart.HeartManager;
 import sound.pause_music_background.PauseMusicBackGroundState;
 import sound.pause_sound.PauseSoundState;
 

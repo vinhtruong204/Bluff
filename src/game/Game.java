@@ -2,14 +2,14 @@ package game;
 
 import java.awt.Graphics;
 
-import gameover.GameOver;
-import gameover.GameOverState;
 import gamestate.GameState;
-import gamewin.GameWin;
-import gamewin.GameWinState;
-import menu.Menu;
-import playing.Playing;
-import playing.pause.Pause;
+import gamestate.gameover.GameOver;
+import gamestate.gameover.GameOverState;
+import gamestate.gamewin.GameWin;
+import gamestate.gamewin.GameWinState;
+import gamestate.menu.Menu;
+import gamestate.playing.Playing;
+import gamestate.playing.pause.Pause;
 
 public class Game {
     // Dimension of the window
