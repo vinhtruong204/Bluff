@@ -8,6 +8,7 @@ import java.awt.image.BufferedImage;
 
 import core.Position;
 import core.Size;
+import core.Vector2D;
 import game.Game;
 import helpmethods.ArrowConstants;
 import helpmethods.CheckDirectionShot;
@@ -23,13 +24,10 @@ public class Arrow extends GameObject {
     private static final int ARROW_HEIGHT = 15;
     private final float MAXSPEED = 8;
 
-    private float speedX;
-    private float speedY;
-
     private BufferedImage[][] animations;
 
     private Rectangle hitBox;
-    // private Vector2D velocity;
+    private Vector2D velocity;
 
     private DirectionShot direction;
     private Position positionStart;
@@ -42,7 +40,7 @@ public class Arrow extends GameObject {
         this.positionStart = positionStart;
         this.positionEnd = positionEnd;
         position = new Position(positionStart.getX(), positionStart.getY());
-        // velocity = new Vector2D(0, 0);
+        velocity = new Vector2D(0, 0);
         hitBox = new Rectangle((int) positionStart.getX(), (int) positionStart.getY(), ARROW_WIDTH, ARROW_HEIGHT);
         size = new Size(ARROW_WIDTH, ARROW_HEIGHT);
         aniType = ArrowConstants.ARROW_SHOT;
@@ -69,11 +67,11 @@ public class Arrow extends GameObject {
         float distanceX = Math.abs(positionStart.getX() - positionEnd.getX());
         float distanceY = Math.abs(positionStart.getY() - positionEnd.getY());
         if (distanceX >= distanceY) {
-            speedX = MAXSPEED;
-            speedY = (distanceY / (distanceX / speedX));
+            velocity.setX(MAXSPEED);
+            velocity.setY(distanceY / (distanceX / velocity.getX()));
         } else {
-            speedY = MAXSPEED;
-            speedX = (distanceX / (distanceY / speedY));
+            velocity.setY(MAXSPEED);
+            velocity.setX(distanceX / (distanceY / velocity.getY()));
         }
     }
 
@@ -84,32 +82,32 @@ public class Arrow extends GameObject {
     private void updatePosition() {
         switch (direction) {
             case DirectionShot.RIGHT:
-                position.setX(position.getX() + speedX);
+                position.setX(position.getX() + velocity.getX());
                 break;
             case DirectionShot.LEFT:
-                position.setX(position.getX() - speedX);
+                position.setX(position.getX() - velocity.getX());
                 break;
             case DirectionShot.UP:
-                position.setY(position.getY() - speedY);
+                position.setY(position.getY() - velocity.getY());
                 break;
             case DirectionShot.DOWN:
-                position.setY(position.getY() + speedY);
+                position.setY(position.getY() + velocity.getY());
                 break;
             case DirectionShot.DIAGONAL_UP_LEFT:
-                position.setX(position.getX() - speedX);
-                position.setY(position.getY() - speedY);
+                position.setX(position.getX() - velocity.getX());
+                position.setY(position.getY() - velocity.getY());
                 break;
             case DirectionShot.DIAGONAL_UP_RIGHT:
-                position.setY(position.getY() - speedY);
-                position.setX(position.getX() + speedX);
+                position.setY(position.getY() - velocity.getY());
+                position.setX(position.getX() + velocity.getX());
                 break;
             case DirectionShot.DIAGONAL_DOWN_LEFT:
-                position.setY(position.getY() + speedY);
-                position.setX(position.getX() - speedX);
+                position.setY(position.getY() + velocity.getY());
+                position.setX(position.getX() - velocity.getX());
                 break;
             case DirectionShot.DIAGONAL_DOWN_RIGHT:
-                position.setY(position.getY() + speedY);
-                position.setX(position.getX() + speedX);
+                position.setY(position.getY() + velocity.getY());
+                position.setX(position.getX() + velocity.getX());
                 break;
             default:
                 break;

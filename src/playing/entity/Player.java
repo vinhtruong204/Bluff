@@ -70,8 +70,6 @@ public class Player extends GameObject {
     //
     private boolean doorIn;
     private boolean enteredDoor;
-
-    //
     private boolean doorOut;
 
     //
