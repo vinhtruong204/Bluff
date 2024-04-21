@@ -41,9 +41,9 @@ public class Menu implements StateMethods {
 
     @Override
     public void update() {
-        for (MenuButton button : buttons) {
-            button.update();
-        }
+        if (MenuState.menuState == MenuState.MAIN) 
+            for (MenuButton button : buttons) 
+                button.update();
     }
 
     @Override
