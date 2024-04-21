@@ -93,7 +93,7 @@ public class LevelManager implements StateMethods {
             bombManager = new BombManager(currentLevel);
             doorManager = new DoorManager(levels[currentLevel].getMap(), player);
             soundManager = new SoundManager(bombManager, heartManager, enemyManager, doorManager, player);
-            if (currentLevel == 6)
+            if (currentLevel == levels.length - 1)
                 arrowManager = new ArrowManager(player, enemyManager, levels[currentLevel].getMap());
         }
     }
@@ -181,7 +181,7 @@ public class LevelManager implements StateMethods {
             handleBombCollision();
             deleteEnemy();
 
-            if (currentLevel == 6)
+            if (currentLevel == levels.length - 1)
                 arrowManager.update();
             enemyManager.update();
             heartManager.update();
