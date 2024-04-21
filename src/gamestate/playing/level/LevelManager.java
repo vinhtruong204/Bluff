@@ -43,7 +43,7 @@ public class LevelManager implements StateMethods {
 
     // Constructor
     public LevelManager(Playing playing) {
-        currentLevel = 6; // Set default level
+        currentLevel = 0; // Set default level
         initPathMap();
         initMap();
         this.playing = playing;
