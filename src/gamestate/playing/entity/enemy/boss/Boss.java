@@ -310,6 +310,7 @@ public class Boss extends Enemy {
                     directionAttack = DirectionShot.NOSHOOT;
                     attacked = true;
                 }
+                else attacked = false;
             }
         }
     }
@@ -334,5 +335,9 @@ public class Boss extends Enemy {
 
     public void setMoving(boolean moving) {
         this.moving = moving;
+    }
+
+    public void setAttacked(boolean attacked) {
+        this.attacked = attacked;
     }
 }
