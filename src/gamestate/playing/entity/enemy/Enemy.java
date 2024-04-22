@@ -7,6 +7,7 @@ import java.awt.image.BufferedImage;
 import core.Position;
 import core.Vector2D;
 import game.Game;
+import game.GamePanel;
 import gamestate.playing.camera.Camera;
 import gamestate.playing.entity.GameObject;
 import gamestate.playing.level.Tile;
@@ -281,8 +282,6 @@ public abstract class Enemy extends GameObject {
 
         // Ahead is a wall or abyss
         if (CheckCollision.isTileSolid(map[rowIndex][colIndex])
-                || !CheckCollision.isTileSolid(map[rowIndex + 1][colIndex])
-                || CheckCollision.isTileSolid(map[rowIndex][colIndex])
                 || !CheckCollision.isTileSolid(map[rowIndex + 1][colIndex])) {
             return false;
         }
@@ -304,15 +303,15 @@ public abstract class Enemy extends GameObject {
         if (direction == WalkDirection.LEFT)
             temp = FlipImage.horizontalflip(temp);
             
-            renderPos = position;
         // If enemy isn't moving
-        // if (oldPos.compareTo(position) == 0) {
-        // }
-        // // Calculate render position
-        // else {
-        //     renderPos.setX(oldPos.getX() + velocity.getX() * GamePanel.interpolation);
-        //     renderPos.setY(oldPos.getY() + velocity.getY() * GamePanel.interpolation);
-        // }
+        if (oldPos.compareTo(position) == 0) {
+            renderPos = position;
+        }
+        // Calculate render position
+        else {
+            renderPos.setX(oldPos.getX() + velocity.getX() * GamePanel.interpolation);
+            renderPos.setY(oldPos.getY() + velocity.getY() * GamePanel.interpolation);
+        }
 
         // Render the bomb if it is in the screen
         if ((int) renderPos.getX() - camera.getMapStartX() >= 0
