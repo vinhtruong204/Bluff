@@ -11,13 +11,13 @@ import helpmethods.LoadSave;
 
 public class Menu implements StateMethods {
     // Background image of the menu
-    BufferedImage background;
+    private BufferedImage background;
 
     // Array button of the menu
-    MenuButton[] buttons;
+    private MenuButton[] buttons;
 
     // Help state of menu
-    Help help;
+    private Help help;
 
     public Menu() {
         // Load background from file
