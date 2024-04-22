@@ -57,15 +57,6 @@ public class Heart extends GameObject {
         }
     }
 
-    // Getter and Setter
-    public Rectangle getHitBox() {
-        return hitBox;
-    }
-
-    public void setHitBox(Rectangle hitBox) {
-        this.hitBox = hitBox;
-    }
-
     @Override
     public void update() {
         updateAnimationTick();
@@ -86,6 +77,15 @@ public class Heart extends GameObject {
     public void render(Graphics g) {
         g.drawImage(animations[aniType][aniIndex], (int) position.getX(),
                 (int) position.getY(), size.getWidth(), size.getHeight(), null);
+    }
+
+    // Getter and Setter
+    public Rectangle getHitBox() {
+        return hitBox;
+    }
+
+    public void setHitBox(Rectangle hitBox) {
+        this.hitBox = hitBox;
     }
 
 }

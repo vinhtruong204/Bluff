@@ -111,16 +111,16 @@ public abstract class Enemy extends GameObject {
                 health = 2;
                 break;
             case EnemyConstants.ARCHER_BLUE:
-                health = 2;
+                health = 5;
                 break;
             case EnemyConstants.ARCHER_PURPLE:
-                health = 2;
+                health = 5;
                 break;
             case EnemyConstants.ARCHER_YELLOW:
-                health = 2;
+                health = 5;
                 break;
             case EnemyConstants.ARCHER_RED:
-                health = 2;
+                health = 5;
                 break;
             default:
                 break;
