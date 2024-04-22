@@ -126,32 +126,24 @@ public class Arrow extends GameObject {
         // Image and position render
         BufferedImage temp = animations[aniType][aniIndex];
 
-        if ((int) position.getX() - camera.getMapStartX() >= 0
-                && (int) position.getX() - camera.getMapStartX() <= Game.SCREEN_WIDTH
-                && (int) position.getY() - camera.getMapStartY() >= 0
-                && (int) position.getY() - camera.getMapStartY() <= Game.SCREEN_HEIGHT) {
-
+        if ((int) position.getX() - camera.getMapStartX() >= 0&& (int) position.getX() - camera.getMapStartX() <= Game.SCREEN_WIDTH
+                && (int) position.getY() - camera.getMapStartY() >= 0 && (int) position.getY() - camera.getMapStartY() <= Game.SCREEN_HEIGHT) {
             Graphics2D g2d = (Graphics2D) g.create();
-
             // If player's direction is left
-
             int imageWidth = temp.getWidth();
             int imageHeight = temp.getHeight();
-
             // Calculate the coordinates of the center of the image
             int imageCenterX = (int) position.getX() - camera.getMapStartX() + imageWidth / 2;
             int imageCenterY = (int) position.getY() - camera.getMapStartY() + imageHeight / 2;
-
             // Move the coordinate axis to make the center of the image (0, 0)
             AffineTransform oldAT = g2d.getTransform();
             g2d.translate(imageCenterX, imageCenterY);
-            //
+            // calculate the rotation angle
             float doy = (float) Math.sqrt(Math.pow(positionEnd.getX() - positionStart.getX(), 2)
                     + Math.pow(positionEnd.getY() - positionStart.getY(), 2));
             float dyx = Math.abs(positionStart.getY() - positionEnd.getY());
             float angle = (float) Math.toDegrees((float) Math.asin(dyx / doy));
             //perform rotation;
-
             switch (direction) {
                 case DirectionShot.LEFT:
                     g2d.rotate(Math.toRadians(180));
@@ -180,14 +172,8 @@ public class Arrow extends GameObject {
                 default:
                     break;
             }
-
             // Render image
-            g2d.drawImage(temp,
-                    -imageWidth / 2,
-                    -imageHeight / 2,
-                    size.getWidth(),
-                    size.getHeight(),
-                    null);
+            g2d.drawImage(temp,-imageWidth / 2,-imageHeight / 2,size.getWidth(),size.getHeight(),null);
             // Restore the state before moving the coordinate axis
             g2d.setTransform(oldAT);
         }

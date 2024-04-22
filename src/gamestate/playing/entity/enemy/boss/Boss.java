@@ -110,19 +110,13 @@ public class Boss extends Enemy {
     private void bfs(PointMatrix src, PointMatrix des) {
         points.clear();
         resetBooleanVisited();
-
         ArrayDeque<PointMatrix> q = new ArrayDeque<>();
-
         visited[src.getRow()][src.getCol()] = true;
         q.addLast(src);
-
         while (!q.isEmpty()) {
             PointMatrix current = q.removeFirst();
-
             points.add(current);
-            if (current.getRow() == des.getRow() && current.getCol() == des.getCol())
-                break;
-
+            if (current.getRow() == des.getRow() && current.getCol() == des.getCol()) break;
             for (int i = 0; i < dx.length; i++) {
                 // Calculate next point around current point
                 PointMatrix nextPoint = new PointMatrix(
@@ -130,7 +124,6 @@ public class Boss extends Enemy {
                         current.getCol() + dy[i],
                         current.getRow(),
                         current.getCol());
-
                 // If can move to this point
                 if (isValid(nextPoint.getRow(), nextPoint.getCol())
                         && !visited[nextPoint.getRow()][nextPoint.getCol()]

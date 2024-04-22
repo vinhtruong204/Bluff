@@ -31,10 +31,10 @@ public class GameOver {
         //if PauseSoundState = ON
         if (PauseSoundState.pauseSoundState == PauseSoundState.ON) {
             gameOver.start();
+            System.out.println("yes");
         }
         // after 5s
         if (System.currentTimeMillis() - currentTime >= 5000) {
-            System.out.println(System.currentTimeMillis() - currentTime);
             GameState.gameState = GameState.MENU;
         }
     }

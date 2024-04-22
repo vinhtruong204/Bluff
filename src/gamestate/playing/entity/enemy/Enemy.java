@@ -171,9 +171,7 @@ public abstract class Enemy extends GameObject {
             // Move down
             fall();
             return;
-        } else
-            // Reset y axis
-            velocity.setY(0.0f);
+        } 
 
         // If enemy colliding with player
         if (aniType == CucumberConstants.ATTACK) {
