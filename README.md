@@ -15,3 +15,5 @@ The workspace contains two folders by default, where:
 
 Meanwhile, the compiled output files will be generated in the `bin` folder by default.
 
+## Demo game
+[Video](https://youtu.be/zJw9Y2jTLhs?si=SdaE4YxCi_74nLgP)
